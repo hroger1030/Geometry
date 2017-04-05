@@ -4,6 +4,8 @@ namespace Geometry
 {
     public class Circle
     {
+        public static readonly Circle UnitCircle = new Circle();
+
         protected Point2 _Center;
         protected float _Radius;
 
