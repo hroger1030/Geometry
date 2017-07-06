@@ -1,9 +1,11 @@
 using System;
+using System.Diagnostics;
 
 namespace Geometry
 {
     public class Circle
     {
+        [DebuggerDisplay("Circle {_Center}, r{_Radius}")]
         public static readonly Circle UnitCircle = new Circle();
 
         protected Point2 _Center;
@@ -71,9 +73,9 @@ namespace Geometry
 
         public bool Intersects(Circle circle)
         {
-            float distance_x = circle.Center.X - this.Center.X;
-            float distance_y = circle.Center.Y - this.Center.Y;
-            float sum_radius = this._Radius + circle._Radius;
+            float distance_x = circle.Center.X - _Center.X;
+            float distance_y = circle.Center.Y - _Center.Y;
+            float sum_radius = _Radius + circle._Radius;
 
             if ((sum_radius * sum_radius) < Math.Abs(distance_x * distance_x + distance_y * distance_y))
                 return false;
@@ -166,14 +168,16 @@ namespace Geometry
 
         public override bool Equals(object obj)
         {
-            if (obj == null)
-                return false;
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (GetType() != obj.GetType()) return false;
 
-            if (GetType() != obj.GetType())
-                return false;
+            Circle new_obj = (Circle)obj;
+            return Equals(new_obj);
+        }
 
-            Circle other = (Circle)obj;
-
+        public bool Equals(Circle other)
+        {
             return (_Center == other._Center && _Radius == other._Radius);
         }
     }

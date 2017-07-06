@@ -1,7 +1,9 @@
 using System;
+using System.Diagnostics;
 
 namespace Geometry
 {
+    [DebuggerDisplay("Vector2 {_X},{_Y}")]
     public class Vector2
     {
         public static readonly Vector2 Zero = new Vector2(0, 0);
@@ -40,38 +42,22 @@ namespace Geometry
 
         public static Vector2 operator +(Vector2 v1, Vector2 v2)
         {
-            return new Vector2
-            (
-                v1.X + v2.X,
-                v1.Y + v2.Y
-            );
+            return new Vector2(v1.X + v2.X, v1.Y + v2.Y);
         }
 
         public static Vector2 operator -(Vector2 v1, Vector2 v2)
         {
-            return new Vector2
-            (
-                v1.X - v2.X,
-                v1.Y - v2.Y
-            );
+            return new Vector2(v1.X - v2.X, v1.Y - v2.Y);
         }
 
         public static Vector2 operator *(Vector2 v1, float s2)
         {
-            return new Vector2
-            (
-                v1.X * s2,
-                v1.Y * s2
-            );
+            return new Vector2(v1.X * s2, v1.Y * s2);
         }
 
         public static Vector2 operator /(Vector2 v1, float s2)
         {
-            return new Vector2
-            (
-                v1.X / s2,
-                v1.Y / s2
-            );
+            return new Vector2(v1.X / s2, v1.Y / s2);
         }
 
         public static bool operator ==(Vector2 v1, Vector2 v2)
@@ -145,12 +131,17 @@ namespace Geometry
 
         public override string ToString()
         {
-            return String.Format("({0},{1})", _X, _Y);
+            return $"({_X},{_Y})";
         }
 
         public override bool Equals(object obj)
         {
-            return (obj != null) && (obj is Vector2) && this == ((Vector2)obj);
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (GetType() != obj.GetType()) return false;
+
+            Vector2 new_obj = (Vector2)obj;
+            return Equals(new_obj);
         }
 
         public bool Equals(Vector2 other)

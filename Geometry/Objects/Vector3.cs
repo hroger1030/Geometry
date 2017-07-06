@@ -1,7 +1,9 @@
 using System;
+using System.Diagnostics;
 
 namespace Geometry
 {
+    [DebuggerDisplay("Vector2 {_X},{_Y},{_Z}")]
     public class Vector3
     {
         public static readonly Vector3 Zero = new Vector3(0, 0, 0);
@@ -44,42 +46,22 @@ namespace Geometry
 
         public static Vector3 operator +(Vector3 v1, Vector3 v2)
         {
-            return new Vector3
-            (
-                v1.X + v2.X,
-                v1.Y + v2.Y,
-                v1.Z + v2.Z
-            );
+            return new Vector3(v1.X + v2.X, v1.Y + v2.Y, v1.Z + v2.Z);
         }
 
         public static Vector3 operator -(Vector3 v1, Vector3 v2)
         {
-            return new Vector3
-            (
-                v1.X - v2.X,
-                v1.Y - v2.Y,
-                v1.Z - v2.Z
-            );
+            return new Vector3(v1.X - v2.X, v1.Y - v2.Y, v1.Z - v2.Z);
         }
 
         public static Vector3 operator *(Vector3 v1, float s2)
         {
-            return new Vector3
-            (
-                v1.X * s2,
-                v1.Y * s2,
-                v1.Z * s2
-            );
+            return new Vector3(v1.X * s2, v1.Y * s2, v1.Z * s2);
         }
 
         public static Vector3 operator /(Vector3 v1, float s2)
         {
-            return new Vector3
-            (
-                v1.X / s2,
-                v1.Y / s2,
-                v1.Z / s2
-            );
+            return new Vector3(v1.X / s2, v1.Y / s2, v1.Z / s2);
         }
 
         public static bool operator ==(Vector3 v1, Vector3 v2)
@@ -160,6 +142,16 @@ namespace Geometry
         public override string ToString()
         {
             return $"({_X},{_Y},{_Z})";
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (GetType() != obj.GetType()) return false;
+
+            Vector3 new_obj = (Vector3)obj;
+            return Equals(new_obj);
         }
 
         public bool Equals(Vector3 other)

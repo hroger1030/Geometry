@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Text;
 
 namespace Geometry
 {
+    [DebuggerDisplay("Cube {_X1},{_Y1},{_Z1} - {_X2}, {_Y2},{_Z2}")]
     public class Cube
     {
         public static Cube UnitCube = new Cube(0f, 0f, 0f, 1f, 1f, 1f);
@@ -87,12 +89,7 @@ namespace Geometry
 
         public float Volume
         {
-            get
-            {
-                return Math.Abs(_X2 - _X1) *
-                       Math.Abs(_Y2 - _Y1) *
-                       Math.Abs(_Z2 - _Z1);
-            }
+            get { return Math.Abs(_X2 - _X1) * Math.Abs(_Y2 - _Y1) * Math.Abs(_Z2 - _Z1); }
         }
 
         public float SurfaceArea
@@ -208,33 +205,17 @@ namespace Geometry
 
         public override bool Equals(object obj)
         {
-            if (obj == null)
-                return false;
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (GetType() != obj.GetType()) return false;
 
-            if (this.GetType() != obj.GetType())
-                return false;
+            Cube new_obj = (Cube)obj;
+            return Equals(new_obj);
+        }
 
-            Cube other = (Cube)obj;
-
-            if (this._X1 != other._X1)
-                return false;
-
-            if (this._X2 != other._X2)
-                return false;
-
-            if (this._Y1 != other._Y1)
-                return false;
-
-            if (this._Y2 != other._Y2)
-                return false;
-
-            if (this._Z1 != other._Z1)
-                return false;
-
-            if (this._Z2 != other._Z2)
-                return false;
-
-            return true;
+        public bool Equals(Cube other)
+        {
+            return (_X1 == other._X1) && (_X2 == other._X2) && (_Y1 == other._Y1) && (_Y2 == other._Y2) && (_Z1 == other._Z1) && (_Z2 == other._Z2);
         }
 
         public override string ToString()
@@ -255,8 +236,7 @@ namespace Geometry
         {
             unchecked
             {
-                return _X1.GetHashCode() ^ (_X2.GetHashCode() * 7) ^ (_Y1.GetHashCode() * 17) 
-                    ^ (_Y2.GetHashCode() * 13) ^ (_Z1.GetHashCode() * 47) ^ (_Z2.GetHashCode() * 37);
+                return _X1.GetHashCode() ^ (_X2.GetHashCode() * 7) ^ (_Y1.GetHashCode() * 17) ^ (_Y2.GetHashCode() * 13) ^ (_Z1.GetHashCode() * 47) ^ (_Z2.GetHashCode() * 37);
             }
         }
     }

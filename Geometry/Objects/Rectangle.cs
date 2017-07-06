@@ -1,7 +1,9 @@
 using System;
+using System.Diagnostics;
 
 namespace Geometry
 {
+    [DebuggerDisplay("Rectangle {_X},{_Y} - {_Height}x{_Width}")]
     public class Rectangle : IEquatable<Rectangle>
     {
         protected float _X;
@@ -293,7 +295,12 @@ namespace Geometry
 
         public override bool Equals(object obj)
         {
-            return (obj != null) && (obj is Vector2) && this == ((Rectangle)obj);
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (GetType() != obj.GetType()) return false;
+
+            Rectangle new_obj = (Rectangle)obj;
+            return Equals(new_obj);
         }
 
         public bool Equals(Rectangle other)

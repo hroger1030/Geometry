@@ -1,7 +1,9 @@
 using System;
+using System.Diagnostics;
 
 namespace Geometry
 {
+    [DebuggerDisplay("Point2 {_X},{_Y}")]
     public class Point2
     {
         protected float _X;
@@ -81,15 +83,12 @@ namespace Geometry
 
         public override bool Equals(object obj)
         {
-            if (obj == null)
-                return false;
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (GetType() != obj.GetType()) return false;
 
-            if (GetType() != obj.GetType())
-                return false;
-
-            Point2 other = (Point2)obj;
-
-            return Equals(other);
+            Point2 new_obj = (Point2)obj;
+            return Equals(new_obj);
         }
 
         public bool Equals(Point2 obj)
