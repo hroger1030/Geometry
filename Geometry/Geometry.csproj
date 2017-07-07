@@ -42,6 +42,7 @@
     <Compile Include="Objects\Rectangle.cs" />
     <Compile Include="Objects\Vector2.cs" />
     <Compile Include="Objects\Vector3.cs" />
+    <Compile Include="Objects\VectorN.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -4,24 +4,23 @@
 // Proprietary and confidential                                                 //
 //////////////////////////////////////////////////////////////////////////////////
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 using Geometry;
 using Newtonsoft.Json;
+using NUnit.Framework;
 
 namespace GeometryTests
 {
-    [TestClass]
+    [TestFixture]
     public class Vector3Tests
     {
-        [TestMethod]
-        [TestCategory("Vector3")]
+        [Test]
+        [Category("Vector3")]
         public void TestOperatorOverloads()
         {
-            Vector3 v1 = new Vector3(3,3,3);
-            Vector3 v2 = new Vector3(1,2,3);
+            Vector3 v1 = new Vector3(3, 3, 3);
+            Vector3 v2 = new Vector3(1, 2, 3);
             Vector3 v3;
-            
+
             v3 = v1 + v2;
             Assert.IsTrue(v3.X == 4f && v3.Y == 5 && v3.Z == 6, "Failed addition");
 
@@ -35,13 +34,13 @@ namespace GeometryTests
             Assert.IsTrue(v3.X == 1.5f && v3.Y == 1.5 && v3.Z == 1.5, "Failed division");
         }
 
-        [TestMethod]
-        [TestCategory("Vector2")]
+        [Test]
+        [Category("Vector2")]
         public void TestSerialization()
         {
-            Vector3 v1 = new Vector3(0f,1f,2f);
+            Vector3 v1 = new Vector3(0f, 1f, 2f);
 
-            string output = JsonConvert.SerializeObject(v1);  
+            string output = JsonConvert.SerializeObject(v1);
             Assert.IsTrue(!string.IsNullOrWhiteSpace(output), "Failed to serialize");
 
             Vector3 v2 = JsonConvert.DeserializeObject<Vector3>(output);

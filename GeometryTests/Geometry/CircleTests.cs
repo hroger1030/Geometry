@@ -5,18 +5,18 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Geometry;
 using Newtonsoft.Json;
+using NUnit.Framework;
 
 namespace GeometryTests
 {
-    [TestClass]
+    [TestFixture]
     public class CircleTests
     {
-        [TestMethod]
-        [TestCategory("Circle")]
+        [Test]
+        [Category("Circle")]
         public void TestBasicProperties()
         {
             var c = new Circle(0, 0, 2);
@@ -31,8 +31,8 @@ namespace GeometryTests
             Assert.IsTrue(c.Center.Y == 0f, "Failed center Y check");
         }
 
-        [TestMethod]
-        [TestCategory("Circle")]
+        [Test]
+        [Category("Circle")]
         public void TestOperatorOverloads()
         {
             var c1 = new Circle(0, 0, 2);
@@ -58,8 +58,8 @@ namespace GeometryTests
             Assert.IsTrue(c1 != c2, "Failed not equals check");
         }
 
-        [TestMethod]
-        [TestCategory("Circle")]
+        [Test]
+        [Category("Circle")]
         public void TestSerialization()
         {
             var c1 = new Circle(0, 0, 2);
@@ -71,24 +71,24 @@ namespace GeometryTests
             Assert.IsTrue(c1 == c2, "Failed to deserialize");
         }
 
-        [TestMethod]
-        [TestCategory("Area")]
+        [Test]
+        [Category("Area")]
         public void TestArea()
         {
             var circle = Circle.UnitCircle;
             Assert.IsTrue(circle.Area == (float)Math.PI * circle.Radius * circle.Radius);
         }
 
-        [TestMethod]
-        [TestCategory("Perimeter")]
+        [Test]
+        [Category("Perimeter")]
         public void TestPerimeter()
         {
             var circle = Circle.UnitCircle;
             Assert.IsTrue(circle.Circumfrence == (float)Math.PI * circle.Radius * 2);
         }
 
-        [TestMethod]
-        [TestCategory("Intersects")]
+        [Test]
+        [Category("Intersects")]
         public void TestIntersectsCircle1()
         {
             // overlap
@@ -97,8 +97,8 @@ namespace GeometryTests
             Assert.IsTrue(circle1.Intersects(circle2));
         }
 
-        [TestMethod]
-        [TestCategory("Intersects")]
+        [Test]
+        [Category("Intersects")]
         public void TestIntersectsCircle2()
         {
             // doesn't intersect
@@ -107,8 +107,8 @@ namespace GeometryTests
             Assert.IsFalse(circle1.Intersects(circle2));
         }
 
-        [TestMethod]
-        [TestCategory("Intersects")]
+        [Test]
+        [Category("Intersects")]
         public void TestIntersectsCircle3()
         {
             // intersects
@@ -117,18 +117,18 @@ namespace GeometryTests
             Assert.IsTrue(circle1.Intersects(circle2));
         }
 
-        [TestMethod]
-        [TestCategory("Intersects")]
+        [Test]
+        [Category("Intersects")]
         public void TestIntersectsRectangle1()
         {
             // overlap
-            var rectangle1 = new Rectangle(0,0,1,1);
+            var rectangle1 = new Rectangle(0, 0, 1, 1);
             var rectangle2 = new Rectangle(0, 0, 1, 1);
             Assert.IsTrue(rectangle1.Intersects(rectangle2));
         }
 
-        [TestMethod]
-        [TestCategory("Intersects")]
+        [Test]
+        [Category("Intersects")]
         public void TestIntersectsRectangle2()
         {
             // doesn't intersect
