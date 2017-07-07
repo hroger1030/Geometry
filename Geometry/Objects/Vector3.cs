@@ -150,7 +150,7 @@ namespace Geometry
             if (ReferenceEquals(this, obj)) return true;
             if (GetType() != obj.GetType()) return false;
 
-            Vector3 new_obj = (Vector3)obj;
+            var new_obj = (Vector3)obj;
             return Equals(new_obj);
         }
 

@@ -140,7 +140,7 @@ namespace Geometry
             if (ReferenceEquals(this, obj)) return true;
             if (GetType() != obj.GetType()) return false;
 
-            Vector2 new_obj = (Vector2)obj;
+            var new_obj = (Vector2)obj;
             return Equals(new_obj);
         }
 

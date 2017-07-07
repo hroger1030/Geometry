@@ -72,7 +72,7 @@ namespace GeometryTests
         }
 
         [Test]
-        [Category("Area")]
+        [Category("Circle")]
         public void TestArea()
         {
             var circle = Circle.UnitCircle;
@@ -80,7 +80,7 @@ namespace GeometryTests
         }
 
         [Test]
-        [Category("Perimeter")]
+        [Category("Circle")]
         public void TestPerimeter()
         {
             var circle = Circle.UnitCircle;
@@ -88,7 +88,7 @@ namespace GeometryTests
         }
 
         [Test]
-        [Category("Intersects")]
+        [Category("Circle")]
         public void TestIntersectsCircle1()
         {
             // overlap
@@ -98,7 +98,7 @@ namespace GeometryTests
         }
 
         [Test]
-        [Category("Intersects")]
+        [Category("Circle")]
         public void TestIntersectsCircle2()
         {
             // doesn't intersect
@@ -108,7 +108,7 @@ namespace GeometryTests
         }
 
         [Test]
-        [Category("Intersects")]
+        [Category("Circle")]
         public void TestIntersectsCircle3()
         {
             // intersects
@@ -118,7 +118,7 @@ namespace GeometryTests
         }
 
         [Test]
-        [Category("Intersects")]
+        [Category("Circle")]
         public void TestIntersectsRectangle1()
         {
             // overlap
@@ -128,7 +128,7 @@ namespace GeometryTests
         }
 
         [Test]
-        [Category("Intersects")]
+        [Category("Circle")]
         public void TestIntersectsRectangle2()
         {
             // doesn't intersect

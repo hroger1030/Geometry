@@ -1,7 +1,7 @@
 using System;
 using System.Diagnostics;
 
-namespace DataStructures
+namespace Geometry
 {
     [DebuggerDisplay("VectorN {_Axis.Length}")]
     public class VectorN
@@ -242,7 +242,7 @@ namespace DataStructures
             if (ReferenceEquals(this, obj)) return true;
             if (GetType() != obj.GetType()) return false;
 
-            VectorN new_obj = (VectorN)obj;
+            var new_obj = (VectorN)obj;
             return Equals(new_obj);
         }
 

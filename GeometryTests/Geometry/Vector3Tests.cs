@@ -35,7 +35,7 @@ namespace GeometryTests
         }
 
         [Test]
-        [Category("Vector2")]
+        [Category("Vector3")]
         public void TestSerialization()
         {
             Vector3 v1 = new Vector3(0f, 1f, 2f);

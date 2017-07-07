@@ -92,7 +92,7 @@ namespace Geometry
                 this.Contains(rectangle.BottomLeftConrner) || this.Contains(rectangle.BottomRightCorner))
                 return true;
 
-            return true;
+            return false;
         }
 
         public bool Contains(Point2 point)
@@ -172,7 +172,7 @@ namespace Geometry
             if (ReferenceEquals(this, obj)) return true;
             if (GetType() != obj.GetType()) return false;
 
-            Circle new_obj = (Circle)obj;
+            var new_obj = (Circle)obj;
             return Equals(new_obj);
         }
 

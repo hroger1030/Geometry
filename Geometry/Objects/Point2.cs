@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 namespace Geometry
 {
-    [DebuggerDisplay("Point2 {_X},{_Y}")]
+    [DebuggerDisplay("Point2 ({_X},{_Y})")]
     public class Point2
     {
         protected float _X;
@@ -87,7 +87,7 @@ namespace Geometry
             if (ReferenceEquals(this, obj)) return true;
             if (GetType() != obj.GetType()) return false;
 
-            Point2 new_obj = (Point2)obj;
+            var new_obj = (Point2)obj;
             return Equals(new_obj);
         }
 

@@ -209,7 +209,7 @@ namespace Geometry
             if (ReferenceEquals(this, obj)) return true;
             if (GetType() != obj.GetType()) return false;
 
-            Cube new_obj = (Cube)obj;
+            var new_obj = (Cube)obj;
             return Equals(new_obj);
         }
 
