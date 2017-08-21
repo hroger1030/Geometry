@@ -6,6 +6,9 @@ namespace Geometry
     [DebuggerDisplay("Point2 ({_X},{_Y})")]
     public class Point2
     {
+        public static readonly Point2 ZERO = new Point2(0, 0);
+        public static readonly Point2 ONE = new Point2(1, 1);
+
         protected float _X;
         protected float _Y;
 
