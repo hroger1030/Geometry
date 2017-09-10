@@ -15,6 +15,42 @@ namespace GeometryTests
     {
         [Test]
         [Category("Vector3")]
+        public void TestDistanceOperations()
+        {
+            Vector3 v1;
+            float distance;
+
+            v1 = new Vector3(0, 0, 3);
+            distance = Vector3.Zero.DistanceTo(v1);
+            Assert.IsTrue(distance == 3f, "Expected distance of 3");
+
+            v1 = new Vector3(3, 4, 0);
+            distance = Vector3.Zero.DistanceTo(v1);
+            Assert.IsTrue(distance == 5f, "Expected distance of 5");
+
+            v1 = new Vector3(-1, 0, 0);
+            distance = Vector3.Zero.DistanceTo(v1);
+            Assert.IsTrue(distance == 1f, "Expected distance of 1");
+
+            v1 = Vector3.Zero;
+            distance = Vector3.Zero.DistanceTo(v1);
+            Assert.IsTrue(distance == 0f, "Expected distance of 0");
+
+            v1 = new Vector3(float.NaN, 0, 0);
+            distance = Vector3.Zero.DistanceTo(v1);
+            Assert.IsTrue(float.IsNaN(distance), "Expected distance of float.NaN");
+
+            v1 = new Vector3(float.PositiveInfinity, 0, 0);
+            distance = Vector3.Zero.DistanceTo(v1);
+            Assert.IsTrue(float.IsPositiveInfinity(distance), "Expected distance of float.PositiveInfinity");
+
+            v1 = new Vector3(float.NegativeInfinity, 0, 0);
+            distance = Vector3.Zero.DistanceTo(v1);
+            Assert.IsTrue(float.IsPositiveInfinity(distance), "Expected distance of float.PositiveInfinity");
+        }
+
+        [Test]
+        [Category("Vector3")]
         public void TestOperatorOverloads()
         {
             Vector3 v1 = new Vector3(3, 3, 3);
