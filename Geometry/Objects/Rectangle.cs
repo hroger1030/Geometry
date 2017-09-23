@@ -146,7 +146,7 @@ namespace Geometry
 
         public Rectangle(float width, float height) : this(0f, 0f, width, height) { }
 
-        public Rectangle(float x, float y, float width, float height)
+        public Rectangle(float left, float top, float width, float height)
         {
             if (width < float.Epsilon)
                 throw new ArgumentException("Width must be greater than 0");
@@ -154,8 +154,8 @@ namespace Geometry
             if (height < float.Epsilon)
                 throw new ArgumentException("Height must be greater than 0");
 
-            _Left = x;
-            _Top = y;
+            _Left = left;
+            _Top = top;
             _Width = width;
             _Height = height;
         }
