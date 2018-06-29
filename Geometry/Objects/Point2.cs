@@ -49,7 +49,7 @@ namespace Geometry
 
         public static Point2 operator +(Point2 p1, Vector2 v1)
         {
-            Point2 output = new Point2();
+            var output = new Point2();
 
             output._X = p1._X + v1.X;
             output._Y = p1._Y + v1.Y;
@@ -59,7 +59,7 @@ namespace Geometry
 
         public static Point2 operator -(Point2 p1, Vector2 v1)
         {
-            Point2 output = new Point2();
+            var output = new Point2();
 
             output._X = p1._X - v1.X;
             output._Y = p1._Y - v1.Y;

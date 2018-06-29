@@ -3,26 +3,14 @@ using System.Diagnostics;
 
 namespace Geometry
 {
-    [DebuggerDisplay("Vector2 {_X},{_Y}")]
+    [DebuggerDisplay("Vector2 ({_X},{_Y})")]
     public class Vector2
     {
         public static readonly Vector2 Zero = new Vector2(0, 0);
         public static readonly Vector2 One = new Vector2(1, 1);
 
-        private float _X;
-        private float _Y;
-
-        public float X
-        {
-            get { return _X; }
-            set { _X = value; }
-        }
-
-        public float Y
-        {
-            get { return _Y; }
-            set { _Y = value; }
-        }
+        public float X { get; set; }
+        public float Y { get; set; }
 
         public Vector2() : this(0, 0) { }
 
@@ -36,8 +24,8 @@ namespace Geometry
 
         public Vector2(float x, float y)
         {
-            _X = x;
-            _Y = y;
+            X = x;
+            Y = y;
         }
 
         public static Vector2 operator +(Vector2 v1, Vector2 v2)
@@ -69,7 +57,7 @@ namespace Geometry
             if (((object)v1 == null) || ((object)v2 == null))
                 return false;
 
-            return ((v1._X == v2._X) && (v1._Y == v2._Y));
+            return ((v1.X == v2.X) && (v1.Y == v2.Y));
         }
 
         public static bool operator !=(Vector2 v1, Vector2 v2)
@@ -102,8 +90,8 @@ namespace Geometry
 
             float inverse = 1f / length;
 
-            _X *= inverse;
-            _Y *= inverse;
+            X *= inverse;
+            Y *= inverse;
         }
 
         public static float DistanceTo(Vector2 v1, Vector2 v2)
@@ -118,20 +106,20 @@ namespace Geometry
 
         public float Length()
         {
-            return (float)Math.Sqrt((float)(_X * _X) + (_Y * _Y));
+            return (float)Math.Sqrt((X * X) + (Y * Y));
         }
 
         public override int GetHashCode()
         {
             unchecked
             {
-                return _X.GetHashCode() ^ (_Y.GetHashCode() * 17);
+                return X.GetHashCode() ^ (Y.GetHashCode() * 17);
             }
         }
 
         public override string ToString()
         {
-            return $"({_X},{_Y})";
+            return $"({X},{Y})";
         }
 
         public override bool Equals(object obj)
@@ -146,12 +134,12 @@ namespace Geometry
 
         public bool Equals(Vector2 other)
         {
-            return other._X == _X && other._Y == _Y;
+            return other.X == X && other.Y == Y;
         }
 
         public float VectorToRotation()
         {
-            return (float)Math.Atan2(_Y, _X);
+            return (float)Math.Atan2(Y, X);
         }
     }
 }
