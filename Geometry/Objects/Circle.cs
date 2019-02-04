@@ -71,13 +71,17 @@ namespace Geometry
             _Radius = circle._Radius;
         }
 
+        /// <summary>
+        /// Checks to see if circles are intersecting. 
+        /// Tangent circles will return true.
+        /// </summary>
         public bool Intersects(Circle circle)
         {
             float distance_x = circle.Center.X - _Center.X;
             float distance_y = circle.Center.Y - _Center.Y;
             float sum_radius = _Radius + circle._Radius;
 
-            if ((sum_radius * sum_radius) < Math.Abs(distance_x * distance_x + distance_y * distance_y))
+            if ((sum_radius * sum_radius) < (distance_x * distance_x + distance_y * distance_y))
                 return false;
             else
                 return true;

@@ -89,7 +89,7 @@ namespace GeometryTests
 
         [Test]
         [Category("Circle")]
-        public void TestIntersectsCircle1()
+        public void TestIntersectsOverlaidCircle()
         {
             // overlap
             var circle1 = Circle.UnitCircle;
@@ -99,21 +99,31 @@ namespace GeometryTests
 
         [Test]
         [Category("Circle")]
-        public void TestIntersectsCircle2()
+        public void TestIntersectsAjacentCircle()
         {
             // doesn't intersect
-            var circle1 = Circle.UnitCircle + Vector2.One;
-            var circle2 = Circle.UnitCircle - Vector2.One;
+            var circle1 = Circle.UnitCircle + new Vector2(3f, 0f);
+            var circle2 = Circle.UnitCircle - new Vector2(3f, 0f);
             Assert.IsFalse(circle1.Intersects(circle2));
         }
 
         [Test]
         [Category("Circle")]
-        public void TestIntersectsCircle3()
+        public void TestIntersectsOverlapingCircle()
         {
             // intersects
             var circle1 = Circle.UnitCircle;
-            var circle2 = Circle.UnitCircle + new Vector2(0.5f, 0.5f);
+            var circle2 = Circle.UnitCircle + new Vector2(0.5f, 0f);
+            Assert.IsTrue(circle1.Intersects(circle2));
+        }
+
+        [Test]
+        [Category("Circle")]
+        public void TestIntersectsTangentCircle()
+        {
+            // tangent
+            var circle1 = Circle.UnitCircle + new Vector2(1f, 0f);
+            var circle2 = Circle.UnitCircle - new Vector2(1f, 0f);
             Assert.IsTrue(circle1.Intersects(circle2));
         }
 
