@@ -5,7 +5,6 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 using Geometry;
-using Newtonsoft.Json;
 using NUnit.Framework;
 
 namespace GeometryTests
@@ -68,19 +67,6 @@ namespace GeometryTests
 
             v3 = v1 / 2;
             Assert.IsTrue(v3.X == 1.5f && v3.Y == 1.5 && v3.Z == 1.5, "Failed division");
-        }
-
-        [Test]
-        [Category("Vector3")]
-        public void TestSerialization()
-        {
-            Vector3 v1 = new Vector3(0f, 1f, 2f);
-
-            string output = JsonConvert.SerializeObject(v1);
-            Assert.IsTrue(!string.IsNullOrWhiteSpace(output), "Failed to serialize");
-
-            Vector3 v2 = JsonConvert.DeserializeObject<Vector3>(output);
-            Assert.IsTrue(v1 == v2, "Failed to deserialize");
         }
     }
 }

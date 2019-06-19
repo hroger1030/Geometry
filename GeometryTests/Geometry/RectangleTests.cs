@@ -5,7 +5,6 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 using Geometry;
-using Newtonsoft.Json;
 using NUnit.Framework;
 
 namespace GeometryTests
@@ -172,18 +171,6 @@ namespace GeometryTests
 
             r2 = new Rectangle(1, 2, 4, 5);
             Assert.IsTrue(r1 != r2, "Failed not equals check");
-        }
-
-        [Test]
-        [Category("Rectangle")]
-        public void TestSerialization()
-        {
-            Rectangle r1 = new Rectangle(0, 0, 2, 3);
-            string output = JsonConvert.SerializeObject(r1);
-            Assert.IsTrue(!string.IsNullOrWhiteSpace(output), "Failed to serialize");
-
-            Rectangle r2 = JsonConvert.DeserializeObject<Rectangle>(output);
-            Assert.IsTrue(r1 == r2, "Failed to deserialize");
         }
     }
 }

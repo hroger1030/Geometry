@@ -5,7 +5,6 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 using Geometry;
-using Newtonsoft.Json;
 using NUnit.Framework;
 
 namespace GeometryTests
@@ -37,19 +36,6 @@ namespace GeometryTests
             Point2 p2 = p1 + v1;
 
             Assert.IsTrue(p2.X == 3f && p2.Y == 4f);
-        }
-
-        [Test]
-        [Category("Point2")]
-        public void TestSerialization()
-        {
-            Point2 p1 = new Point2(0f, 1f);
-
-            string output = JsonConvert.SerializeObject(p1);
-            Assert.IsTrue(!string.IsNullOrWhiteSpace(output), "Failed to serialize");
-
-            Point2 p2 = JsonConvert.DeserializeObject<Point2>(output);
-            Assert.IsTrue(p1 == p2, "Failed to deserialize");
         }
     }
 }
