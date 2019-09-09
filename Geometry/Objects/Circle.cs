@@ -3,48 +3,37 @@ using System.Diagnostics;
 
 namespace Geometry
 {
+    [DebuggerDisplay("Circle {_Center}, r{_Radius}")]
     public class Circle
     {
-        [DebuggerDisplay("Circle {_Center}, r{_Radius}")]
         public static readonly Circle UnitCircle = new Circle();
 
-        protected Point2 _Center;
-        protected float _Radius;
-
-        public Point2 Center
-        {
-            get { return _Center; }
-            set { _Center = value; }
-        }
-        public float Radius
-        {
-            get { return _Radius; }
-            set { _Radius = value; }
-        }
+        public Point2 Center { get; set; }
+        public float Radius { get; set; }
 
         public float Left
         {
-            get { return _Center.X - _Radius; }
+            get { return Center.X - Radius; }
         }
         public float Right
         {
-            get { return _Center.X + _Radius; }
+            get { return Center.X + Radius; }
         }
         public float Top
         {
-            get { return _Center.Y - _Radius; }
+            get { return Center.Y - Radius; }
         }
         public float Bottom
         {
-            get { return _Center.Y + _Radius; }
+            get { return Center.Y + Radius; }
         }
         public float Area
         {
-            get { return (float)(Math.PI * _Radius * _Radius); }
+            get { return (float)(Math.PI * Radius * Radius); }
         }
         public float Circumfrence
         {
-            get { return (float)(Math.PI * 2 * _Radius); }
+            get { return (float)(Math.PI * 2 * Radius); }
         }
 
         public Circle() : this(0f, 0f, 1f) { }
@@ -53,22 +42,14 @@ namespace Geometry
 
         public Circle(float radius) : this(0f, 0f, radius) { }
 
-        public Circle(float x, float y, float radius)
-        {
-            _Center = new Point2(x, y);
-            _Radius = radius;
-        }
+        public Circle(float x, float y, float radius) : this(new Point2(x, y), radius) { }
+
+        public Circle(Circle circle) : this(new Point2(circle.Center.X, circle.Center.Y), circle.Radius) { }
 
         public Circle(Point2 position, float radius)
         {
-            _Center = position;
-            _Radius = radius;
-        }
-
-        public Circle(Circle circle)
-        {
-            _Center = new Point2(circle.Center.X, circle.Center.Y);
-            _Radius = circle._Radius;
+            Center = position;
+            Radius = radius;
         }
 
         /// <summary>
@@ -77,9 +58,9 @@ namespace Geometry
         /// </summary>
         public bool Intersects(Circle circle)
         {
-            float distance_x = circle.Center.X - _Center.X;
-            float distance_y = circle.Center.Y - _Center.Y;
-            float sum_radius = _Radius + circle._Radius;
+            float distance_x = circle.Center.X - Center.X;
+            float distance_y = circle.Center.Y - Center.Y;
+            float sum_radius = Radius + circle.Radius;
 
             if ((sum_radius * sum_radius) < (distance_x * distance_x + distance_y * distance_y))
                 return false;
@@ -89,7 +70,7 @@ namespace Geometry
 
         public bool Intersects(Rectangle rectangle)
         {
-            if (rectangle.Contains(_Center))
+            if (rectangle.Contains(Center))
                 return true;
 
             if (this.Contains(rectangle.TopLeftConrner) || this.Contains(rectangle.TopRightConrner) ||
@@ -104,7 +85,7 @@ namespace Geometry
             float distance_x = point.X - this.Center.X;
             float distance_y = point.Y - this.Center.Y;
 
-            if ((_Radius * _Radius) < Math.Abs(distance_x * distance_x + distance_y * distance_y))
+            if ((Radius * Radius) < Math.Abs(distance_x * distance_x + distance_y * distance_y))
                 return false;
             else
                 return true;
@@ -121,22 +102,22 @@ namespace Geometry
 
         public static Circle operator +(Circle circle, Vector2 vector)
         {
-            return new Circle(circle._Center.X + vector.X, circle._Center.Y + vector.Y, circle.Radius);
+            return new Circle(circle.Center.X + vector.X, circle.Center.Y + vector.Y, circle.Radius);
         }
 
         public static Circle operator -(Circle circle, Vector2 vector)
         {
-            return new Circle(circle._Center.X - vector.X, circle._Center.Y - vector.Y, circle.Radius);
+            return new Circle(circle.Center.X - vector.X, circle.Center.Y - vector.Y, circle.Radius);
         }
 
         public static Circle operator *(Circle circle, float scalar)
         {
-            return new Circle(circle._Center.X, circle._Center.Y, circle._Radius * scalar);
+            return new Circle(circle.Center.X, circle.Center.Y, circle.Radius * scalar);
         }
 
         public static Circle operator /(Circle circle, float scalar)
         {
-            return new Circle(circle._Center.X, circle._Center.Y, circle._Radius / scalar);
+            return new Circle(circle.Center.X, circle.Center.Y, circle.Radius / scalar);
         }
 
         public static bool operator ==(Circle c1, Circle c2)
@@ -149,7 +130,7 @@ namespace Geometry
             if (((object)c1 == null) || ((object)c2 == null))
                 return false;
 
-            return (c1._Center.X == c2._Center.X) && (c1._Center.Y == c2._Center.Y) && (c1._Radius == c2._Radius);
+            return (c1.Center.X == c2.Center.X) && (c1.Center.Y == c2.Center.Y) && (c1.Radius == c2.Radius);
         }
 
         public static bool operator !=(Circle a, Circle b)
@@ -161,13 +142,13 @@ namespace Geometry
         {
             unchecked
             {
-                return (_Center.GetHashCode() * 19) ^ (_Radius.GetHashCode() * 691);
+                return (Center.GetHashCode() * 19) ^ (Radius.GetHashCode() * 691);
             }
         }
 
         public override string ToString()
         {
-            return $"CenterPoint {_Center}, Radius: {_Radius}";
+            return $"CenterPoint {Center}, Radius: {Radius}";
         }
 
         public override bool Equals(object obj)
@@ -182,7 +163,7 @@ namespace Geometry
 
         public bool Equals(Circle other)
         {
-            return (_Center == other._Center && _Radius == other._Radius);
+            return (Center == other.Center && Radius == other.Radius);
         }
     }
 }

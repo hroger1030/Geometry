@@ -37,6 +37,8 @@
   <ItemGroup>
     <Compile Include="Objects\Cube.cs" />
     <Compile Include="Objects\Circle.cs" />
+    <Compile Include="Objects\Triangle.cs" />
+    <Compile Include="Objects\LineSegment.cs" />
     <Compile Include="Objects\Point2.cs" />
     <Compile Include="Objects\Point3.cs" />
     <Compile Include="Objects\Rectangle.cs" />
