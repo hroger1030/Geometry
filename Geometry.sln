@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.705
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29306.81
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Geometry", "Geometry\Geometry.csproj", "{A9AA7B19-14E9-46C6-A3EC-F622A793F96B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Geometry", "Geometry\Geometry.csproj", "{8EA63D5D-02E6-43FE-BE68-68CE42E5398D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeometryTests", "GeometryTests\GeometryTests.csproj", "{7DEC7563-1798-4F7E-B37B-741A3464F34D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeometryTests", "GeometryTests\GeometryTests.csproj", "{E8C534EA-4C92-48E1-9ACA-E08E0345ECB1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,14 +13,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{A9AA7B19-14E9-46C6-A3EC-F622A793F96B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A9AA7B19-14E9-46C6-A3EC-F622A793F96B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A9AA7B19-14E9-46C6-A3EC-F622A793F96B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A9AA7B19-14E9-46C6-A3EC-F622A793F96B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7DEC7563-1798-4F7E-B37B-741A3464F34D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7DEC7563-1798-4F7E-B37B-741A3464F34D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7DEC7563-1798-4F7E-B37B-741A3464F34D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7DEC7563-1798-4F7E-B37B-741A3464F34D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8EA63D5D-02E6-43FE-BE68-68CE42E5398D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8EA63D5D-02E6-43FE-BE68-68CE42E5398D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8EA63D5D-02E6-43FE-BE68-68CE42E5398D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8EA63D5D-02E6-43FE-BE68-68CE42E5398D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E8C534EA-4C92-48E1-9ACA-E08E0345ECB1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E8C534EA-4C92-48E1-9ACA-E08E0345ECB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E8C534EA-4C92-48E1-9ACA-E08E0345ECB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E8C534EA-4C92-48E1-9ACA-E08E0345ECB1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

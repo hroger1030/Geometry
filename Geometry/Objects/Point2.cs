@@ -49,20 +49,22 @@ namespace Geometry
 
         public static Point2 operator +(Point2 p1, Vector2 v1)
         {
-            var output = new Point2();
-
-            output._X = p1._X + v1.X;
-            output._Y = p1._Y + v1.Y;
+            var output = new Point2
+            {
+                _X = p1._X + v1.X,
+                _Y = p1._Y + v1.Y
+            };
 
             return output;
         }
 
         public static Point2 operator -(Point2 p1, Vector2 v1)
         {
-            var output = new Point2();
-
-            output._X = p1._X - v1.X;
-            output._Y = p1._Y - v1.Y;
+            var output = new Point2
+            {
+                _X = p1._X - v1.X,
+                _Y = p1._Y - v1.Y
+            };
 
             return output;
         }
@@ -73,7 +75,7 @@ namespace Geometry
                 return true;
 
             // If one is null, but not both, return false.
-            if (((object)p1 == null) || ((object)p2 == null))
+            if ((p1 is null) || (p2 is null))
                 return false;
 
             return ((p1._X == p2._X) && (p1._Y == p2._Y));
@@ -86,7 +88,7 @@ namespace Geometry
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
+            if (obj is null) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (GetType() != obj.GetType()) return false;
 
