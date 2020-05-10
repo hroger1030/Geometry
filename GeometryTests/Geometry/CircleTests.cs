@@ -16,7 +16,7 @@ namespace GeometryTests
     {
         [Test]
         [Category("Circle")]
-        public void TestBasicProperties()
+        public void Circle_TestBasicProperties_Pass()
         {
             var c = new Circle(0, 0, 2);
 
@@ -32,28 +32,66 @@ namespace GeometryTests
 
         [Test]
         [Category("Circle")]
-        public void TestOperatorOverloads()
+        public void Circle_CirclePlusVector_Success()
         {
             var c1 = new Circle(0, 0, 2);
             var v1 = new Vector2(1f, 1f);
-            Circle c2;
 
-            c2 = c1 + v1;
+            Circle c2 = c1 + v1;
             Assert.IsTrue(c2.Center.X == 1f && c2.Center.Y == 1f && c2.Radius == 2f, "Failed add check");
+        }
 
-            c2 = c1 - v1;
+        [Test]
+        [Category("Circle")]
+        public void Circle_CircleMinusVector_Success()
+        {
+            var c1 = new Circle(0, 0, 2);
+            var v1 = new Vector2(1f, 1f);
+
+            Circle c2 = c1 - v1;
             Assert.IsTrue(c2.Center.X == -1f && c2.Center.Y == -1f && c2.Radius == 2f, "Failed subtract check");
+        }
 
-            c2 = c1 * 2f;
+
+        [Test]
+        [Category("Circle")]
+        public void Circle_CircleTimesVector_Success()
+        {
+            var c1 = new Circle(0, 0, 2);
+            var v1 = new Vector2(1f, 1f);
+
+            Circle c2 = c1 * 2f;
             Assert.IsTrue(c2.Center.X == 0f && c2.Center.Y == 0f && c2.Radius == 4f, "Failed multiply check");
+        }
 
-            c2 = c1 / 2f;
+        [Test]
+        [Category("Circle")]
+        public void Circle_CircleDividedByVector_Success()
+        {
+            var c1 = new Circle(0, 0, 2);
+            var v1 = new Vector2(1f, 1f);
+
+            Circle c2 = c1 / 2f;
             Assert.IsTrue(c2.Center.X == 0f && c2.Center.Y == 0f && c2.Radius == 1f, "Failed divide check");
+        }
 
-            c2 = new Circle(0, 0, 2);
+        [Test]
+        [Category("Circle")]
+        public void Circle_CircleEqualsTest_Success()
+        {
+            var c1 = new Circle(0, 0, 2);
+            var c2 = new Circle(0, 0, 2);
+
             Assert.IsTrue(c1 == c2, "Failed equals check");
+        }
 
-            c2 = new Circle(1, 2, 4);
+        [Test]
+        [Category("Circle")]
+        public void Circle_CircleNotEqualsTest_Success()
+        {
+            var c1 = new Circle(0, 0, 2);
+            var c2 = new Circle(1, 2, 4);
+
             Assert.IsTrue(c1 != c2, "Failed not equals check");
         }
 
@@ -62,6 +100,7 @@ namespace GeometryTests
         public void TestArea()
         {
             var circle = Circle.UnitCircle;
+
             Assert.IsTrue(circle.Area == (float)Math.PI * circle.Radius * circle.Radius);
         }
 
@@ -70,6 +109,7 @@ namespace GeometryTests
         public void TestPerimeter()
         {
             var circle = Circle.UnitCircle;
+
             Assert.IsTrue(circle.Circumfrence == (float)Math.PI * circle.Radius * 2);
         }
 
@@ -80,6 +120,7 @@ namespace GeometryTests
             // overlap
             var circle1 = Circle.UnitCircle;
             var circle2 = Circle.UnitCircle;
+
             Assert.IsTrue(circle1.Intersects(circle2));
         }
 
@@ -90,6 +131,7 @@ namespace GeometryTests
             // doesn't intersect
             var circle1 = Circle.UnitCircle + new Vector2(3f, 0f);
             var circle2 = Circle.UnitCircle - new Vector2(3f, 0f);
+
             Assert.IsFalse(circle1.Intersects(circle2));
         }
 
@@ -100,6 +142,7 @@ namespace GeometryTests
             // intersects
             var circle1 = Circle.UnitCircle;
             var circle2 = Circle.UnitCircle + new Vector2(0.5f, 0f);
+
             Assert.IsTrue(circle1.Intersects(circle2));
         }
 
@@ -110,6 +153,7 @@ namespace GeometryTests
             // tangent
             var circle1 = Circle.UnitCircle + new Vector2(1f, 0f);
             var circle2 = Circle.UnitCircle - new Vector2(1f, 0f);
+
             Assert.IsTrue(circle1.Intersects(circle2));
         }
 
@@ -120,6 +164,7 @@ namespace GeometryTests
             // overlap
             var rectangle1 = new Rectangle(0, 0, 1, 1);
             var rectangle2 = new Rectangle(0, 0, 1, 1);
+
             Assert.IsTrue(rectangle1.Intersects(rectangle2));
         }
 
@@ -130,6 +175,7 @@ namespace GeometryTests
             // doesn't intersect
             var rectangle1 = new Rectangle(0, 0, 1, 1) + Vector2.One;
             var rectangle2 = new Rectangle(0, 0, 1, 1) - Vector2.One;
+
             Assert.IsFalse(rectangle1.Intersects(rectangle2));
         }
     }
