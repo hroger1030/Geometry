@@ -2,78 +2,66 @@ using System.Diagnostics;
 
 namespace Geometry
 {
-    [DebuggerDisplay("Point3 {_X},{_Y},{_Z}")]
+    [DebuggerDisplay("Point3 {X},{Y},{Z}")]
     public class Point3
     {
-        protected float _X;
-        protected float _Y;
-        protected float _Z;
-
-        public float X
-        {
-            get { return _X; }
-            set { _X = value; }
-        }
-        public float Y
-        {
-            get { return _Y; }
-            set { _Y = value; }
-        }
-        public float Z
-        {
-            get { return _Z; }
-            set { _Z = value; }
-        }
+        public float X { get; set; }
+        public float Y { get; set; }
+        public float Z { get; set; }
 
         public Point3() : this(0f, 0f, 0f) { }
 
         public Point3(float x, float y, float z)
         {
-            _X = x;
-            _Y = y;
-            _Z = z;
+            X = x;
+            Y = y;
+            Z = z;
         }
 
         public static Point3 operator +(Point3 p1, Point3 p2)
         {
-            Point3 output = new Point3();
-
-            output._X = p1._X + p2._X;
-            output._Y = p1._Y + p2._Y;
-            output._Z = p1._Z + p2._Z;
+            Point3 output = new Point3
+            {
+                X = p1.X + p2.X,
+                Y = p1.Y + p2.Y,
+                Z = p1.Z + p2.Z
+            };
 
             return output;
         }
 
         public static Point3 operator -(Point3 p1, Point3 p2)
         {
-            Point3 output = new Point3();
-
-            output._X = p1._X - p2._X;
-            output._Y = p1._Y - p2._Y;
-            output._Z = p1._Z - p2._Z;
+            Point3 output = new Point3
+            {
+                X = p1.X - p2.X,
+                Y = p1.Y - p2.Y,
+                Z = p1.Z - p2.Z
+            };
 
             return output;
         }
 
         public static Point3 operator *(Point3 p1, Point3 p2)
         {
-            Point3 output = new Point3();
-
-            output._X = p1._X * p2._X;
-            output._Y = p1._Y * p2._Y;
-            output._Z = p1._Z * p2._Z;
+            Point3 output = new Point3
+            {
+                X = p1.X * p2.X,
+                Y = p1.Y * p2.Y,
+                Z = p1.Z * p2.Z
+            };
 
             return output;
         }
 
         public static Point3 operator /(Point3 p1, Point3 p2)
         {
-            Point3 output = new Point3();
-
-            output._X = p1._X / p2._X;
-            output._Y = p1._Y / p2._Y;
-            output._Z = p1._Z / p2._Z;
+            Point3 output = new Point3
+            {
+                X = p1.X / p2.X,
+                Y = p1.Y / p2.Y,
+                Z = p1.Z / p2.Z
+            };
 
             return output;
         }
@@ -84,10 +72,10 @@ namespace Geometry
                 return true;
 
             // If one is null, but not both, return false.
-            if (((object)p1 == null) || ((object)p2 == null))
+            if ((p1 is null) || (p2 is null))
                 return false;
 
-            return ((p1._X == p2._X) && (p1._Y == p2._Y) && (p1._Z == p2._Z));
+            return ((p1.X == p2.X) && (p1.Y == p2.Y) && (p1.Z == p2.Z));
         }
 
         public static bool operator !=(Point3 v1, Point3 v2)
@@ -97,7 +85,7 @@ namespace Geometry
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
+            if (obj is null) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (GetType() != obj.GetType()) return false;
 
@@ -107,13 +95,13 @@ namespace Geometry
 
         public bool Equals(Point3 obj)
         {
-            if (_X != obj._X)
+            if (X != obj.X)
                 return false;
 
-            if (_Y != obj._Y)
+            if (Y != obj.Y)
                 return false;
 
-            if (_Z != obj._Z)
+            if (Z != obj.Z)
                 return false;
 
             return true;
@@ -123,13 +111,13 @@ namespace Geometry
         {
             unchecked
             {
-                return (_X.GetHashCode() * 1607) ^ (_Y.GetHashCode() * 1033) ^ (_Z.GetHashCode() * 59);
+                return (X.GetHashCode() * 1607) ^ (Y.GetHashCode() * 1033) ^ (Z.GetHashCode() * 59);
             }
         }
 
         public override string ToString()
         {
-            return $"Point3({_X},{_Y},{_Z})";
+            return $"Point3({X},{Y},{Z})";
         }
     }
 }

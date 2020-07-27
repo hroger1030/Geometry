@@ -3,25 +3,14 @@ using System.Diagnostics;
 
 namespace Geometry
 {
-    [DebuggerDisplay("Point2 ({_X},{_Y})")]
+    [DebuggerDisplay("Point2 ({X},{Y})")]
     public class Point2
     {
         public static readonly Point2 ZERO = new Point2(0, 0);
         public static readonly Point2 ONE = new Point2(1, 1);
 
-        protected float _X;
-        protected float _Y;
-
-        public float X
-        {
-            get { return _X; }
-            set { _X = value; }
-        }
-        public float Y
-        {
-            get { return _Y; }
-            set { _Y = value; }
-        }
+        public float X { get; set; }
+        public float Y { get; set; }
 
         public Point2() : this(0f, 0f) { }
 
@@ -33,13 +22,13 @@ namespace Geometry
 
         public Point2(float x, float y)
         {
-            _X = x;
-            _Y = y;
+            X = x;
+            Y = y;
         }
 
         public float DistanceTo(Point2 other)
         {
-            return Point2.DistanceTo(this, other);
+            return DistanceTo(this, other);
         }
 
         public static float DistanceTo(Point2 p1, Point2 p2)
@@ -51,8 +40,8 @@ namespace Geometry
         {
             var output = new Point2
             {
-                _X = p1._X + v1.X,
-                _Y = p1._Y + v1.Y
+                X = p1.X + v1.X,
+                Y = p1.Y + v1.Y
             };
 
             return output;
@@ -62,8 +51,8 @@ namespace Geometry
         {
             var output = new Point2
             {
-                _X = p1._X - v1.X,
-                _Y = p1._Y - v1.Y
+                X = p1.X - v1.X,
+                Y = p1.Y - v1.Y
             };
 
             return output;
@@ -78,7 +67,7 @@ namespace Geometry
             if ((p1 is null) || (p2 is null))
                 return false;
 
-            return ((p1._X == p2._X) && (p1._Y == p2._Y));
+            return ((p1.X == p2.X) && (p1.Y == p2.Y));
         }
 
         public static bool operator !=(Point2 p1, Point2 p2)
@@ -98,20 +87,20 @@ namespace Geometry
 
         public bool Equals(Point2 obj)
         {
-            return ((_X == obj._X) && (_Y == obj._Y));
+            return ((X == obj.X) && (Y == obj.Y));
         }
 
         public override int GetHashCode()
         {
             unchecked
             {
-                return (_X.GetHashCode() * 17) ^ (_X.GetHashCode() * 2011);
+                return (X.GetHashCode() * 17) ^ (X.GetHashCode() * 2011);
             }
         }
 
         public override string ToString()
         {
-            return $"Point2({_X},{_Y})";
+            return $"Point2({X},{Y})";
         }
     }
 }

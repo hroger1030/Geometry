@@ -9,25 +9,9 @@ namespace Geometry
         public static readonly Vector3 Zero = new Vector3(0, 0, 0);
         public static readonly Vector3 One = new Vector3(1, 1, 1);
 
-        private float _X;
-        private float _Y;
-        private float _Z;
-
-        public float X
-        {
-            get { return _X; }
-            set { _X = value; }
-        }
-        public float Y
-        {
-            get { return _Y; }
-            set { _Y = value; }
-        }
-        public float Z
-        {
-            get { return _Z; }
-            set { _Z = value; }
-        }
+        public float X { get; set; }
+        public float Y { get; set; }
+        public float Z { get; set; }
 
         public Vector3() : this(0, 0, 0) { }
 
@@ -39,9 +23,9 @@ namespace Geometry
 
         public Vector3(float x, float y, float z)
         {
-            _X = x;
-            _Y = y;
-            _Z = z;
+            X = x;
+            Y = y;
+            Z = z;
         }
 
         public static Vector3 operator +(Vector3 v1, Vector3 v2)
@@ -70,10 +54,10 @@ namespace Geometry
                 return true;
 
             // If one is null, but not both, return false.
-            if (((object)v1 == null) || ((object)v2 == null))
+            if ((v1 is null) || (v2 is null))
                 return false;
 
-            return ((v1._X == v2._X) && (v1._Y == v2._Y) && (v1._Z == v2._Z));
+            return ((v1.X == v2.X) && (v1.Y == v2.Y) && (v1.Z == v2.Z));
         }
 
         public static bool operator !=(Vector3 v1, Vector3 v2)
@@ -107,9 +91,9 @@ namespace Geometry
 
             float inverse = 1f / length;
 
-            _X *= inverse;
-            _Y *= inverse;
-            _Z *= inverse;
+            X *= inverse;
+            Y *= inverse;
+            Z *= inverse;
         }
 
         public static float DistanceTo(Vector3 v1, Vector3 v2)
@@ -128,25 +112,25 @@ namespace Geometry
 
         public float Length()
         {
-            return (float)Math.Sqrt((_X * _X) + (_Y * _Y) + (_Z * _Z));
+            return (float)Math.Sqrt((X * X) + (Y * Y) + (Z * Z));
         }
 
         public override int GetHashCode()
         {
             unchecked
             {
-                return (_X.GetHashCode() * 1361) ^ (_Y.GetHashCode() * 3449) ^ (_Z.GetHashCode() * 47);
+                return (X.GetHashCode() * 1361) ^ (Y.GetHashCode() * 3449) ^ (Z.GetHashCode() * 47);
             }
         }
 
         public override string ToString()
         {
-            return $"({_X},{_Y},{_Z})";
+            return $"({X},{Y},{Z})";
         }
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
+            if (obj is null) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (GetType() != obj.GetType()) return false;
 
@@ -156,7 +140,7 @@ namespace Geometry
 
         public bool Equals(Vector3 other)
         {
-            return other._X == _X && other._Y == _Y && other._Z == _Z;
+            return other.X == X && other.Y == Y && other.Z == Z;
         }
     }
 }

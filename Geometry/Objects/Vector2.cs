@@ -54,7 +54,7 @@ namespace Geometry
                 return true;
 
             // If one is null, but not both, return false.
-            if (((object)v1 == null) || ((object)v2 == null))
+            if ((v1 is null) || (v2 is null))
                 return false;
 
             return ((v1.X == v2.X) && (v1.Y == v2.Y));
@@ -124,7 +124,7 @@ namespace Geometry
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
+            if (obj is null) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (GetType() != obj.GetType()) return false;
 

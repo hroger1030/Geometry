@@ -26,7 +26,7 @@ namespace Geometry
             get { return _Width; }
             set
             {
-                if (value < float.Epsilon)
+                if (value <= 0)
                     throw new ArgumentException("width must be greater than 0");
 
                 _Width = value;
@@ -37,7 +37,7 @@ namespace Geometry
             get { return _Height; }
             set
             {
-                if (value < float.Epsilon)
+                if (value <= 0)
                     throw new ArgumentException("height must be greater than 0");
 
                 _Height = value;
@@ -299,7 +299,7 @@ namespace Geometry
                 return true;
 
             // If one is null, but not both, return false.
-            if (((object)r1 == null) || ((object)r2 == null))
+            if ((r1 is null) || (r2 is null))
                 return false;
 
             return (r1._Left == r2._Left) && (r1._Top == r2._Top) && (r1._Width == r2._Width) && (r1._Height == r2._Height);
@@ -312,7 +312,7 @@ namespace Geometry
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
+            if (obj is null) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (GetType() != obj.GetType()) return false;
 
