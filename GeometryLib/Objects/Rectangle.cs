@@ -1,146 +1,81 @@
+/*
+The MIT License (MIT)
+
+Copyright (c) 2007 Roger Hill
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files 
+(the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, 
+publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do 
+so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF 
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE 
+FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+
 using System;
-using System.Diagnostics;
 
 namespace Geometry
 {
-    [DebuggerDisplay("Rectangle {_Left},{_Top} - {_Height}x{_Width}")]
-    public class Rectangle : IEquatable<Rectangle>
+    public class Rectangle : I2d, IEquatable<Rectangle>
     {
-        protected float _Left;
-        protected float _Top;
-        protected float _Width;
-        protected float _Height;
-
-        public float X
-        {
-            get { return _Left; }
-            set { _Left = value; }
-        }
-        public float Y
-        {
-            get { return _Top; }
-            set { _Top = value; }
-        }
-        public float Width
-        {
-            get { return _Width; }
-            set
-            {
-                if (value <= 0)
-                    throw new ArgumentException("width must be greater than 0");
-
-                _Width = value;
-            }
-        }
-        public float Height
-        {
-            get { return _Height; }
-            set
-            {
-                if (value <= 0)
-                    throw new ArgumentException("height must be greater than 0");
-
-                _Height = value;
-            }
-        }
-
-        public Point2 TopLeftConrner
-        {
-            get { return new Point2(_Left, _Top); }
-        }
-        public Point2 TopRightConrner
-        {
-            get { return new Point2(_Left + _Width, _Top); }
-        }
-        public Point2 BottomLeftConrner
-        {
-            get { return new Point2(_Left, _Top + _Height); }
-        }
-        public Point2 BottomRightCorner
-        {
-            get { return new Point2(_Left + _Width, _Top + _Height); }
-        }
-
         /// <summary>
         /// Returns the x coordinate of the left edge of this <see cref="Rectangle"/>.
         /// </summary>
-        public float Left
-        {
-            get { return _Left; }
-            set { _Left = value; }
-        }
+        public float Left { get; set; }
+
         /// <summary>
         /// Returns the x coordinate of the right edge of this <see cref="Rectangle"/>.
         /// </summary>
-        public float Right
-        {
-            get { return _Left + _Width; }
-            set { _Left = value - _Width; }
-        }
+        public float Right { get; set; }
+
         /// <summary>
         /// Returns the y coordinate of the top edge of this <see cref="Rectangle"/>.
         /// </summary>
-        public float Top
-        {
-            get { return _Top; }
-            set { _Top = value; }
-        }
+        public float Top { get; set; }
+
         /// <summary>
         /// Returns the y coordinate of the bottom edge of this <see cref="Rectangle"/>.
         /// </summary>
-        public float Bottom
-        {
-            get { return (_Top + _Height); }
-            set { _Top = value - _Height; }
-        }
+        public float Bottom { get; set; }
+
+        public float X => Left;
+
+        public float Y => Top;
+
+        public float Width => Right - Left;
+
+        public float Height => Bottom - Top;
+
+        public Point2 TopLeftConrner => new(Left, Top);
+
+        public Point2 TopRightConrner => new(Right, Top);
+
+        public Point2 BottomLeftConrner => new(Left, Bottom);
+
+        public Point2 BottomRightCorner => new(Right, Bottom);
+
         /// <summary>
         /// The top-left coordinates of this <see cref="Rectangle"/>.
         /// </summary>
-        public Point2 Location
-        {
-            get { return new Point2(_Left, _Top); }
-            set
-            {
-                _Left = value.X;
-                _Top = value.Y;
-            }
-        }
+        public Point2 Location => TopLeftConrner;
+
         /// <summary>
         /// The width-height coordinates of this <see cref="Rectangle"/>.
         /// </summary>
-        public Point2 Size
-        {
-            get
-            {
-                return new Point2(_Width, _Height);
-            }
-            set
-            {
-                _Width = value.X;
-                _Height = value.Y;
-            }
-        }
+        public Point2 Size => new(Width, Height);
 
         /// <summary>
         /// A <see cref="Point2"/> located in the center of this <see cref="Rectangle"/>.
         /// </summary>
-        public Point2 Center
-        {
-            get { return new Point2(_Left + (_Width / 2), _Top + (_Height / 2)); }
-            set
-            {
-                _Left = value.X - (_Width / 2);
-                _Top = value.Y - (_Height / 2);
-            }
-        }
-        public float Area
-        {
-            get { return _Height * _Width; }
-        }
-        public float Perimeter
-        {
-            get { return (_Height + _Width) * 2f; }
-        }
+        public Point2 Center => new((Right - Left) / 2, (Bottom - Top) / 2);
+
+        public float Area => Width * Height;
+
+        public float Perimeter => (Width + Height) * 2f;
 
         public Rectangle() : this(0f, 0f, 1f, 1f) { }
 
@@ -154,16 +89,16 @@ namespace Geometry
             if (height < float.Epsilon)
                 throw new ArgumentException("Height must be greater than 0");
 
-            _Left = left;
-            _Top = top;
-            _Width = width;
-            _Height = height;
+            Left = left;
+            Top = top;
+            Right = left + width;
+            Bottom = top + height;
         }
 
         public Rectangle(Point2 center, float width, float height)
         {
             if (center == null)
-                throw new ArgumentNullException("Center point cannot be null");
+                throw new ArgumentNullException(nameof(center), "Center point cannot be null");
 
             if (width < float.Epsilon)
                 throw new ArgumentException("Width must be greater than 0");
@@ -171,143 +106,146 @@ namespace Geometry
             if (height < float.Epsilon)
                 throw new ArgumentException("Height must be greater than 0");
 
-            _Left = center.X - width/2;
-            _Top = center.Y - height/2;
-            _Width = width;
-            _Height = height;
+            Left = center.X - width / 2;
+            Top = center.Y - height / 2;
+            Right = center.X + width / 2;
+            Bottom = center.Y + height / 2;
         }
 
         public Rectangle(Rectangle rectangle)
         {
-            _Left = rectangle._Left;
-            _Top = rectangle._Top;
-            _Width = rectangle._Width;
-            _Height = rectangle._Height;
-        }
-
-        public bool Contains(int x, int y)
-        {
-            return ((((_Left <= x) && (x < (_Left + _Width))) && (_Top <= y)) && (y < (_Top + _Height)));
-        }
-
-        public bool Contains(float x, float y)
-        {
-            return (_Left <= x) && (_Top <= y) && (x <= (_Left + _Width)) && (y <= (_Top + _Height));
+            Left = rectangle.Left;
+            Top = rectangle.Top;
+            Right = rectangle.Right;
+            Bottom = rectangle.Bottom;
         }
 
         public bool Contains(Point2 point)
         {
-            return (_Left <= point.X) && (_Top <= point.Y) && (point.X <= (_Left + _Width)) && (point.Y <= (_Top + _Height));
+            return Contains(point.X, point.Y);
+        }
+
+        public bool Contains(float x, float y)
+        {
+            return x >= Left && x <= Right && y >= Top && y <= Bottom;
         }
 
         public bool Contains(Rectangle value)
         {
-            return (_Left <= value._Left) && (value._Left + value._Width) <= (_Left + _Width) && (_Top <= value._Top) && (value._Top + value._Height) <= (_Top + _Height);
+            return value.Left > Left && value.Right < Right && value.Top > Top && value.Bottom < Bottom;
         }
 
         /// <summary>
         /// Adjusts the edges of this <see cref="Rectangle"/> by specified horizontal and vertical amounts. 
         /// Rectangle top left will remain in place, and values don't have to be symetrical.
         /// </summary>
-        public void Scale(float width_scale, float height_scale)
+        public Rectangle Scale(float widthScale, float heightScale)
         {
-            if (height_scale < float.Epsilon)
-                throw new ArgumentException("Height scale must be greater than 0");
-
-            if (width_scale < float.Epsilon)
+            if (widthScale < float.Epsilon)
                 throw new ArgumentException("Width scale must be greater than 0");
 
-            _Width *= width_scale;
-            _Height *= height_scale;
+            if (heightScale < float.Epsilon)
+                throw new ArgumentException("Height scale must be greater than 0");
+
+            return new Rectangle
+            {
+                Left = Left,
+                Top = Top,
+                Right = Left + (Width * widthScale),
+                Bottom = Top + (Height * heightScale),
+            };
         }
 
         /// <summary>
         /// Gets whether or not a specified <see cref="Rectangle"/> intersects with this <see cref="Rectangle"/>.
         /// </summary>
-        public bool Intersects(Rectangle other)
+        public bool Intersects(Rectangle r)
         {
-            return (other.Left < Right) && (other.Right > Left) && (other.Top < Bottom) && (other.Bottom > Top);
+            return Contains(r.TopLeftConrner) || Contains(r.TopRightConrner) || Contains(BottomLeftConrner) || Contains(BottomRightCorner);
         }
 
         /// <summary>
         /// Gets whether or not a specified <see cref="Circle"/> intersects with this <see cref="Rectangle"/>.
         /// </summary>
-        public bool Intersects(Circle circle)
+        public bool Intersects(Circle c)
         {
-            Point2 rectangle_center = Center;
-
-            float circleDistance_x = Math.Abs(circle.Center.X - rectangle_center.X);
-            float circleDistance_y = Math.Abs(circle.Center.Y - rectangle_center.Y);
-
-            if (circleDistance_x > (_Width / 2f + circle.Radius))
-                return false;
-
-            if (circleDistance_y > (_Height / 2f + circle.Radius))
-                return false;
-
-            if (circleDistance_x <= (_Width / 2f))
-                return true;
-
-            if (circleDistance_y <= (_Height / 2f))
-                return true;
-
-            float cornerDistance_sq = (circleDistance_x - _Width / 2f) * (circleDistance_x - _Width / 2f) + (circleDistance_y - _Height / 2f) * (circleDistance_y - _Height / 2f);
-
-            return (cornerDistance_sq <= (circle.Radius * circle.Radius));
+            return c.Contains(TopLeftConrner) || c.Contains(TopRightConrner) || c.Contains(BottomLeftConrner) || c.Contains(BottomRightCorner);
         }
 
         /// <summary>
-        /// Creates a new <see cref="Rectangle"/> that completely contains two other rectangles.
+        /// Creates a new <see cref="Rectangle"/> that completely contains two r rectangles.
         /// </summary>
-        public static Rectangle Union(Rectangle value1, Rectangle value2)
+        public static Rectangle Union(Rectangle r1, Rectangle r2)
         {
-            float x = Math.Min(value1._Left, value2._Left);
-            float y = Math.Min(value1._Top, value2._Top);
-            return new Rectangle(x, y, Math.Max(value1.Right, value2.Right) - x, Math.Max(value1.Bottom, value2.Bottom) - y);
+            return new Rectangle()
+            {
+                Left = Math.Min(r1.Left, r2.Left),
+                Top = Math.Min(r1.Left, r2.Left),
+                Right = Math.Max(r1.Right, r2.Right),
+                Bottom = Math.Max(r1.Bottom, r2.Bottom),
+            };
         }
 
-        public static Rectangle operator +(Rectangle rectangle, Vector2 vector)
+        /// <summary>
+        /// Creates a new <see cref="Rectangle"/> that is shifted by a vector.
+        /// </summary>
+        public static Rectangle operator +(Rectangle r, Vector2 v)
         {
-            return new Rectangle(rectangle.X + vector.X, rectangle.Y + vector.Y, rectangle.Width, rectangle.Height);
+            if (r == null)
+                throw new ArgumentNullException(nameof(r));
+
+            if (v == null)
+                throw new ArgumentNullException(nameof(v));
+
+            return new Rectangle()
+            {
+                Left = r.X + v.X,
+                Top = r.Y + v.Y,
+                Right = r.Right + v.X,
+                Bottom = r.Bottom + v.Y,
+            };
         }
 
-        public static Rectangle operator -(Rectangle rectangle, Vector2 vector)
+        public static Rectangle operator -(Rectangle r, Vector2 v)
         {
-            return new Rectangle(rectangle.X - vector.X, rectangle.Y - vector.Y, rectangle.Width, rectangle.Height);
+            if (r == null)
+                throw new ArgumentNullException(nameof(r));
+
+            if (v == null)
+                throw new ArgumentNullException(nameof(v));
+
+            return new Rectangle()
+            {
+                Left = r.X - v.X,
+                Top = r.Y - v.Y,
+                Right = r.Right - v.X,
+                Bottom = r.Bottom - v.Y,
+            };
         }
 
-        public static Rectangle operator *(Rectangle rectangle, float scale)
+        public static Rectangle operator *(Rectangle r, float scale)
         {
+            if (r == null)
+                throw new ArgumentNullException(nameof(r));
+
             if (scale < 0)
                 throw new ArgumentException("Scale cannot be less than 0");
 
-            return new Rectangle(rectangle.X, rectangle.Y, rectangle.Width * scale, rectangle.Height * scale);
+            return new Rectangle()
+            {
+                Left = r.Left,
+                Top = r.Top,
+                Right = r.Left + (r.Width * scale),
+                Bottom = r.Top + (r.Height * scale),
+            };
         }
 
-        public static Rectangle operator /(Rectangle rectangle, float scale)
+        public static Rectangle operator /(Rectangle r, float scale)
         {
-            if (scale == 0f)
-                throw new ArgumentException("Scale cannot be zero, divide by zero errors will occur");
+            if (scale == 0)
+                throw new DivideByZeroException("Scale cannot be 0");
 
-            return new Rectangle(rectangle.X, rectangle.Y, rectangle.Width / scale, rectangle.Height / scale);
-        }
-
-        public static bool operator ==(Rectangle r1, Rectangle r2)
-        {
-            // If both are null, or both are same instance, return true.
-            if (ReferenceEquals(r1, r2))
-                return true;
-
-            // If one is null, but not both, return false.
-            if ((r1 is null) || (r2 is null))
-                return false;
-
-            return (r1._Left == r2._Left) && (r1._Top == r2._Top) && (r1._Width == r2._Width) && (r1._Height == r2._Height);
-        }
-
-        public static bool operator !=(Rectangle a, Rectangle b)
-        {
-            return !(a == b);
+            return r * (1 / scale);
         }
 
         public override bool Equals(object obj)
@@ -320,22 +258,17 @@ namespace Geometry
             return Equals(new_obj);
         }
 
-        public bool Equals(Rectangle other)
+        public bool Equals(Rectangle r)
         {
-            return _Left == other._Left && _Top == other._Top && _Width == other._Width && _Height == other._Height;
+            return Left == r.Left && Top == r.Top && Right == r.Right && Bottom == r.Bottom;
         }
 
         public override int GetHashCode()
         {
             unchecked
             {
-                return _Left.GetHashCode() ^ (_Top.GetHashCode() << 8) ^ (_Width.GetHashCode() << 16) ^ (_Height.GetHashCode() << 24);
+                return Left.GetHashCode() ^ (Top.GetHashCode() << 8) ^ (Right.GetHashCode() << 16) ^ (Bottom.GetHashCode() << 24);
             }
-        }
-
-        public override string ToString()
-        {
-            return $"Rectangle(X:{_Left}, Y:{_Top}, Width:{_Width}, Height:{_Height}";
         }
     }
 }

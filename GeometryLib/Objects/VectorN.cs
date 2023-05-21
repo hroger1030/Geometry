@@ -1,121 +1,59 @@
+/*
+The MIT License (MIT)
+
+Copyright (c) 2007 Roger Hill
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files 
+(the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, 
+publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do 
+so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF 
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE 
+FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+
 using System;
-using System.Diagnostics;
 
 namespace Geometry
 {
-    [DebuggerDisplay("VectorN {_Axis.Length}")]
-    public class VectorN
+    public class VectorN : IEquatable<VectorN>
     {
-        protected double[] _Axis;
+        public float[] Axis { get; set; } = Array.Empty<float>();
 
-        public double[] Axis
+        /// <summary>
+        /// Empty vector CTOR
+        /// </summary>
+        public VectorN(int length)
         {
-            get { return _Axis; }
-            set { _Axis = value; }
+            Axis = new float[length];
+
+            for (int i = 0; i < length; i++)
+                Axis[i] = 0f;
         }
 
-        public double this[int i]
+        /// <summary>
+        /// Copy CTOR
+        /// </summary>
+        public VectorN(VectorN v)
         {
-            get
-            {
-                if (i < 0 || i >= _Axis.Length)
-                    throw new IndexOutOfRangeException($"VectorN element '{i}' does not exist.");
-                else
-                    return _Axis[i];
-            }
-            set
-            {
-                if (i < 0 || i >= _Axis.Length)
-                    throw new IndexOutOfRangeException($"VectorN element '{i}' does not exist.");
-                else
-                    _Axis[i] = value;
-            }
-        }
+            Axis = new float[v.Axis.Length];
 
-        public double Length
-        {
-            get { return GetLength(); }
-        }
-
-        public bool IsNormalized
-        {
-            get { return (GetLength() == 1.0); }
-        }
-
-        public VectorN(VectorN other)
-        {
-            Copy(other);
-        }
-
-        public VectorN(int dimensions) : this(dimensions, 0) { }
-
-        public VectorN(int dimensions, double default_value)
-        {
-            if (dimensions < 1)
-                throw new InvalidOperationException("Vectors with less that 1 dimension aren't supported.");
-
-            _Axis = new double[dimensions];
-
-            for (int i = 0; i < dimensions; i++)
-                _Axis[i] = default_value;
-        }
-
-        public static bool operator <(VectorN v1, VectorN v2)
-        {
-            return v1.Length < v2.Length;
-        }
-
-        public static bool operator >(VectorN v1, VectorN v2)
-        {
-            return v1.Length > v2.Length;
-        }
-
-        public static bool operator ==(VectorN v1, VectorN v2)
-        {
-            if (v1.Axis.Length != v2.Axis.Length)
-                throw new InvalidOperationException($"Performing operations on vectors of differing dimensions ('{v1.Length}' and '{v2.Length}') can produce odd results.");
-
-            for (int i = 0; i < v1.Axis.Length; i++)
-            {
-                if (v1.Axis[i] != v2.Axis[i])
-                    return false;
-            }
-
-            return true;
-        }
-
-        public static bool operator !=(VectorN v1, VectorN v2)
-        {
-            if (v1.Axis.Length != v2.Axis.Length)
-                throw new InvalidOperationException($"Performing operations on vectors of differing dimensions ('{v1.Length}' and '{v2.Length}') can produce odd results.");
-
-            for (int i = 0; i < v1.Axis.Length; i++)
-            {
-                if (v1.Axis[i] == v2.Axis[i])
-                    return false;
-            }
-
-            return true;
-        }
-
-        public static VectorN operator -(VectorN v1)
-        {
-            VectorN output = new VectorN(v1.Axis.Length);
-
-            for (int i = 0; i < v1.Axis.Length; i++)
-                output.Axis[i] = -v1.Axis[i];
-
-            return output;
+            for (int i = 0; i < v.Axis.Length; i++)
+                Axis[i] = v.Axis[i];
         }
 
         public static VectorN operator +(VectorN v1, VectorN v2)
         {
             if (v1.Axis.Length != v2.Axis.Length)
-                throw new InvalidOperationException($"Performing operations on vectors of differing dimensions ('{v1.Length}' and '{v2.Length}') can produce odd results.");
+                throw new InvalidOperationException($"cannot add vectors of unequal orders");
 
-            VectorN output = new VectorN(v1.Axis.Length);
+            var output = new VectorN(v1.Axis.Length);
 
-            for (int i = 0; i < output.Axis.Length; i++)
+            for (int i = 0; i < v1.Axis.Length; i++)
                 output.Axis[i] = v1.Axis[i] + v2.Axis[i];
 
             return output;
@@ -124,116 +62,34 @@ namespace Geometry
         public static VectorN operator -(VectorN v1, VectorN v2)
         {
             if (v1.Axis.Length != v2.Axis.Length)
-                throw new InvalidOperationException($"Performing operations on vectors of differing dimensions ('{v1.Length}' and '{v2.Length}') can produce odd results.");
+                throw new InvalidOperationException($"cannot add vectors of unequal orders");
 
-            VectorN output = new VectorN(v1.Axis.Length);
+            var output = new VectorN(v1.Axis.Length);
 
-            for (int i = 0; i < output.Axis.Length; i++)
+            for (int i = 0; i < v1.Axis.Length; i++)
                 output.Axis[i] = v1.Axis[i] - v2.Axis[i];
 
             return output;
         }
 
-        public static VectorN operator *(VectorN v1, double scalar)
+        public static VectorN operator *(VectorN v, float scalar)
         {
-            VectorN output = new VectorN(v1);
-            output.Scale(scalar);
+            var output = new VectorN(v.Axis.Length);
+
+            for (int i = 0; i < v.Axis.Length; i++)
+                output.Axis[i] = v.Axis[i] * scalar;
 
             return output;
         }
 
-        public static VectorN operator /(VectorN v1, double scalar)
+        public static VectorN operator /(VectorN v, float scalar)
         {
-            VectorN output = new VectorN(v1);
-            output.Scale(1 / scalar);
+            var output = new VectorN(v.Axis.Length);
+
+            for (int i = 0; i < v.Axis.Length; i++)
+                output.Axis[i] = v.Axis[i] / scalar;
 
             return output;
-        }
-
-        /// <summary>
-        /// Returns the dot product scalar of the two vectors.
-        /// </summary>
-        public static double operator *(VectorN v1, VectorN v2)
-        {
-            if (v1.Axis.Length != v2.Axis.Length)
-                throw new InvalidOperationException($"Performing operations on vectors of differing dimensions ('{v1.Length}' and '{v2.Length}') can produce odd results.");
-
-            double output = 0;
-
-            for (int i = 0; i < v1.Axis.Length; i++)
-                output += v1.Axis[i] * v2.Axis[i];
-
-            return output;
-        }
-
-        public VectorN CreateVectorToTarget(VectorN target)
-        {
-            VectorN output = new VectorN(_Axis.Length);
-
-            for (int i = 0; i < _Axis.Length; i++)
-                output[i] = target[i] - _Axis[i];
-
-            if (!IsNormalized)
-                output.Normalize();
-
-            return output;
-        }
-
-        public static VectorN Interpolate(VectorN v1, VectorN v2, double interpolate_range)
-        {
-            if (v1.Axis.Length != v2.Axis.Length)
-                throw new InvalidOperationException($"Performing operations on vectors of differing dimensions ('{v1.Length}' and '{v2.Length}') can produce odd results.");
-
-            if (interpolate_range > 1 || interpolate_range < 0)
-                throw new ArgumentOutOfRangeException("Interpolate range", interpolate_range, "interpolate range must be between 0 and 1.");
-
-            VectorN output = new VectorN(v1.Axis.Length);
-
-            for (int i = 0; i < output.Axis.Length; i++)
-                output.Axis[i] = v1.Axis[i] * (1 - interpolate_range) + v2.Axis[i] * interpolate_range;
-
-            return output;
-        }
-
-        public double DistanceTo(VectorN target)
-        {
-            double distance = 0;
-
-            for (int i = 0; i < _Axis.Length; i++)
-                distance += (target._Axis[i] - this._Axis[i]) * (target._Axis[i] - this._Axis[i]);
-
-            return Math.Sqrt(distance);
-        }
-
-        public void Copy(VectorN other)
-        {
-            _Axis = new double[other.Axis.Length];
-
-            for (int i = 0; i < _Axis.Length; i++)
-                _Axis[i] = other[i];
-        }
-
-        public void Scale(double scalar)
-        {
-            for (int i = 0; i < _Axis.Length; i++)
-                _Axis[i] *= scalar;
-        }
-
-        public void Normalize()
-        {
-            double length = GetLength();
-
-            if (length != 0)
-            {
-                for (int i = 0; i < _Axis.Length; i++)
-                    _Axis[i] /= length;
-            }
-        }
-
-        public void Reset()
-        {
-            for (int i = 0; i < _Axis.Length; i++)
-                _Axis[i] = 0;
         }
 
         public override bool Equals(object obj)
@@ -246,14 +102,14 @@ namespace Geometry
             return Equals(new_obj);
         }
 
-        public bool Equals(VectorN other)
+        public bool Equals(VectorN v)
         {
-            if (_Axis.Length != other._Axis.Length)
+            if (Axis.Length != v.Axis.Length)
                 return false;
 
-            for (int i = 0; i < _Axis.Length; i++)
+            for (int i = 0; i < Axis.Length; i++)
             {
-                if (_Axis[i] != other._Axis[i])
+                if (Axis[i] != v.Axis[i])
                     return false;
             }
 
@@ -262,22 +118,7 @@ namespace Geometry
 
         public override int GetHashCode()
         {
-            return _Axis.GetHashCode();
-        }
-
-        public override string ToString()
-        {
-            return $"VectorN({ _Axis.Length})";
-        }
-
-        protected double GetLength()
-        {
-            double total = 0;
-
-            for (int i = 0; i < _Axis.Length; i++)
-                total += _Axis[i] * _Axis[i];
-
-            return Math.Sqrt(total);
+            return Axis.GetHashCode();
         }
     }
 }

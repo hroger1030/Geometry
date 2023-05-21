@@ -1,8 +1,26 @@
+/*
+The MIT License (MIT)
+
+Copyright (c) 2007 Roger Hill
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files 
+(the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, 
+publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do 
+so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF 
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE 
+FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+
 using System;
 
 namespace Geometry
 {
-    public class Triangle
+    public class Triangle : I2d, IEquatable<Triangle>
     {
         public enum Type
         {
@@ -11,13 +29,15 @@ namespace Geometry
             Scalene,
         }
 
-        public Point2 Point1 { get; set; }
-        public Point2 Point2 { get; set; }
-        public Point2 Point3 { get; set; }
+        public Point2 A { get; set; }
+
+        public Point2 B { get; set; }
+
+        public Point2 C { get; set; }
 
         public float Perimeter
         {
-            get { return Point1.DistanceTo(Point2) + Point2.DistanceTo(Point3) + Point3.DistanceTo(Point1); }
+            get { return A.DistanceTo(B) + B.DistanceTo(C) + C.DistanceTo(A); }
         }
 
         public float Area
@@ -27,9 +47,9 @@ namespace Geometry
                 float buffer;
 
                 // using heron's formula
-                var a = Point1.DistanceTo(Point2);
-                var b = Point2.DistanceTo(Point3);
-                var c = Point3.DistanceTo(Point1);
+                var a = A.DistanceTo(B);
+                var b = B.DistanceTo(C);
+                var c = C.DistanceTo(A);
 
                 // arrange a > b > c
                 if (b > a)
@@ -58,36 +78,36 @@ namespace Geometry
             }
         }
 
-        public Triangle(Point2 point1, Point2 point2, Point2 point3)
+        public Type TriangleType
         {
-            if (point1 == null)
-                throw new ArgumentException("Point1 object cannot be null");
-
-            if (point2 == null)
-                throw new ArgumentException("Point2 object cannot be null");
-
-            if (point3 == null)
-                throw new ArgumentException("Point3 object cannot be null");
-
-            if (point1.Equals(point2) || point2.Equals(point3) || point3.Equals(point1))
-                throw new ArgumentException("All points must be distinct points with seperate locations");
-
-            Point1 = point1;
-            Point2 = point2;
-            Point3 = point3;
-        }
-
-        public override int GetHashCode()
-        {
-            unchecked
+            get
             {
-                return (Point1.GetHashCode() * 31) ^ (Point2.GetHashCode() * 691 ^ (Point2.GetHashCode() * 17));
+                var a = A.DistanceTo(B);
+                var b = B.DistanceTo(C);
+                var c = C.DistanceTo(A);
+
+                if (a == b && b == c)
+                    return Type.Equilateral;
+
+                if (a == b || b == c || c == a)
+                    return Type.Isosceles;
+
+                return Type.Scalene;
             }
         }
 
-        public override string ToString()
+        public Triangle(Point2 p1, Point2 p2, Point2 p3)
         {
-            return $"Point1: {Point1}, Point2: {Point2}, Point3: {Point3}";
+            if (p1 == null) throw new ArgumentNullException(nameof(p1));
+            if (p2 == null) throw new ArgumentNullException(nameof(p2));
+            if (p3 == null) throw new ArgumentNullException(nameof(p3));
+
+            if (p1 == (p2) || p2 == (p3) || p3 == (p1))
+                throw new ArgumentException("All points must be distinct points with seperate locations");
+
+            A = p1;
+            B = p2;
+            C = p3;
         }
 
         public override bool Equals(object obj)
@@ -100,9 +120,17 @@ namespace Geometry
             return Equals(new_obj);
         }
 
-        public bool Equals(Triangle other)
+        public bool Equals(Triangle t)
         {
-            return (Point1.Equals(other.Point1) && Point2.Equals(other.Point2) && Point3.Equals(other.Point3));
+            return (A.Equals(t.A) && B.Equals(t.B) && C.Equals(t.C));
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return (A.GetHashCode() * 31) ^ (B.GetHashCode() * 691 ^ (C.GetHashCode() * 17));
+            }
         }
     }
 }

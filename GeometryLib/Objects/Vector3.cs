@@ -1,16 +1,34 @@
+/*
+The MIT License (MIT)
+
+Copyright (c) 2007 Roger Hill
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files 
+(the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, 
+publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do 
+so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF 
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE 
+FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+
 using System;
-using System.Diagnostics;
 
 namespace Geometry
 {
-    [DebuggerDisplay("Vector2 {_X},{_Y},{_Z}")]
-    public class Vector3
+    public class Vector3 : IEquatable<Vector3>
     {
-        public static readonly Vector3 Zero = new Vector3(0, 0, 0);
-        public static readonly Vector3 One = new Vector3(1, 1, 1);
+        public static readonly Vector3 Zero = new(0, 0, 0);
+        public static readonly Vector3 One = new(1, 1, 1);
 
         public float X { get; set; }
+
         public float Y { get; set; }
+
         public float Z { get; set; }
 
         public Vector3() : this(0, 0, 0) { }
@@ -48,23 +66,6 @@ namespace Geometry
             return new Vector3(v1.X / s2, v1.Y / s2, v1.Z / s2);
         }
 
-        public static bool operator ==(Vector3 v1, Vector3 v2)
-        {
-            if (ReferenceEquals(v1, v2))
-                return true;
-
-            // If one is null, but not both, return false.
-            if ((v1 is null) || (v2 is null))
-                return false;
-
-            return ((v1.X == v2.X) && (v1.Y == v2.Y) && (v1.Z == v2.Z));
-        }
-
-        public static bool operator !=(Vector3 v1, Vector3 v2)
-        {
-            return !(v1 == v2);
-        }
-
         public static Vector3 Normalize(Vector3 v1)
         {
             var length = v1.Length();
@@ -80,20 +81,6 @@ namespace Geometry
                 v1.Y * inverse,
                 v1.Z * inverse
             );
-        }
-
-        public void Normalize()
-        {
-            float length = Length();
-
-            if (length == 0)
-                throw new DivideByZeroException("Cannot normalize a vector when it's magnitude is zero");
-
-            float inverse = 1f / length;
-
-            X *= inverse;
-            Y *= inverse;
-            Z *= inverse;
         }
 
         public static float DistanceTo(Vector3 v1, Vector3 v2)
@@ -115,32 +102,27 @@ namespace Geometry
             return (float)Math.Sqrt((X * X) + (Y * Y) + (Z * Z));
         }
 
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                return (X.GetHashCode() * 1361) ^ (Y.GetHashCode() * 3449) ^ (Z.GetHashCode() * 47);
-            }
-        }
-
-        public override string ToString()
-        {
-            return $"({X},{Y},{Z})";
-        }
-
         public override bool Equals(object obj)
         {
             if (obj is null) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (GetType() != obj.GetType()) return false;
 
-            var new_obj = (Vector3)obj;
-            return Equals(new_obj);
+            var v = (Vector3)obj;
+            return Equals(v);
         }
 
-        public bool Equals(Vector3 other)
+        public bool Equals(Vector3 v)
         {
-            return other.X == X && other.Y == Y && other.Z == Z;
+            return v.X == X && v.Y == Y && v.Z == Z;
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return (X.GetHashCode() * 1361) ^ (Y.GetHashCode() * 3449) ^ (Z.GetHashCode() * 47);
+            }
         }
     }
 }

@@ -20,55 +20,20 @@ using System;
 
 namespace Geometry
 {
-    public class Point3 : IEquatable<Point3>
+    public class Line2 : I1d, IEquatable<Line2>
     {
-        public float X { get; set; }
+        public Point2 Point1 { get; set; }
 
-        public float Y { get; set; }
+        public Point2 Point2 { get; set; }
 
-        public float Z { get; set; }
+        public float Length => Point1.DistanceTo(Point2);
 
-        public Point3() : this(0f, 0f, 0f) { }
+        public Line2(float p1x, float p1y, float p2x, float p2y) : this(new Point2(p1x, p1y), new Point2(p2x, p2y)) { }
 
-        public Point3(float x, float y, float z)
+        public Line2(Point2 p1, Point2 p2)
         {
-            X = x;
-            Y = y;
-            Z = z;
-        }
-
-        public Point3(Point3 p)
-        {
-            X = p.X;
-            Y = p.Y;
-            Z = p.Z;
-        }
-
-        public Point3(Point2 p)
-        {
-            X = p.X;
-            Y = p.Y;
-            Z = 0;
-        }
-
-        public static Point3 operator +(Point3 p1, Point3 p2)
-        {
-            return new Point3
-            {
-                X = p1.X + p2.X,
-                Y = p1.Y + p2.Y,
-                Z = p1.Z + p2.Z
-            };
-        }
-
-        public static Point3 operator -(Point3 p1, Point3 p2)
-        {
-            return new Point3
-            {
-                X = p1.X - p2.X,
-                Y = p1.Y - p2.Y,
-                Z = p1.Z - p2.Z
-            };
+            Point1 = p1;
+            Point2 = p2;
         }
 
         public override bool Equals(object obj)
@@ -77,26 +42,26 @@ namespace Geometry
             if (ReferenceEquals(this, obj)) return true;
             if (GetType() != obj.GetType()) return false;
 
-            var new_obj = (Point3)obj;
+            var new_obj = (Line2)obj;
             return Equals(new_obj);
         }
 
-        public bool Equals(Point3 p)
+        public bool Equals(Line2 l)
         {
-            if (p is null) return false;
-            if (X != p.X) return false;
-            if (Y != p.Y) return false;
-            if (Z != p.Z) return false;
-
-            return true;
+            return Point1.Equals(l.Point1) && Point2.Equals(l.Point2);
         }
 
         public override int GetHashCode()
         {
             unchecked
             {
-                return (X.GetHashCode() * 1607) ^ (Y.GetHashCode() * 1033) ^ (Z.GetHashCode() * 59);
+                return (Point1.GetHashCode() * 37) ^ (Point2.GetHashCode() * 691);
             }
+        }
+
+        public override string ToString()
+        {
+            return $"Point1: {Point1}, Point2: {Point2}";
         }
     }
 }

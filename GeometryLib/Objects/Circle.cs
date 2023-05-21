@@ -1,54 +1,62 @@
+/*
+The MIT License (MIT)
+
+Copyright (c) 2007 Roger Hill
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files 
+(the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, 
+publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do 
+so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF 
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE 
+FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+
 using System;
-using System.Diagnostics;
 
 namespace Geometry
 {
-    [DebuggerDisplay("Circle {_Center}, r{_Radius}")]
-    public class Circle
+    public class Circle : I2d, IEquatable<Circle>
     {
-        public static readonly Circle UnitCircle = new Circle();
+        public static readonly Circle UnitCircle = new();
 
         public Point2 Center { get; set; }
+
         public float Radius { get; set; }
 
-        public float Left
-        {
-            get { return Center.X - Radius; }
-        }
-        public float Right
-        {
-            get { return Center.X + Radius; }
-        }
-        public float Top
-        {
-            get { return Center.Y - Radius; }
-        }
-        public float Bottom
-        {
-            get { return Center.Y + Radius; }
-        }
-        public float Area
-        {
-            get { return (float)(Math.PI * Radius * Radius); }
-        }
-        public float Circumfrence
-        {
-            get { return (float)(Math.PI * 2 * Radius); }
-        }
+        public float Left => Center.X - Radius;
+
+        public float Right => Center.X + Radius;
+
+        public float Top => Center.Y - Radius;
+
+        public float Bottom => Center.Y + Radius;
+
+        public float Area => (float)(Math.PI * Radius * Radius);
+
+        public float Circumfrence => (float)(Math.PI * 2 * Radius);
+
+        public float Diameter => Radius * 2;
+
+        public float Perimeter => Circumfrence;
 
         public Circle() : this(0f, 0f, 1f) { }
 
-        public Circle(Point2 position) : this(position, 1f) { }
+        public Circle(Point2 position) : this(position.X, position.Y, 1f) { }
 
         public Circle(float radius) : this(0f, 0f, radius) { }
 
-        public Circle(float x, float y, float radius) : this(new Point2(x, y), radius) { }
+        public Circle(Circle circle) : this(circle.Center.X, circle.Center.Y, circle.Radius) { }
 
-        public Circle(Circle circle) : this(new Point2(circle.Center.X, circle.Center.Y), circle.Radius) { }
-
-        public Circle(Point2 position, float radius)
+        public Circle(float x, float y, float radius)
         {
-            Center = position;
+            if (radius <= 0f) throw new ArgumentOutOfRangeException(nameof(radius));
+
+            Center = new Point2(x, y);
             Radius = radius;
         }
 
@@ -56,86 +64,81 @@ namespace Geometry
         /// Checks to see if circles are intersecting. 
         /// Tangent circles will return true.
         /// </summary>
-        public bool Intersects(Circle circle)
+        public bool Intersects(Circle c)
         {
-            float distance_x = circle.Center.X - Center.X;
-            float distance_y = circle.Center.Y - Center.Y;
-            float sum_radius = Radius + circle.Radius;
-
-            if ((sum_radius * sum_radius) < (distance_x * distance_x + distance_y * distance_y))
-                return false;
-            else
+            if (c.Center == Center) 
                 return true;
+
+            float distance_x = c.Center.X - Center.X;
+            float distance_y = c.Center.Y - Center.Y;
+            float sum_radius = Radius + c.Radius;
+
+            return ((sum_radius * sum_radius) >= (distance_x * distance_x + distance_y * distance_y));
         }
 
-        public bool Intersects(Rectangle rectangle)
+        public bool Intersects(Rectangle r)
         {
-            if (rectangle.Contains(Center))
-                return true;
+            if (r == null) throw new ArgumentNullException(nameof(r));
 
-            if (this.Contains(rectangle.TopLeftConrner) || this.Contains(rectangle.TopRightConrner) ||
-                this.Contains(rectangle.BottomLeftConrner) || this.Contains(rectangle.BottomRightCorner))
-                return true;
+            if (Contains(r.TopLeftConrner)) return true;
+            if (Contains(r.TopRightConrner)) return true;
+            if (Contains(r.BottomRightCorner)) return true;
+            if (Contains(r.BottomLeftConrner)) return true;
 
             return false;
         }
 
-        public bool Contains(Point2 point)
+        public bool Contains(Point2 p)
         {
-            float distance_x = point.X - this.Center.X;
-            float distance_y = point.Y - this.Center.Y;
+            float distance_x = p.X - Center.X;
+            float distance_y = p.Y - Center.Y;
 
-            if ((Radius * Radius) < Math.Abs(distance_x * distance_x + distance_y * distance_y))
-                return false;
-            else
-                return true;
+            return ((Radius * Radius) < Math.Abs(distance_x * distance_x + distance_y * distance_y));
         }
 
-        public bool Contains(Rectangle rectangle)
+        public bool Contains(Rectangle r)
         {
-            // A circle contains a rectangle if it contains all of the rectangle's corners.
-            return this.Contains(rectangle.TopLeftConrner) &&
-            this.Contains(rectangle.TopRightConrner) &&
-            this.Contains(rectangle.BottomRightCorner) &&
-            this.Contains(rectangle.BottomLeftConrner);
+            if (!Contains(r.TopLeftConrner)) return false;
+            if (!Contains(r.TopRightConrner)) return false;
+            if (!Contains(r.BottomRightCorner)) return false;
+            if (!Contains(r.BottomLeftConrner)) return false;
+
+            return true;
         }
 
-        public static Circle operator +(Circle circle, Vector2 vector)
+        public static Circle operator +(Circle c, Vector2 v)
         {
-            return new Circle(circle.Center.X + vector.X, circle.Center.Y + vector.Y, circle.Radius);
+            return new Circle(c.Center.X + v.X, c.Center.Y + v.Y, c.Radius);
         }
 
-        public static Circle operator -(Circle circle, Vector2 vector)
+        public static Circle operator -(Circle c, Vector2 v)
         {
-            return new Circle(circle.Center.X - vector.X, circle.Center.Y - vector.Y, circle.Radius);
+            return new Circle(c.Center.X - v.X, c.Center.Y - v.Y, c.Radius);
         }
 
-        public static Circle operator *(Circle circle, float scalar)
+        public static Circle operator *(Circle c, float scale)
         {
-            return new Circle(circle.Center.X, circle.Center.Y, circle.Radius * scalar);
+            return new Circle(c.Center.X, c.Center.Y, c.Radius * scale);
         }
 
-        public static Circle operator /(Circle circle, float scalar)
+        public static Circle operator /(Circle c, float scale)
         {
-            return new Circle(circle.Center.X, circle.Center.Y, circle.Radius / scalar);
+            return new Circle(c.Center.X, c.Center.Y, c.Radius / scale);
         }
 
-        public static bool operator ==(Circle c1, Circle c2)
+        public override bool Equals(object obj)
         {
-            // If both are null, or both are same instance, return true.
-            if (ReferenceEquals(c1, c2))
-                return true;
+            if (obj is null) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (GetType() != obj.GetType()) return false;
 
-            // If one is null, but not both, return false.
-            if (((object)c1 == null) || ((object)c2 == null))
-                return false;
-
-            return (c1.Center.X == c2.Center.X) && (c1.Center.Y == c2.Center.Y) && (c1.Radius == c2.Radius);
+            var new_obj = (Circle)obj;
+            return Equals(new_obj);
         }
 
-        public static bool operator !=(Circle a, Circle b)
+        public bool Equals(Circle c)
         {
-            return !(a == b);
+            return (Center.Equals(c.Center) && Radius.Equals(c.Radius));
         }
 
         public override int GetHashCode()
@@ -144,26 +147,6 @@ namespace Geometry
             {
                 return (Center.GetHashCode() * 19) ^ (Radius.GetHashCode() * 691);
             }
-        }
-
-        public override string ToString()
-        {
-            return $"CenterPoint {Center}, Radius: {Radius}";
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (GetType() != obj.GetType()) return false;
-
-            var new_obj = (Circle)obj;
-            return Equals(new_obj);
-        }
-
-        public bool Equals(Circle other)
-        {
-            return (Center == other.Center && Radius == other.Radius);
         }
     }
 }

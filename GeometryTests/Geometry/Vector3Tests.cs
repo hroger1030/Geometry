@@ -1,8 +1,20 @@
-﻿//////////////////////////////////////////////////////////////////////////////////
-// Copyright (C) Global Conquest Games, LLC - All Rights Reserved               //
-// Unauthorized copying of this file, via any medium is strictly prohibited     //
-// Proprietary and confidential                                                 //
-//////////////////////////////////////////////////////////////////////////////////
+﻿/*
+The MIT License (MIT)
+
+Copyright (c) 2007 Roger Hill
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files 
+(the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, 
+publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do 
+so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF 
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE 
+FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
 
 using Geometry;
 using NUnit.Framework;
@@ -52,11 +64,10 @@ namespace GeometryTests
         [Category("Vector3")]
         public void TestOperatorOverloads()
         {
-            Vector3 v1 = new Vector3(3, 3, 3);
-            Vector3 v2 = new Vector3(1, 2, 3);
-            Vector3 v3;
+            var v1 = new Vector3(3, 3, 3);
+            var v2 = new Vector3(1, 2, 3);
 
-            v3 = v1 + v2;
+            var v3 = v1 + v2;
             Assert.IsTrue(v3.X == 4f && v3.Y == 5 && v3.Z == 6, "Failed addition");
 
             v3 = v1 - v2;

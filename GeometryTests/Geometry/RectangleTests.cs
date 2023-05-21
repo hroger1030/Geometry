@@ -1,8 +1,20 @@
-﻿//////////////////////////////////////////////////////////////////////////////////
-// Copyright (C) Global Conquest Games, LLC - All Rights Reserved               //
-// Unauthorized copying of this file, via any medium is strictly prohibited     //
-// Proprietary and confidential                                                 //
-//////////////////////////////////////////////////////////////////////////////////
+﻿/*
+The MIT License (MIT)
+
+Copyright (c) 2007 Roger Hill
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files 
+(the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, 
+publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do 
+so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF 
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE 
+FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
 
 using Geometry;
 using NUnit.Framework;
@@ -16,7 +28,7 @@ namespace GeometryTests
         [Category("Rectangle")]
         public void TestBasicProperties()
         {
-            Rectangle r = new Rectangle(0, 0, 2, 3);
+            var r = new Rectangle(0, 0, 2, 3);
 
             Assert.IsTrue(r.Top == 0f, "Failed top check");
             Assert.IsTrue(r.Left == 0f, "Failed left check");
@@ -40,7 +52,7 @@ namespace GeometryTests
         [Category("Rectangle")]
         public void TestContainsGeometry()
         {
-            Rectangle r = new Rectangle(0, 0, 10, 10);
+            var r = new Rectangle(0, 0, 10, 10);
 
             // point inside
             Assert.IsTrue(r.Contains(new Point2(3, 3)), "Failed contained check 1");
@@ -75,7 +87,7 @@ namespace GeometryTests
         [Category("Rectangle")]
         public void TestRectangleIntersectsGeometry()
         {
-            Rectangle r = new Rectangle(0, 0, 10, 10);
+            var r = new Rectangle(0, 0, 10, 10);
 
             // rectangle intersects
             Assert.IsTrue(r.Intersects(new Rectangle(-2, -2, 10, 10)), "Failed intersect check 1");
@@ -98,47 +110,41 @@ namespace GeometryTests
 
         [Test]
         [Category("Rectangle")]
-        public void TestCircleIntersectsGeometry()
+        [Category("Geometry")]
+        [TestCase(0f, 0f, 6f)] // overlapping
+        [TestCase(0f, 0f, 2f)] // offset
+        [TestCase(5f, 5f, 1f)] // contained
+        [TestCase(5f, 5f, 25f)] // containing
+        [TestCase(-1f, 5f, 1f)] // tangent
+        public void Rectangle_RectangleCircleIntersection_Pass(float x, float y, float radius)
         {
-            Rectangle r = new Rectangle(0, 0, 10, 10);
+            var r = new Rectangle(0, 0, 10, 10);
+            var c = new Circle(x, y, radius);
 
-            // circle inside rectangle
-            Assert.IsTrue(r.Intersects(new Circle(5, 5, 1)), "Failed intersect check 1");
-
-            // circle outside
-            Assert.IsFalse(r.Intersects(new Circle(5, 15, 1)), "Failed intersect check 2.0");
-            Assert.IsFalse(r.Intersects(new Circle(15, 5, 1)), "Failed intersect check 2.1");
-            Assert.IsFalse(r.Intersects(new Circle(-5, 5, 1)), "Failed intersect check 2.2");
-            Assert.IsFalse(r.Intersects(new Circle(5, -5, 1)), "Failed intersect check 2.3");
-
-            // circle inside & tangent
-            Assert.IsTrue(r.Intersects(new Circle(5, 5, 5)), "Failed intersect check 3");
-
-            // circle outside & tangent
-            Assert.IsTrue(r.Intersects(new Circle(5, 15, 5)), "Failed intersect check 4");
-
-            // rectangle inside circle
-            Assert.IsTrue(r.Intersects(new Circle(5, 5, 20)), "Failed intersect check 5");
+            Assert.IsTrue(r.Intersects(c), "Failed intersect check 1");
         }
 
         [Test]
         [Category("Rectangle")]
-        public void TestScale()
+        [Category("Math")]
+        [TestCase(1f, 1f)] 
+        [TestCase(0.5f, 0.5f)] 
+        public void Rectangle_Scale_Pass(float x, float y)
         {
-            Rectangle r = new Rectangle(0, 0, 2, 3);
-            r.Scale(1.5f, 2f);
+            var r = new Rectangle(0f, 0f, 2f, 2f);
+            r.Scale(x, y);
 
-            Assert.IsTrue(r.Width == 3f, "Failed width check");
-            Assert.IsTrue(r.Height == 6f, "Failed height check");
+            Assert.IsTrue(r.Width == (2f * x), "Failed width check");
+            Assert.IsTrue(r.Height == (2f * y), "Failed height check");
         }
 
         [Test]
         [Category("Rectangle")]
         public void TestUnion()
         {
-            Rectangle r1 = new Rectangle(0, 0, 2, 2);
-            Rectangle r2 = new Rectangle(1, 1, 2, 2);
-            Rectangle r3 = Rectangle.Union(r1, r2);
+            var r1 = new Rectangle(0, 0, 2, 2);
+            var r2 = new Rectangle(1, 1, 2, 2);
+            var r3 = Rectangle.Union(r1, r2);
 
             Assert.IsTrue(r3.X == 0f, "Failed X check");
             Assert.IsTrue(r3.Y == 0f, "Failed Y check");
@@ -150,11 +156,10 @@ namespace GeometryTests
         [Category("Rectangle")]
         public void TestOperatorOverloads()
         {
-            Rectangle r1 = new Rectangle(0, 0, 2, 3);
-            Vector2 v1 = new Vector2(1f, 1f);
-            Rectangle r2;
+            var r1 = new Rectangle(0, 0, 2, 3);
+            var v1 = new Vector2(1f, 1f);
 
-            r2 = r1 + v1;
+            var r2 = r1 + v1;
             Assert.IsTrue(r2.Top == 1f && r2.Top == 1f && r2.Height == 3f && r2.Width == 2f, "Failed add check");
 
             r2 = r1 - v1;
@@ -171,6 +176,28 @@ namespace GeometryTests
 
             r2 = new Rectangle(1, 2, 4, 5);
             Assert.IsTrue(r1 != r2, "Failed not equals check");
+        }
+
+        [Test]
+        [Category("Rectangle")]
+        public void TestIntersectsRectangle1()
+        {
+            // overlap
+            var r1 = new Rectangle(0, 0, 1, 1);
+            var r2 = new Rectangle(0, 0, 1, 1);
+
+            Assert.IsTrue(r1.Intersects(r2));
+        }
+
+        [Test]
+        [Category("Rectangle")]
+        public void TestIntersectsRectangle2()
+        {
+            // doesn't intersect
+            var rectangle1 = new Rectangle(0, 0, 1, 1) + Vector2.One;
+            var rectangle2 = new Rectangle(0, 0, 1, 1) - Vector2.One;
+
+            Assert.IsFalse(rectangle1.Intersects(rectangle2));
         }
     }
 }

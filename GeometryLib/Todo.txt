@@ -1,8 +1,0 @@
-﻿Line segments
-sphere
-all perimeters
-polygon
-plane
-collisions
-cylinder
-triangle
