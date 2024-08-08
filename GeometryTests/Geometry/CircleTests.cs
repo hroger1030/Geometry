@@ -19,7 +19,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 using Geometry;
 using NUnit.Framework;
 using System;
-using System.Security.Cryptography.X509Certificates;
 
 namespace GeometryTests
 {
@@ -44,14 +43,14 @@ namespace GeometryTests
         {
             var c = new Circle(0, 0, 2);
 
-            Assert.IsTrue(c.Right == 2f, "Failed right side check");
-            Assert.IsTrue(c.Bottom == 2f, "Failed bottom side check");
-            Assert.IsTrue(c.Top == -2f, "Failed top side check");
-            Assert.IsTrue(c.Left == -2f, "Failed left side check");
+            Assert.That(c.Right == 2f, Is.True, "Failed right side check");
+            Assert.That(c.Bottom == 2f, Is.True, "Failed bottom side check");
+            Assert.That(c.Top == -2f, Is.True, "Failed top side check");
+            Assert.That(c.Left == -2f, Is.True, "Failed left side check");
 
-            Assert.IsTrue(c.Radius == 2f, "Failed radius check");
-            Assert.IsTrue(c.Center.X == 0f, "Failed center X check");
-            Assert.IsTrue(c.Center.Y == 0f, "Failed center Y check");
+            Assert.That(c.Radius == 2f, Is.True, "Failed radius check");
+            Assert.That(c.Center.X == 0f, Is.True, "Failed center X check");
+            Assert.That(c.Center.Y == 0f, Is.True, "Failed center Y check");
         }
 
         [Test]
@@ -67,9 +66,9 @@ namespace GeometryTests
 
             Circle c2 = c1 + v1;
 
-            Assert.IsTrue(c2.Center.X == (0f + x), "Failed add check");
-            Assert.IsTrue(c2.Center.Y == (0f + y), "Failed add check");
-            Assert.IsTrue(c2.Radius == 2f, "Failed add check");
+            Assert.That(c2.Center.X == (0f + x), Is.True, "Failed add check");
+            Assert.That(c2.Center.Y == (0f + y), Is.True, "Failed add check");
+            Assert.That(c2.Radius == 2f, Is.True, "Failed add check");
         }
 
         [Test]
@@ -85,9 +84,9 @@ namespace GeometryTests
 
             Circle c2 = c1 - v1;
 
-            Assert.IsTrue(c2.Center.X == (0f - x), "Failed add check");
-            Assert.IsTrue(c2.Center.Y == (0f - y), "Failed add check");
-            Assert.IsTrue(c2.Radius == 2f, "Failed add check");
+            Assert.That(c2.Center.X == (0f - x), Is.True, "Failed add check");
+            Assert.That(c2.Center.Y == (0f - y), Is.True, "Failed add check");
+            Assert.That(c2.Radius == 2f, Is.True, "Failed add check");
         }
 
 
@@ -103,9 +102,9 @@ namespace GeometryTests
 
             Circle c2 = c1 * scale;
 
-            Assert.IsTrue(c2.Center.X == x, "Failed multiply check");
-            Assert.IsTrue(c2.Center.Y == y, "Failed multiply check");
-            Assert.IsTrue(c2.Radius == (2f * scale), "Failed multiply check");
+            Assert.That(c2.Center.X == x, Is.True, "Failed multiply check");
+            Assert.That(c2.Center.Y == y, Is.True, "Failed multiply check");
+            Assert.That(c2.Radius == (2f * scale), Is.True, "Failed multiply check");
         }
 
         [Test]
@@ -128,7 +127,7 @@ namespace GeometryTests
             var c1 = new Circle(0, 0, 2f);
             var c2 = c1 / 2f;
 
-            Assert.IsTrue(c2.Center.X == 0f && c2.Center.Y == 0f && c2.Radius == 1f, "Failed scale check");
+            Assert.That(c2.Center.X == 0f && c2.Center.Y == 0f && c2.Radius == 1f, Is.True, "Failed scale check");
         }
 
         [Test]
@@ -139,7 +138,7 @@ namespace GeometryTests
             var c1 = new Circle(0, 0, 2f);
             var c2 = new Circle(0, 0, 2f);
 
-            Assert.IsTrue(c1.Equals(c2), "Failed equals check");
+            Assert.That(c1.Equals(c2), Is.True, "Failed equals check");
         }
 
         [Test]
@@ -150,7 +149,7 @@ namespace GeometryTests
             var c1 = new Circle(0, 0, 2f);
             var c2 = new Circle(1, 2, 4f);
 
-            Assert.IsFalse(c1.Equals(c2), "Failed not equals check");
+            Assert.That(c1.Equals(c2), Is.False, "Failed not equals check");
         }
 
         [Test]
@@ -160,7 +159,7 @@ namespace GeometryTests
         {
             var c = Circle.UnitCircle;
 
-            Assert.IsTrue(c.Area == (float)Math.PI * c.Radius * c.Radius);
+            Assert.That(c.Area == (float)Math.PI * c.Radius * c.Radius, Is.True);
         }
 
         [Test]
@@ -170,7 +169,7 @@ namespace GeometryTests
         {
             var c = Circle.UnitCircle;
 
-            Assert.IsTrue(c.Circumfrence == (float)Math.PI * c.Radius * 2);
+            Assert.That(c.Circumfrence == (float)Math.PI * c.Radius * 2, Is.True);
         }
 
         [Test]
@@ -186,8 +185,26 @@ namespace GeometryTests
             var c1 = new Circle(x1, y1, r1);
             var c2 = new Circle(x2, y2, r2);
 
-            Assert.IsTrue(c1.Intersects(c2));
+            Assert.That(c1.Intersects(c2), Is.True);
         }
+
+        [Test]
+        [Category("Circle")]
+        [Category("Geometry")]
+        [TestCase(0f, 0f, true)] // center
+        [TestCase(0.5f, 0.5f, true)] // inside
+        [TestCase(1f, 0f, true)] // tangent
+        [TestCase(-1f, 0f, true)] // tangent
+        [TestCase(1f, 1f, false)] // outside corner
+        [TestCase(100f, 100f, false)] // far distant
+        public void Circle_ContainsPoints_Pass(float x, float y, bool expectedResult)
+        {
+            var c1 = new Circle(0, 0, 1);
+            var p1 = new Point2(x, y);
+
+            Assert.That(c1.Contains(p1) == expectedResult, Is.True);
+        }
+
 
         [Test]
         [Category("Circle")]
@@ -199,7 +216,7 @@ namespace GeometryTests
             var c1 = new Circle(x1, y1, r1);
             var c2 = new Circle(x2, y2, r2);
 
-            Assert.IsFalse(c1.Intersects(c2));
+            Assert.That(c1.Intersects(c2), Is.False);
         }
     }
 }

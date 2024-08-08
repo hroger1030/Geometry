@@ -32,16 +32,16 @@ namespace GeometryTests
             var v2 = new Vector2(1, 2);
 
             var v3 = v1 + v2;
-            Assert.IsTrue(v3.X == 4f && v3.Y == 5, "Failed addition");
+            Assert.That(v3.X == 4f && v3.Y == 5, Is.True, "Failed addition");  
 
             v3 = v1 - v2;
-            Assert.IsTrue(v3.X == 2f && v3.Y == 1, "Failed subtraction");
+            Assert.That(v3.X == 2f && v3.Y == 1, Is.True, "Failed subtraction");
 
             v3 = v1 * 2;
-            Assert.IsTrue(v3.X == 6f && v3.Y == 6, "Failed multiplication");
+            Assert.That(v3.X == 6f && v3.Y == 6, Is.True, "Failed multiplication");
 
             v3 = v1 / 2;
-            Assert.IsTrue(v3.X == 1.5f && v3.Y == 1.5, "Failed division");
+            Assert.That(v3.X == 1.5f && v3.Y == 1.5, Is.True, "Failed division");
         }
     }
 }

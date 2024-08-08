@@ -33,31 +33,31 @@ namespace GeometryTests
 
             v1 = new Vector3(0, 0, 3);
             distance = Vector3.Zero.DistanceTo(v1);
-            Assert.IsTrue(distance == 3f, "Expected distance of 3");
+            Assert.That(distance == 3f, Is.True, "Expected distance of 3");
 
             v1 = new Vector3(3, 4, 0);
             distance = Vector3.Zero.DistanceTo(v1);
-            Assert.IsTrue(distance == 5f, "Expected distance of 5");
+            Assert.That(distance == 5f, Is.True, "Expected distance of 5");
 
             v1 = new Vector3(-1, 0, 0);
             distance = Vector3.Zero.DistanceTo(v1);
-            Assert.IsTrue(distance == 1f, "Expected distance of 1");
+            Assert.That(distance == 1f, Is.True, "Expected distance of 1");
 
             v1 = Vector3.Zero;
             distance = Vector3.Zero.DistanceTo(v1);
-            Assert.IsTrue(distance == 0f, "Expected distance of 0");
+            Assert.That(distance == 0f, Is.True, "Expected distance of 0");
 
             v1 = new Vector3(float.NaN, 0, 0);
             distance = Vector3.Zero.DistanceTo(v1);
-            Assert.IsTrue(float.IsNaN(distance), "Expected distance of float.NaN");
+            Assert.That(float.IsNaN(distance), Is.True, "Expected distance of float.NaN");
 
             v1 = new Vector3(float.PositiveInfinity, 0, 0);
             distance = Vector3.Zero.DistanceTo(v1);
-            Assert.IsTrue(float.IsPositiveInfinity(distance), "Expected distance of float.PositiveInfinity");
+            Assert.That(float.IsPositiveInfinity(distance), Is.True, "Expected distance of float.PositiveInfinity");
 
             v1 = new Vector3(float.NegativeInfinity, 0, 0);
             distance = Vector3.Zero.DistanceTo(v1);
-            Assert.IsTrue(float.IsPositiveInfinity(distance), "Expected distance of float.PositiveInfinity");
+            Assert.That(float.IsPositiveInfinity(distance), Is.True, "Expected distance of float.PositiveInfinity");
         }
 
         [Test]
@@ -68,16 +68,16 @@ namespace GeometryTests
             var v2 = new Vector3(1, 2, 3);
 
             var v3 = v1 + v2;
-            Assert.IsTrue(v3.X == 4f && v3.Y == 5 && v3.Z == 6, "Failed addition");
+            Assert.That(v3.X == 4f && v3.Y == 5 && v3.Z == 6, Is.True, "Failed addition");
 
             v3 = v1 - v2;
-            Assert.IsTrue(v3.X == 2f && v3.Y == 1 && v3.Z == 0, "Failed subtraction");
+            Assert.That(v3.X == 2f && v3.Y == 1 && v3.Z == 0, Is.True, "Failed subtraction");
 
             v3 = v1 * 2;
-            Assert.IsTrue(v3.X == 6f && v3.Y == 6 && v3.Z == 6, "Failed multiplication");
+            Assert.That(v3.X == 6f && v3.Y == 6 && v3.Z == 6, Is.True, "Failed multiplication");
 
             v3 = v1 / 2;
-            Assert.IsTrue(v3.X == 1.5f && v3.Y == 1.5 && v3.Z == 1.5, "Failed division");
+            Assert.That(v3.X == 1.5f && v3.Y == 1.5 && v3.Z == 1.5, Is.True, "Failed division");
         }
     }
 }

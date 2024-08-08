@@ -17,9 +17,11 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
 using System;
+using System.Diagnostics;
 
 namespace Geometry
 {
+    [DebuggerDisplay("({X},{Y})")]
     public class Point2 : I1d, IEquatable<Point2>
     {
         public static readonly Point2 ZERO = new(0, 0);

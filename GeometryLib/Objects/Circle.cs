@@ -17,9 +17,11 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
 using System;
+using System.Diagnostics;
 
 namespace Geometry
 {
+    [DebuggerDisplay("({Center.X},{Center.Y},{Radius})")]
     public class Circle : I2d, IEquatable<Circle>
     {
         public static readonly Circle UnitCircle = new();
@@ -54,7 +56,8 @@ namespace Geometry
 
         public Circle(float x, float y, float radius)
         {
-            if (radius <= 0f) throw new ArgumentOutOfRangeException(nameof(radius));
+            if (radius <= 0f) 
+                throw new ArgumentOutOfRangeException(nameof(radius));
 
             Center = new Point2(x, y);
             Radius = radius;
@@ -93,7 +96,7 @@ namespace Geometry
             float distance_x = p.X - Center.X;
             float distance_y = p.Y - Center.Y;
 
-            return ((Radius * Radius) < Math.Abs(distance_x * distance_x + distance_y * distance_y));
+            return ((Radius * Radius) >= Math.Abs(distance_x * distance_x + distance_y * distance_y));
         }
 
         public bool Contains(Rectangle r)

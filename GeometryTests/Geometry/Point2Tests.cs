@@ -33,9 +33,9 @@ namespace GeometryTests
             var p3 = new Point2(0f, -1f);
             var p4 = new Point2(3f, 4f);
 
-            Assert.IsTrue(p1.DistanceTo(p2) == 1f);
-            Assert.IsTrue(p2.DistanceTo(p3) == 2f);
-            Assert.IsTrue(p1.DistanceTo(p4) == 5f);
+            Assert.That(p1.DistanceTo(p2) == 1f, Is.True);
+            Assert.That(p2.DistanceTo(p3) == 2f, Is.True);
+            Assert.That(p1.DistanceTo(p4) == 5f, Is.True);
         }
 
         [Test]
@@ -47,7 +47,7 @@ namespace GeometryTests
 
             var p2 = p1 + v1;
 
-            Assert.IsTrue(p2.X == 3f && p2.Y == 4f);
+            Assert.That(p2.X == 3f && p2.Y == 4f, Is.True);
         }
     }
 }

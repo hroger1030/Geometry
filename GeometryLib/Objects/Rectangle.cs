@@ -17,9 +17,11 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
 using System;
+using System.Diagnostics;
 
 namespace Geometry
 {
+    [DebuggerDisplay("({Top},{Left},{Bottom},{Right})")]
     public class Rectangle : I2d, IEquatable<Rectangle>
     {
         /// <summary>
@@ -132,7 +134,7 @@ namespace Geometry
 
         public bool Contains(Rectangle value)
         {
-            return value.Left > Left && value.Right < Right && value.Top > Top && value.Bottom < Bottom;
+            return value.Left >= Left && value.Right <= Right && value.Top >= Top && value.Bottom <= Bottom;
         }
 
         /// <summary>
@@ -141,12 +143,6 @@ namespace Geometry
         /// </summary>
         public Rectangle Scale(float widthScale, float heightScale)
         {
-            if (widthScale < float.Epsilon)
-                throw new ArgumentException("Width scale must be greater than 0");
-
-            if (heightScale < float.Epsilon)
-                throw new ArgumentException("Height scale must be greater than 0");
-
             return new Rectangle
             {
                 Left = Left,
@@ -161,7 +157,21 @@ namespace Geometry
         /// </summary>
         public bool Intersects(Rectangle r)
         {
-            return Contains(r.TopLeftConrner) || Contains(r.TopRightConrner) || Contains(BottomLeftConrner) || Contains(BottomRightCorner);
+            // Check if the rectangles are intersecting or tangent
+            bool intersectingOrTangent = this.Right >= r.Left && // rect1's right side is to the right of or touching rect2's left side
+                                         this.Left <= r.Right && // rect1's left side is to the left of or touching rect2's right side
+                                         this.Bottom >= r.Top && // rect1's bottom side is below or touching rect2's top side
+                                         this.Top <= r.Bottom;   // rect1's top side is above or touching rect2's bottom side
+
+            return intersectingOrTangent;
+
+            //var topLeft = Contains(r.TopLeftConrner);
+            //var topRight = Contains(r.TopRightConrner);
+            //var bottomLeft = Contains(r.BottomLeftConrner);
+            //var bottomRight = Contains(r.BottomRightCorner);
+
+            //// retrun true if any one of these are true
+            //return topLeft || topRight || bottomLeft || bottomRight;
         }
 
         /// <summary>
@@ -169,7 +179,17 @@ namespace Geometry
         /// </summary>
         public bool Intersects(Circle c)
         {
-            return c.Contains(TopLeftConrner) || c.Contains(TopRightConrner) || c.Contains(BottomLeftConrner) || c.Contains(BottomRightCorner);
+            // return true if circle center is in rectangle
+            if (Contains(c.Center))
+                return true;
+
+            var topLeft = c.Contains(TopLeftConrner);
+            var topRight = c.Contains(TopRightConrner);
+            var bottomLeft = c.Contains(BottomLeftConrner);
+            var bottomRight = c.Contains(BottomRightCorner);
+
+            // return true if circle contains any cormers
+            return topLeft || topRight || bottomLeft || bottomRight;
         }
 
         /// <summary>
@@ -254,8 +274,8 @@ namespace Geometry
             if (ReferenceEquals(this, obj)) return true;
             if (GetType() != obj.GetType()) return false;
 
-            var new_obj = (Rectangle)obj;
-            return Equals(new_obj);
+            var newObj = (Rectangle)obj;
+            return Equals(newObj);
         }
 
         public bool Equals(Rectangle r)
