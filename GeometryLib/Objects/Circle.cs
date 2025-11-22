@@ -146,10 +146,7 @@ namespace Geometry
 
         public override int GetHashCode()
         {
-            unchecked
-            {
-                return (Center.GetHashCode() * 19) ^ (Radius.GetHashCode() * 691);
-            }
+            return HashCode.Combine(Center, Radius);
         }
     }
 }

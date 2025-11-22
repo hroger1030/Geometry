@@ -102,7 +102,7 @@ namespace Geometry
 
         public bool Equals(Point2 p)
         {
-            if (p == null) 
+            if (p == null)
                 return false;
 
             return ((X == p.X) && (Y == p.Y));
@@ -110,10 +110,7 @@ namespace Geometry
 
         public override int GetHashCode()
         {
-            unchecked
-            {
-                return (X.GetHashCode() * 17) ^ (Y.GetHashCode() * 2011);
-            }
+            return HashCode.Combine(X, Y);
         }
     }
 }

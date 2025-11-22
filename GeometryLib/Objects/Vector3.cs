@@ -119,10 +119,7 @@ namespace Geometry
 
         public override int GetHashCode()
         {
-            unchecked
-            {
-                return (X.GetHashCode() * 1361) ^ (Y.GetHashCode() * 3449) ^ (Z.GetHashCode() * 47);
-            }
+            return HashCode.Combine(X, Y, Z);
         }
     }
 }

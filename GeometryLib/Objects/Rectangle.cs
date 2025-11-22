@@ -285,10 +285,7 @@ namespace Geometry
 
         public override int GetHashCode()
         {
-            unchecked
-            {
-                return Left.GetHashCode() ^ (Top.GetHashCode() << 8) ^ (Right.GetHashCode() << 16) ^ (Bottom.GetHashCode() << 24);
-            }
+            return HashCode.Combine(Left, Right, Top, Bottom);
         }
     }
 }

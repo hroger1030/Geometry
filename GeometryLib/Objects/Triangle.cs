@@ -127,10 +127,7 @@ namespace Geometry
 
         public override int GetHashCode()
         {
-            unchecked
-            {
-                return (A.GetHashCode() * 31) ^ (B.GetHashCode() * 691 ^ (C.GetHashCode() * 17));
-            }
+            return HashCode.Combine(A, B, C);
         }
     }
 }

@@ -53,10 +53,7 @@ namespace Geometry
 
         public override int GetHashCode()
         {
-            unchecked
-            {
-                return (Point1.GetHashCode() * 37) ^ (Point2.GetHashCode() * 691);
-            }
+            return HashCode.Combine(Point1, Point2);
         }
 
         public override string ToString()
