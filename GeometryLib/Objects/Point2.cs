@@ -22,7 +22,7 @@ using System.Diagnostics;
 namespace Geometry
 {
     [DebuggerDisplay("({X},{Y})")]
-    public class Point2 : I1d, IEquatable<Point2>
+    public class Point2 : IEquatable<Point2>
     {
         public static readonly Point2 ZERO = new(0, 0);
         public static readonly Point2 ONE = new(1, 1);
@@ -30,8 +30,6 @@ namespace Geometry
         public float X { get; set; }
 
         public float Y { get; set; }
-
-        public float Length => 0f;
 
         public Point2() : this(0f, 0f) { }
 

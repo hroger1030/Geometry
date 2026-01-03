@@ -37,7 +37,7 @@ namespace Geometry
         public float Z2 { get; set; }
 
         /// <summary>
-        /// Returns a C object coresponding to the 3d coordinates of a corner of the cube object
+        /// Returns a C object corresponding to the 3d coordinates of a corner of the cube object
         /// </summary>
         public Point3 this[int i]
         {
@@ -115,14 +115,14 @@ namespace Geometry
 
         public bool Intersects(Cube c)
         {
-            if (!c.Contains(X1, Y1, Z1)) return true;
-            if (!c.Contains(X1, Y1, Z2)) return true;
-            if (!c.Contains(X1, Y2, Z2)) return true;
-            if (!c.Contains(X2, Y2, Z2)) return true;
-            if (!c.Contains(X2, Y2, Z1)) return true;
-            if (!c.Contains(X2, Y1, Z1)) return true;
-            if (!c.Contains(X2, Y1, Z2)) return true;
-            if (!c.Contains(X1, Y2, Z1)) return true;
+            if (c.Contains(X1, Y1, Z1)) return true;
+            if (c.Contains(X1, Y1, Z2)) return true;
+            if (c.Contains(X1, Y2, Z2)) return true;
+            if (c.Contains(X2, Y2, Z2)) return true;
+            if (c.Contains(X2, Y2, Z1)) return true;
+            if (c.Contains(X2, Y1, Z1)) return true;
+            if (c.Contains(X2, Y1, Z2)) return true;
+            if (c.Contains(X1, Y2, Z1)) return true;
 
             return false;
         }
