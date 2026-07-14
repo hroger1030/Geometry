@@ -18,6 +18,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using Geometry;
 using NUnit.Framework;
+using System;
 
 namespace GeometryTests
 {
@@ -79,5 +80,30 @@ namespace GeometryTests
             v3 = v1 / 2;
             Assert.That(v3.X == 1.5f && v3.Y == 1.5 && v3.Z == 1.5, Is.True, "Failed division");
         }
+
+        [Test]
+        [Category("Vector3")]
+        public void TestNormalize_ZeroVector_Fail()
+        {
+            var v = new Vector3(0f, 0f, 0f);
+
+            Assert.Throws<DivideByZeroException>((Action)(() => Vector3.Normalize(v)));
+        }
+
+        [Test]
+        [Category("Vector3")]
+        public void TestEqualsAndHashCode()
+        {
+            var v1 = new Vector3(1f, 2f, 3f);
+            var v2 = new Vector3(1f, 2f, 3f);
+
+            Assert.That(v1.Equals(v2), Is.True);
+            Assert.That(v1.Equals((object)v2), Is.True);
+            Assert.That(v1.GetHashCode(), Is.EqualTo(v2.GetHashCode()));
+            Assert.That(v1.Equals((object)null), Is.False);
+        }
     }
 }
+
+
+

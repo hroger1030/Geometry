@@ -18,6 +18,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using Geometry;
 using NUnit.Framework;
+using System;
 
 namespace GeometryTests
 {
@@ -43,5 +44,38 @@ namespace GeometryTests
             v3 = v1 / 2;
             Assert.That(v3.X == 1.5f && v3.Y == 1.5, Is.True, "Failed division");
         }
+
+        [Test]
+        [Category("Vector2")]
+        public void TestNormalize_Pass()
+        {
+            var v = new Vector2(3f, 4f);
+            var normalized = Vector2.Normalize(v);
+
+            Assert.That(normalized.Length(), Is.EqualTo(1f).Within(1e-6f));
+            Assert.That(v.Length(), Is.EqualTo(5f));
+        }
+
+        [Test]
+        [Category("Vector2")]
+        public void TestNormalize_ZeroVector_Fail()
+        {
+            var v = new Vector2(0f, 0f);
+
+            Assert.Throws<DivideByZeroException>((Action)(() => Vector2.Normalize(v)));
+            Assert.Throws<DivideByZeroException>((Action)(() => v.Normalize()));
+        }
+
+        [Test]
+        [Category("Vector2")]
+        public void TestDivideByZero_Fail()
+        {
+            var v = new Vector2(1f, 1f);
+
+            Assert.Throws<DivideByZeroException>((Action)(() => { var result = v / 0f; }));
+        }
     }
 }
+
+
+

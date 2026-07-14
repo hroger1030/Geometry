@@ -33,7 +33,7 @@ namespace GeometryTests
         [TestCase(-3.14159f)]
         public void Circle_TestNegativeRadius_Fail(float radius)
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() => new Circle(0, 0, radius));
+            Assert.Throws<ArgumentOutOfRangeException>((Action)(() => new Circle(0, 0, radius)));
         }
 
         [Test]
@@ -112,11 +112,14 @@ namespace GeometryTests
         [Category("Math")]
         [TestCase(0f)] // sets radius to 0
         [TestCase(-10f)] // sets radius to negative
-        public void Circle_CircleTimesVector_Fail(float scale)
+        public void Circle_MultiplyByScale_ThrowsForNonPositiveScale(float scale)
         {
-            var c1 = new Circle(0, 0, 2f);
+            var circle = new Circle(0, 0, 2f);
 
-            Assert.Throws<ArgumentOutOfRangeException>(() => c1 *= scale);
+            Action act = () => circle *= scale;
+            var ex = Assert.Throws<ArgumentOutOfRangeException>(act);
+
+            Assert.That(ex.ParamName, Is.EqualTo(nameof(scale)));
         }
 
         [Test]
@@ -169,7 +172,7 @@ namespace GeometryTests
         {
             var c = Circle.UnitCircle;
 
-            Assert.That(c.Circumfrence == (float)Math.PI * c.Radius * 2, Is.True);
+            Assert.That(c.Circumference == (float)Math.PI * c.Radius * 2, Is.True);
         }
 
         [Test]
@@ -211,12 +214,79 @@ namespace GeometryTests
         [Category("Geometry")]
         [TestCase(0f, 0f, 2f, 9f, 9f, 2f)] // remote
         [TestCase(0f, 0f, 1f, 2.01f, 0f, 1f)] // close
-        public void Circle_IntersectsAjacentCircle_Fail(float x1, float y1, float r1, float x2, float y2, float r2)
+        public void Circle_IntersectsAdjacentCircle_Fail(float x1, float y1, float r1, float x2, float y2, float r2)
         {
             var c1 = new Circle(x1, y1, r1);
             var c2 = new Circle(x2, y2, r2);
 
             Assert.That(c1.Intersects(c2), Is.False);
+        }
+
+        [Test]
+        [Category("Circle")]
+        [Category("Geometry")]
+        public void Circle_IntersectsRectangle_Pass()
+        {
+            var c = new Circle(2f, 2f, 1f);
+            var r = new Rectangle(2f, 1f, 2f, 2f);
+
+            Assert.That(c.Intersects(r), Is.True);
+        }
+
+        [Test]
+        [Category("Circle")]
+        [Category("Geometry")]
+        public void Circle_IntersectsRectangle_Fail()
+        {
+            var c = new Circle(0f, 0f, 1f);
+            var r = new Rectangle(2.1f, 2.1f, 1f, 1f);
+
+            Assert.That(c.Intersects(r), Is.False);
+        }
+
+        [Test]
+        [Category("Circle")]
+        [Category("Geometry")]
+        public void Circle_IntersectsRectangle_Null_Fail()
+        {
+            var c = new Circle(0f, 0f, 1f);
+
+            Assert.Throws<ArgumentNullException>((Action)(() => c.Intersects((Rectangle)null)));
+        }
+
+        [Test]
+        [Category("Circle")]
+        [Category("Geometry")]
+        public void Circle_ContainsRectangle_Pass()
+        {
+            var c = new Circle(0f, 0f, 5f);
+            var r = new Rectangle(-1f, -1f, 2f, 2f);
+
+            Assert.That(c.Contains(r), Is.True);
+        }
+
+        [Test]
+        [Category("Circle")]
+        [Category("Geometry")]
+        public void Circle_ContainsRectangle_Fail()
+        {
+            var c = new Circle(0f, 0f, 1f);
+            var r = new Rectangle(0f, 0f, 2f, 2f);
+
+            Assert.That(c.Contains(r), Is.False);
+        }
+
+        [Test]
+        [Category("Circle")]
+        [Category("Math")]
+        public void Circle_EqualsObjectAndHashCode_Pass()
+        {
+            var c1 = new Circle(0f, 0f, 2f);
+            var c2 = new Circle(0f, 0f, 2f);
+
+            Assert.That(c1.Equals((object)c2), Is.True);
+            Assert.That(c1.GetHashCode(), Is.EqualTo(c2.GetHashCode()));
+            Assert.That(c1.Equals((object)null), Is.False);
         }
     }
 }

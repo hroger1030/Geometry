@@ -16,6 +16,7 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
+using System;
 using Geometry;
 using NUnit.Framework;
 
@@ -191,5 +192,57 @@ namespace GeometryTests
 
             Assert.That(rectangle1.Intersects(rectangle2), Is.False);
         }
+
+        [Test]
+        [Category("Rectangle")]
+        public void Rectangle_ConstructorInvalidDimensions_Fail()
+        {
+            Assert.Throws<ArgumentException>((Action)(() => new Rectangle(0, 0, 0f, 1f)));
+            Assert.Throws<ArgumentException>((Action)(() => new Rectangle(0, 0, 1f, 0f)));
+        }
+
+        [Test]
+        [Category("Rectangle")]
+        public void Rectangle_ConstructorCenterNull_Fail()
+        {
+            Assert.Throws<ArgumentNullException>((Action)(() => new Rectangle((Point2)null, 1f, 1f)));
+        }
+
+        [Test]
+        [Category("Rectangle")]
+        public void Rectangle_Union_Pass()
+        {
+            var r1 = new Rectangle(1, 1, 2, 2);
+            var r2 = new Rectangle(0, 0, 1, 1);
+            var union = Rectangle.Union(r1, r2);
+
+            Assert.That(union.Left, Is.EqualTo(0f));
+            Assert.That(union.Top, Is.EqualTo(0f));
+            Assert.That(union.Width, Is.EqualTo(3f));
+            Assert.That(union.Height, Is.EqualTo(3f));
+        }
+
+        [Test]
+        [Category("Rectangle")]
+        public void Rectangle_IntersectsCircle_Fail()
+        {
+            var r = new Rectangle(0, 0, 1, 1);
+            var c = new Circle(3f, 3f, 0.5f);
+
+            Assert.That(r.Intersects(c), Is.False);
+        }
+
+        [Test]
+        [Category("Rectangle")]
+        public void Rectangle_OperatorNullVector_Fail()
+        {
+            var r = new Rectangle(0, 0, 2, 2);
+
+            Assert.Throws<ArgumentNullException>((Action)(() => { var result = r + (Vector2)null; }));
+            Assert.Throws<ArgumentNullException>((Action)(() => { var result = r - (Vector2)null; }));
+        }
     }
 }
+
+
+

@@ -2,6 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
+    <NoWarn>$(NoWarn);IDE0130</NoWarn>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Objects\2d\" />
+    <Folder Include="Objects\3d\" />
+  </ItemGroup>
 
 </Project>
