@@ -7,7 +7,6 @@
 
   <ItemGroup>
     <Folder Include="Objects\2d\" />
-    <Folder Include="Objects\3d\" />
   </ItemGroup>
 
 </Project>

@@ -162,7 +162,7 @@ namespace GeometryTests
         {
             var c = Circle.UnitCircle;
 
-            Assert.That(c.Area == (float)Math.PI * c.Radius * c.Radius, Is.True);
+            Assert.That(c.Area == MathF.PI * c.Radius * c.Radius, Is.True);
         }
 
         [Test]
@@ -172,7 +172,7 @@ namespace GeometryTests
         {
             var c = Circle.UnitCircle;
 
-            Assert.That(c.Circumference == (float)Math.PI * c.Radius * 2, Is.True);
+            Assert.That(c.Circumference == MathF.PI * c.Radius * 2, Is.True);
         }
 
         [Test]

@@ -6,12 +6,12 @@
     <Authors>Roger Hill</Authors>
     <Company>GlobalGonquestGames</Company>
 	<IsTestProject>true</IsTestProject>
+	<NoWarn>$(NoWarn);IDE0130</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />
-    <NoWarn>$(NoWarn);IDE0130</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>

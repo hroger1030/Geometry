@@ -1,0 +1,6 @@
+root = true
+
+[*.cs]
+# Disable namespace/folder-structure style enforcement for this repository.
+dotnet_style_namespace_match_folder = false
+dotnet_diagnostic.IDE0130.severity = none

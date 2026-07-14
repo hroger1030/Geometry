@@ -52,7 +52,7 @@ namespace GeometryTests
             var v = new Vector2(3f, 4f);
             var normalized = Vector2.Normalize(v);
 
-            Assert.That(normalized.Length(), Is.EqualTo(1f).Within(1e-6f));
+            Assert.That(normalized.Length(), Is.EqualTo(1f).Within(Constants.FLOAT_ERROR_MARGIN));
             Assert.That(v.Length(), Is.EqualTo(5f));
         }
 
