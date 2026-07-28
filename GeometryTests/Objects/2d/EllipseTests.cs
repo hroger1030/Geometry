@@ -42,6 +42,3 @@ namespace GeometryTests
         }
     }
 }
-
-
-

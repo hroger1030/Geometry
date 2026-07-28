@@ -45,8 +45,8 @@ namespace Geometry
         public Ellipse(Point2 center, float radiusX, float radiusY)
         {
             ArgumentNullException.ThrowIfNull(center);
-            ArgumentOutOfRangeException.ThrowIfLessThan(radiusX, 0f);
-            ArgumentOutOfRangeException.ThrowIfLessThan(radiusY, 0f);
+            ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(radiusX, 0f);
+            ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(radiusY, 0f);
 
             Center = center;
             RadiusX = radiusX;

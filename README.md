@@ -1,53 +1,70 @@
 # Geometry
-This is a basic geometry library for 2D and 3D shapes. It is written in c# and is intended to be used in game and simple math projects.
-I would not reccomend it for any serious math projects as it is not optimized for precision, and primarily uses floats. That being said,
-it is very fast and easy to use. It is also very easy to extend and add new shapes to the library.
 
-One of the ongoing bits of work is to add test coverage to the library. There are proabably a number of bugs that have not been found yet,
-and test coverage will help to find them. If you find a bug, please open an issue and I will try to fix it as soon as possible.
+A lightweight 2D/3D/nD geometry library written in C# for games and other applications that don't need
+high-precision math. It favors speed and simplicity over precision — values are stored as `float`, so this
+is **not** a good fit for serious scientific or CAD-grade math. It is, however, fast, easy to use, and easy
+to extend with new shapes.
 
-Note that some of the of the objects in this library are assumed to be grid-aligned (Rectangle, Cube). Further work could be done to make them more general.
+Note that some objects are assumed to be grid-aligned (e.g. `Rectangle`, `Cube`, `AABB`). Making these
+fully general (arbitrary rotation, etc.) is potential future work.
 
+Test coverage is an ongoing effort. If you find a bug, please open an issue and it will be looked at as
+soon as possible.
 
+## Solution layout
 
-## 2d Objects
+| Project | Description |
+|---|---|
+| [GeometryLib](GeometryLib) | The library itself. Namespace: `Geometry`. |
+| [GeometryTests](GeometryTests) | NUnit test suite for the library, mirroring the `Objects` folder structure. |
 
-### Point2 
+## Requirements
 
-### Line2
+- .NET 10 SDK
+- Windows (target platform)
 
-### Circle
+## Building and testing
 
-### Triangle
+```
+dotnet build
+dotnet test
+```
 
-### Rectangle
+## Objects
 
-### Polygon
+### 2D (`GeometryLib/Objects/2d`)
 
-### Vector2
+- Point2
+- Vector2
+- Line2
+- Circle
+- Ellipse
+- Triangle2
+- Rectangle
+- Polygon
 
+### 3D (`GeometryLib/Objects/3d`)
 
+- Point3
+- Vector3
+- Ray
+- Plane3
+- Triangle3
+- Sphere
+- Cube
+- AABB
+- Capsule
 
-## 3d objects
+### Higher dimension (`GeometryLib/Objects/Nd`)
 
-### Cube
+- VectorN
 
-### Vector3
+### Interfaces (`GeometryLib/Interfaces`)
 
-### Line3 (TODO)
+- I1d
+- I2d
+- I3d
 
-### Plane (TODO)
+## License
 
-### Sphere (TODO)
-
-
-
-## Higher dimension objects
-
-### VectorN
-
-
-
-
-
-
+MIT — see [LICENSE.txt](LICENSE.txt).

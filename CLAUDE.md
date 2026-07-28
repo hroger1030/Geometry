@@ -7,14 +7,14 @@ This repository contains a .NET solution for experimenting with a geometry libra
 ## Stack
 
 - C#
-- Microsoft .NET 8
+- Microsoft .NET 10
 - Newtonsoft JSON parser
 - NUnit tests 
 - To be built for a Windows platform
 
 ## Development guidance
 
-- Keep changes compatible with .NET 8.
+- Keep changes compatible with .NET 10.
 - There should be only one namespace per project, and it should match the project name.
 - No private functions allowed. methods should be public to allow unit tests to be written.
 - set up functions to use dependency injection to allow for easy testing.
