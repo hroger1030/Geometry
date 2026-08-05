@@ -21,9 +21,6 @@ This repository contains a .NET solution for experimenting with a geometry libra
 - Prefer small, focused updates to the genetic logic and parser code.
 - When changing behavior in the console app, keep the existing JSON parsing flow intact unless there is a specific reason to restructure it.
 - If you add new features, update this file to reflect the new workflow.
-
-## Non-negotiables
-
 - Don't upgrade any nuget package version without asking first. You can point out out of date packages to the user.
 - Don't do write anything to git. You can read all you want, but no writes or commits.
 - when refactoring existing code, do not remove comments. They can be updated if needed, but not removed.
