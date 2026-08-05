@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 18
-VisualStudioVersion = 18.8.12023.21 stable
+VisualStudioVersion = 18.8.12023.21
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeometryTests", "GeometryTests\GeometryTests.csproj", "{E8C534EA-4C92-48E1-9ACA-E08E0345ECB1}"
 EndProject
@@ -9,6 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Geometry", "GeometryLib\Geo
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Notes", "Notes", "{6CA31B35-3BF0-4AED-AEB6-4F496958F150}"
 	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
 		CLAUDE.md = CLAUDE.md
 		LICENSE.txt = LICENSE.txt
 		README.md = README.md

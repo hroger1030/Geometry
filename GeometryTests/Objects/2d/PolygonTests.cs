@@ -1,7 +1,7 @@
 ﻿/*
 The MIT License (MIT)
 
-Copyright (c) 2007 Roger Hill
+Copyright (c) 2017 Roger Hill
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files 
 (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, 
@@ -27,6 +27,7 @@ namespace GeometryTests
     public class PolygonTests
     {
         [Test]
+        [Category("Polygon")]
         public void Polygon_AreaPerimeterAndContainment_Pass()
         {
             var polygon = new Polygon(new List<Point2>
@@ -45,6 +46,7 @@ namespace GeometryTests
         }
 
         [Test]
+        [Category("Polygon")]
         public void Polygon_OperatorTranslation_Pass()
         {
             var polygon = new Polygon(new List<Point2>
@@ -62,6 +64,7 @@ namespace GeometryTests
         }
 
         [Test]
+        [Category("Polygon")]
         public void Polygon_ScalingOperators_Pass()
         {
             var polygon = new Polygon(new List<Point2>
@@ -81,6 +84,7 @@ namespace GeometryTests
         }
 
         [Test]
+        [Category("Polygon")]
         public void Polygon_ScalingOperatorDivideByZero_Fail()
         {
             var polygon = new Polygon(new List<Point2>
@@ -94,6 +98,7 @@ namespace GeometryTests
         }
 
         [Test]
+        [Category("Polygon")]
         public void Polygon_NullConstructor_Fail()
         {
             Assert.Throws<ArgumentNullException>((Action)(() => new Polygon(null)));

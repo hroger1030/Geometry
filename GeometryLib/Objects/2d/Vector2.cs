@@ -1,7 +1,7 @@
 /*
 The MIT License (MIT)
 
-Copyright (c) 2007 Roger Hill
+Copyright (c) 2017 Roger Hill
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files 
 (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, 
@@ -15,8 +15,6 @@ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVE
 FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-
-using System;
 
 namespace Geometry
 {
@@ -108,6 +106,13 @@ namespace Geometry
         public float VectorToRotation()
         {
             return MathF.Atan2(Y, X);
+        }
+
+        // 2D cross product has no perpendicular axis to return a vector along, so the result is the
+        // scalar Z component that a 3D cross product would produce; sign indicates winding/orientation.
+        public static float Cross(Vector2 v1, Vector2 v2)
+        {
+            return (v1.X * v2.Y) - (v1.Y * v2.X);
         }
 
         public float Length()

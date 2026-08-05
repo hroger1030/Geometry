@@ -1,7 +1,7 @@
 ﻿/*
 The MIT License (MIT)
 
-Copyright (c) 2007 Roger Hill
+Copyright (c) 2017 Roger Hill
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files 
 (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, 
@@ -197,8 +197,8 @@ namespace GeometryTests
         [Category("Rectangle")]
         public void Rectangle_ConstructorInvalidDimensions_Fail()
         {
-            Assert.Throws<ArgumentException>((Action)(() => new Rectangle(0, 0, 0f, 1f)));
-            Assert.Throws<ArgumentException>((Action)(() => new Rectangle(0, 0, 1f, 0f)));
+            Assert.Throws<ArgumentOutOfRangeException>((Action)(() => new Rectangle(0, 0, 0f, 1f)));
+            Assert.Throws<ArgumentOutOfRangeException>((Action)(() => new Rectangle(0, 0, 1f, 0f)));
         }
 
         [Test]

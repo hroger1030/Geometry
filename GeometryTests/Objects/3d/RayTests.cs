@@ -1,7 +1,7 @@
 ﻿/*
 The MIT License (MIT)
 
-Copyright (c) 2007 Roger Hill
+Copyright (c) 2017 Roger Hill
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files 
 (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, 
@@ -16,6 +16,7 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
+using System;
 using Geometry;
 using NUnit.Framework;
 
@@ -25,6 +26,7 @@ namespace GeometryTests
     public class RayTests
     {
         [Test]
+        [Category("Ray")]
         public void Ray_PointAtAndSphereIntersection_Pass()
         {
             var ray = new Ray(new Point3(0f, 0f, -5f), new Vector3(0f, 0f, 1f));
@@ -37,6 +39,7 @@ namespace GeometryTests
         }
 
         [Test]
+        [Category("Ray")]
         public void Ray_IntersectsAABB_ReturnsExpectedDistance()
         {
             var ray = new Ray(new Point3(0f, 0f, -5f), new Vector3(0f, 0f, 1f));
@@ -47,6 +50,7 @@ namespace GeometryTests
         }
 
         [Test]
+        [Category("Ray")]
         public void Ray_IntersectsCube_ReturnsExpectedDistance()
         {
             var ray = new Ray(new Point3(0f, 0f, -5f), new Vector3(0f, 0f, 1f));
@@ -57,6 +61,7 @@ namespace GeometryTests
         }
 
         [Test]
+        [Category("Ray")]
         public void Ray_IntersectsPlane_ReturnsExpectedDistance()
         {
             var ray = new Ray(new Point3(0f, 0f, -5f), new Vector3(0f, 0f, 1f));
@@ -64,6 +69,164 @@ namespace GeometryTests
 
             Assert.That(ray.Intersects(plane, out float distance), Is.True);
             Assert.That(distance, Is.EqualTo(5f).Within(Constants.FLOAT_ERROR_MARGIN));
+        }
+
+        [Test]
+        [Category("Ray")]
+        public void Ray_Constructor_NullArguments_Fail()
+        {
+            Assert.Throws<ArgumentNullException>((Action)(() => new Ray(null, new Vector3(0f, 0f, 1f))));
+            Assert.Throws<ArgumentNullException>((Action)(() => new Ray(new Point3(0f, 0f, 0f), null)));
+        }
+
+        [Test]
+        [Category("Ray")]
+        public void Ray_Constructor_ZeroDirection_Fail()
+        {
+            Assert.Throws<ArgumentException>((Action)(() => new Ray(new Point3(0f, 0f, 0f), new Vector3(0f, 0f, 0f))));
+        }
+
+        [Test]
+        [Category("Ray")]
+        public void Ray_ZeroPlane_Pass()
+        {
+            Assert.That(Ray.ZeroPlane.Normal, Is.EqualTo(new Vector3(0f, 0f, 1f)));
+        }
+
+        [Test]
+        [Category("Ray")]
+        public void Ray_IntersectsSphere_Miss_Fail()
+        {
+            var ray = new Ray(new Point3(0f, 0f, -5f), new Vector3(0f, 0f, 1f));
+            var farSphere = new Sphere(new Point3(10f, 10f, 10f), 1f);
+
+            Assert.That(ray.Intersects(farSphere, out float distance), Is.False);
+            Assert.That(distance, Is.EqualTo(0f));
+        }
+
+        [Test]
+        [Category("Ray")]
+        public void Ray_IntersectsSphere_OriginInsideSphere_Pass()
+        {
+            var ray = new Ray(new Point3(0f, 0f, 0f), new Vector3(0f, 0f, 1f));
+            var enclosing = new Sphere(new Point3(0f, 0f, 0f), 5f);
+
+            Assert.That(ray.Intersects(enclosing, out float distance), Is.True);
+            Assert.That(distance, Is.EqualTo(5f).Within(Constants.FLOAT_ERROR_MARGIN));
+        }
+
+        [Test]
+        [Category("Ray")]
+        public void Ray_IntersectsSphere_BehindRay_Fail()
+        {
+            var ray = new Ray(new Point3(0f, 0f, 0f), new Vector3(0f, 0f, 1f));
+            var behind = new Sphere(new Point3(0f, 0f, -5f), 1f);
+
+            Assert.That(ray.Intersects(behind, out float distance), Is.False);
+            Assert.That(distance, Is.EqualTo(0f));
+        }
+
+        [Test]
+        [Category("Ray")]
+        public void Ray_IntersectsAABB_Miss_Fail()
+        {
+            var ray = new Ray(new Point3(0f, 0f, -5f), new Vector3(0f, 0f, 1f));
+            var farBox = new AABB(new Point3(10f, 10f, 10f), new Point3(11f, 11f, 11f));
+
+            Assert.That(ray.Intersects(farBox, out float distance), Is.False);
+        }
+
+        [Test]
+        [Category("Ray")]
+        public void Ray_IntersectsAABB_ParallelAxes_Pass()
+        {
+            var ray = new Ray(new Point3(0f, 0f, 0f), new Vector3(1f, 0f, 0f));
+            var box = new AABB(new Point3(-1f, -1f, -1f), new Point3(1f, 1f, 1f));
+
+            Assert.That(ray.Intersects(box, out float distance), Is.True);
+        }
+
+        [Test]
+        [Category("Ray")]
+        public void Ray_IntersectsAABB_ParallelAxesOutsideSlab_Fail()
+        {
+            var ray = new Ray(new Point3(0f, 5f, 0f), new Vector3(1f, 0f, 0f));
+            var box = new AABB(new Point3(-1f, -1f, -1f), new Point3(1f, 1f, 1f));
+
+            Assert.That(ray.Intersects(box, out float distance), Is.False);
+        }
+
+        [Test]
+        [Category("Ray")]
+        public void Ray_IntersectsCube_NullArgument_Fail()
+        {
+            var ray = new Ray(new Point3(0f, 0f, -5f), new Vector3(0f, 0f, 1f));
+            Assert.Throws<ArgumentNullException>((Action)(() => ray.Intersects((Cube)null, out float distance)));
+        }
+
+        [Test]
+        [Category("Ray")]
+        public void Ray_IntersectsSphere_NullArgument_Fail()
+        {
+            var ray = new Ray(new Point3(0f, 0f, -5f), new Vector3(0f, 0f, 1f));
+            Assert.Throws<ArgumentNullException>((Action)(() => ray.Intersects((Sphere)null, out float distance)));
+        }
+
+        [Test]
+        [Category("Ray")]
+        public void Ray_IntersectsAABB_NullArgument_Fail()
+        {
+            var ray = new Ray(new Point3(0f, 0f, -5f), new Vector3(0f, 0f, 1f));
+            Assert.Throws<ArgumentNullException>((Action)(() => ray.Intersects((AABB)null, out float distance)));
+        }
+
+        [Test]
+        [Category("Ray")]
+        public void Ray_IntersectsPlane_NullArgument_Fail()
+        {
+            var ray = new Ray(new Point3(0f, 0f, -5f), new Vector3(0f, 0f, 1f));
+            Assert.Throws<ArgumentNullException>((Action)(() => ray.Intersects((Plane3)null, out float distance)));
+        }
+
+        [Test]
+        [Category("Ray")]
+        public void Ray_IntersectsPlane_Parallel_Fail()
+        {
+            var ray = new Ray(new Point3(0f, 0f, -5f), new Vector3(1f, 0f, 0f));
+            var plane = new Plane3(new Vector3(0f, 0f, 1f), 0f);
+
+            Assert.That(ray.Intersects(plane, out float distance), Is.False);
+            Assert.That(distance, Is.EqualTo(0f));
+        }
+
+        [Test]
+        [Category("Ray")]
+        public void Ray_IntersectsPlane_BehindRay_Fail()
+        {
+            var ray = new Ray(new Point3(0f, 0f, -5f), new Vector3(0f, 0f, -1f));
+            var plane = new Plane3(new Vector3(0f, 0f, 1f), 0f);
+
+            Assert.That(ray.Intersects(plane, out float distance), Is.False);
+        }
+
+        [Test]
+        [Category("Ray")]
+        public void Ray_Equals_Pass()
+        {
+            var ray = new Ray(new Point3(0f, 0f, 0f), new Vector3(0f, 0f, 1f));
+            var same = new Ray(new Point3(0f, 0f, 0f), new Vector3(0f, 0f, 1f));
+            var different = new Ray(new Point3(1f, 0f, 0f), new Vector3(0f, 0f, 1f));
+
+            Assert.That(ray.Equals(ray), Is.True);
+            Assert.That(ray.Equals(same), Is.True);
+            Assert.That(ray.Equals((Ray)null), Is.False);
+            Assert.That(ray.Equals(different), Is.False);
+
+            Assert.That(ray.Equals((object)same), Is.True);
+            Assert.That(ray.Equals((object)null), Is.False);
+            Assert.That(ray.Equals((object)"not a ray"), Is.False);
+
+            Assert.That(ray.GetHashCode(), Is.EqualTo(same.GetHashCode()));
         }
     }
 }

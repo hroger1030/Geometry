@@ -1,7 +1,7 @@
 ﻿/*
 The MIT License (MIT)
 
-Copyright (c) 2007 Roger Hill
+Copyright (c) 2017 Roger Hill
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files 
 (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, 
@@ -63,6 +63,17 @@ namespace Geometry
             }
         }
 
+        public float Width => X2 - X1;
+
+        public float Height => Y2 - Y1;
+
+        public float Depth => Z2 - Z1;
+
+        /// <summary>
+        /// A <see cref="Point3"/> located in the center of this <see cref="Cube"/>.
+        /// </summary>
+        public Point3 Center => new((X1 + X2) / 2, (Y1 + Y2) / 2, (Z1 + Z2) / 2);
+
         public float Volume => MathF.Abs(X2 - X1) * MathF.Abs(Y2 - Y1) * MathF.Abs(Z2 - Z1);
 
         public float SurfaceArea
@@ -89,6 +100,18 @@ namespace Geometry
             Z2 = z2;
         }
 
+        public Cube(Cube cube)
+        {
+            ArgumentNullException.ThrowIfNull(cube);
+
+            X1 = cube.X1;
+            Y1 = cube.Y1;
+            Z1 = cube.Z1;
+            X2 = cube.X2;
+            Y2 = cube.Y2;
+            Z2 = cube.Z2;
+        }
+
         public bool Contains(Point3 p)
         {
             return Contains(p.X, p.Y, p.Z);
@@ -96,7 +119,7 @@ namespace Geometry
 
         public bool Contains(float x, float y, float z)
         {
-            return (X1 < x && X2 > x) && (Y1 < y && Y2 > y) && (Z1 < z && Z2 > z);
+            return (X1 <= x && X2 >= x) && (Y1 <= y && Y2 >= y) && (Z1 <= z && Z2 >= z);
         }
 
         public bool Contains(Cube c)
@@ -120,6 +143,36 @@ namespace Geometry
             return X1 <= c.X2 && X2 >= c.X1 &&
                    Y1 <= c.Y2 && Y2 >= c.Y1 &&
                    Z1 <= c.Z2 && Z2 >= c.Z1;
+        }
+
+        /// <summary>
+        /// Gets whether or not a specified <see cref="Sphere"/> intersects with this <see cref="Cube"/>.
+        /// </summary>
+        public bool Intersects(Sphere s)
+        {
+            ArgumentNullException.ThrowIfNull(s);
+
+            float closestX = Math.Clamp(s.Center.X, X1, X2);
+            float closestY = Math.Clamp(s.Center.Y, Y1, Y2);
+            float closestZ = Math.Clamp(s.Center.Z, Z1, Z2);
+
+            float distanceX = s.Center.X - closestX;
+            float distanceY = s.Center.Y - closestY;
+            float distanceZ = s.Center.Z - closestZ;
+
+            return (distanceX * distanceX + distanceY * distanceY + distanceZ * distanceZ) <= (s.Radius * s.Radius);
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="Cube"/> that is scaled up from the X1,Y1,Z1 corner. Calling this with a scale of
+        /// 2 will double the width, height and depth while keeping X1,Y1,Z1 fixed.
+        /// </summary>
+        public static Cube operator *(Cube c, float scale)
+        {
+            ArgumentNullException.ThrowIfNull(c);
+            ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(scale, 0f);
+
+            return new Cube(c.X1, c.Y1, c.Z1, c.X1 + (c.Width * scale), c.Y1 + (c.Height * scale), c.Z1 + (c.Depth * scale));
         }
 
         public override bool Equals(object obj)

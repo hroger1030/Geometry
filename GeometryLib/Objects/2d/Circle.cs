@@ -1,7 +1,7 @@
 /*
 The MIT License (MIT)
 
-Copyright (c) 2007 Roger Hill
+Copyright (c) 2017 Roger Hill
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files 
 (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, 
@@ -16,7 +16,6 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-using System;
 using System.Diagnostics;
 
 namespace Geometry
@@ -56,8 +55,7 @@ namespace Geometry
 
         public Circle(float x, float y, float radius)
         {
-            if (radius <= 0f)
-                throw new ArgumentOutOfRangeException(nameof(radius), "Radius must be greater than zero.");
+            ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(radius, 0f);
 
             Center = new Point2(x, y);
             Radius = radius;
@@ -122,16 +120,14 @@ namespace Geometry
 
         public static Circle operator *(Circle c, float scale)
         {
-            if (scale <= 0f)
-                throw new ArgumentOutOfRangeException(nameof(scale), "Scale must be greater than zero.");
+            ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(scale, 0f);
 
             return new Circle(c.Center.X, c.Center.Y, c.Radius * scale);
         }
 
         public static Circle operator /(Circle c, float scale)
         {
-            if (scale <= 0f)
-                throw new ArgumentOutOfRangeException(nameof(scale), "Scale must be greater than zero.");
+            ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(scale, 0f);
 
             return new Circle(c.Center.X, c.Center.Y, c.Radius / scale);
         }

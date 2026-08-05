@@ -1,7 +1,7 @@
 ﻿/*
 The MIT License (MIT)
 
-Copyright (c) 2007 Roger Hill
+Copyright (c) 2017 Roger Hill
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files 
 (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, 
@@ -26,6 +26,7 @@ namespace GeometryTests
     public class PlaneTests
     {
         [Test]
+        [Category("Plane3")]
         public void Plane_DistanceAndNormalize_Pass()
         {
             var plane = new Plane3(new Vector3(0f, 0f, 1f), -5f);
@@ -37,6 +38,7 @@ namespace GeometryTests
         }
 
         [Test]
+        [Category("Plane3")]
         public void Plane_ZeroNormal_Fail()
         {
             Assert.Throws<ArgumentException>((Action)(() => new Plane3(new Vector3(0f, 0f, 0f), 0f)));

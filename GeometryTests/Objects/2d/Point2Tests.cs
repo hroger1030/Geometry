@@ -1,7 +1,7 @@
 ﻿/*
 The MIT License (MIT)
 
-Copyright (c) 2007 Roger Hill
+Copyright (c) 2017 Roger Hill
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files 
 (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, 
@@ -78,11 +78,58 @@ namespace GeometryTests
         {
             var p1 = new Point2(1f, 2f);
             var p2 = new Point2(1f, 2f);
+            var different = new Point2(9f, 2f);
 
+            Assert.That(p1.Equals(p1), Is.True);
             Assert.That(p1.Equals(p2), Is.True);
+            Assert.That(p1.Equals((Point2)null), Is.False);
+            Assert.That(p1.Equals(different), Is.False);
+
+            Assert.That(p1.Equals((object)p1), Is.True);
             Assert.That(p1.Equals((object)p2), Is.True);
             Assert.That(p1.GetHashCode(), Is.EqualTo(p2.GetHashCode()));
             Assert.That(p1.Equals((object)null), Is.False);
+            Assert.That(p1.Equals((object)"not a point"), Is.False);
+        }
+
+        [Test]
+        [Category("Point2")]
+        public void TestConstructorOverloads_Pass()
+        {
+            var fromDouble = new Point2(1.0, 2.0);
+            Assert.That(fromDouble.X, Is.EqualTo(1f));
+            Assert.That(fromDouble.Y, Is.EqualTo(2f));
+
+            var fromInt = new Point2(3, 4);
+            Assert.That(fromInt.X, Is.EqualTo(3f));
+            Assert.That(fromInt.Y, Is.EqualTo(4f));
+
+            var fromShort = new Point2((short)5, (short)6);
+            Assert.That(fromShort.X, Is.EqualTo(5f));
+            Assert.That(fromShort.Y, Is.EqualTo(6f));
+        }
+
+        [Test]
+        [Category("Point2")]
+        public void TestStaticFields_Pass()
+        {
+            Assert.That(Point2.ZERO.X, Is.EqualTo(0f));
+            Assert.That(Point2.ZERO.Y, Is.EqualTo(0f));
+            Assert.That(Point2.ONE.X, Is.EqualTo(1f));
+            Assert.That(Point2.ONE.Y, Is.EqualTo(1f));
+        }
+
+        [Test]
+        [Category("Point2")]
+        public void TestSubtractOperator_Pass()
+        {
+            var p1 = new Point2(3f, 4f);
+            var v1 = new Vector2(1f, 2f);
+
+            var p2 = p1 - v1;
+
+            Assert.That(p2.X, Is.EqualTo(2f));
+            Assert.That(p2.Y, Is.EqualTo(2f));
         }
     }
 }

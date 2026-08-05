@@ -1,7 +1,7 @@
 ﻿/*
 The MIT License (MIT)
 
-Copyright (c) 2007 Roger Hill
+Copyright (c) 2017 Roger Hill
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files 
 (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, 
@@ -26,6 +26,7 @@ namespace GeometryTests
     public class SphereTests
     {
         [Test]
+        [Category("Sphere")]
         public void Sphere_AreaVolumeContainsIntersects_Pass()
         {
             var sphere = new Sphere(new Point3(0f, 0f, 0f), 2f);
@@ -40,10 +41,76 @@ namespace GeometryTests
         }
 
         [Test]
+        [Category("Sphere")]
         public void Sphere_InvalidRadius_Fail()
         {
             Assert.Throws<ArgumentOutOfRangeException>((Action)(() => new Sphere(new Point3(0f, 0f, 0f), 0f)));
             Assert.Throws<ArgumentOutOfRangeException>((Action)(() => new Sphere(new Point3(0f, 0f, 0f), -1f)));
+        }
+
+        [Test]
+        [Category("Sphere")]
+        public void Sphere_NullCenter_Fail()
+        {
+            Assert.Throws<ArgumentNullException>((Action)(() => new Sphere(null, 1f)));
+        }
+
+        [Test]
+        [Category("Sphere")]
+        public void Sphere_NullArguments_Fail()
+        {
+            var sphere = new Sphere(new Point3(0f, 0f, 0f), 1f);
+
+            Assert.Throws<ArgumentNullException>((Action)(() => sphere.Contains((Point3)null)));
+            Assert.Throws<ArgumentNullException>((Action)(() => sphere.Intersects((Sphere)null)));
+            Assert.Throws<ArgumentNullException>((Action)(() => sphere.Intersects((Cube)null)));
+            Assert.Throws<ArgumentNullException>((Action)(() => sphere.Contains((Cube)null)));
+        }
+
+        [Test]
+        [Category("Sphere")]
+        public void Sphere_IntersectsCube_Pass()
+        {
+            var sphere = new Sphere(new Point3(0f, 0f, 0f), 1f);
+            var overlapping = new Cube(0.5f, 0.5f, 0.5f, 2f, 2f, 2f);
+            var separate = new Cube(10f, 10f, 10f, 11f, 11f, 11f);
+
+            Assert.That(sphere.Intersects(overlapping), Is.True);
+            Assert.That(sphere.Intersects(separate), Is.False);
+        }
+
+        [Test]
+        [Category("Sphere")]
+        public void Sphere_ContainsCube_Pass()
+        {
+            var sphere = new Sphere(new Point3(0f, 0f, 0f), 10f);
+            var containedCube = new Cube(-1f, -1f, -1f, 1f, 1f, 1f);
+            var farCube = new Cube(50f, 50f, 50f, 51f, 51f, 51f);
+
+            Assert.That(sphere.Contains(containedCube), Is.True);
+            Assert.That(sphere.Contains(farCube), Is.False);
+        }
+
+        [Test]
+        [Category("Sphere")]
+        public void Sphere_Equals_Pass()
+        {
+            var sphere = new Sphere(new Point3(1f, 1f, 1f), 2f);
+            var same = new Sphere(new Point3(1f, 1f, 1f), 2f);
+            var differentCenter = new Sphere(new Point3(2f, 1f, 1f), 2f);
+            var differentRadius = new Sphere(new Point3(1f, 1f, 1f), 3f);
+
+            Assert.That(sphere.Equals(sphere), Is.True);
+            Assert.That(sphere.Equals(same), Is.True);
+            Assert.That(sphere.Equals((Sphere)null), Is.False);
+            Assert.That(sphere.Equals(differentCenter), Is.False);
+            Assert.That(sphere.Equals(differentRadius), Is.False);
+
+            Assert.That(sphere.Equals((object)same), Is.True);
+            Assert.That(sphere.Equals((object)null), Is.False);
+            Assert.That(sphere.Equals((object)"not a sphere"), Is.False);
+
+            Assert.That(sphere.GetHashCode(), Is.EqualTo(same.GetHashCode()));
         }
     }
 }

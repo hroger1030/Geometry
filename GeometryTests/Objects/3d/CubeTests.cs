@@ -1,7 +1,7 @@
 ﻿/*
 The MIT License (MIT)
 
-Copyright (c) 2007 Roger Hill
+Copyright (c) 2017 Roger Hill
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files 
 (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, 
@@ -26,6 +26,7 @@ namespace GeometryTests
     public class CubeTests
     {
         [Test]
+        [Category("Cube")]
         public void Cube_ContainsAndIntersects_Pass()
         {
             var inner = new Cube(new Point3(0f, 0f, 0f), new Point3(1f, 1f, 1f));
@@ -37,10 +38,142 @@ namespace GeometryTests
         }
 
         [Test]
+        [Category("Cube")]
         public void Cube_Indexer_OutOfRange_Fail()
         {
             var cube = new Cube(0f, 0f, 0f, 1f, 1f, 1f);
             Assert.Throws<IndexOutOfRangeException>((Action)(() => { var point = cube[8]; }));
+        }
+
+        [Test]
+        [Category("Cube")]
+        public void Cube_Indexer_Corners_Pass()
+        {
+            var cube = new Cube(0f, 0f, 0f, 1f, 2f, 3f);
+
+            Assert.That(cube[0], Is.EqualTo(new Point3(0f, 0f, 0f)));
+            Assert.That(cube[1], Is.EqualTo(new Point3(0f, 2f, 0f)));
+            Assert.That(cube[2], Is.EqualTo(new Point3(1f, 0f, 0f)));
+            Assert.That(cube[3], Is.EqualTo(new Point3(1f, 2f, 0f)));
+            Assert.That(cube[4], Is.EqualTo(new Point3(0f, 0f, 3f)));
+            Assert.That(cube[5], Is.EqualTo(new Point3(0f, 2f, 3f)));
+            Assert.That(cube[6], Is.EqualTo(new Point3(1f, 0f, 3f)));
+            Assert.That(cube[7], Is.EqualTo(new Point3(1f, 2f, 3f)));
+        }
+
+        [Test]
+        [Category("Cube")]
+        public void Cube_Dimensions_Pass()
+        {
+            var cube = new Cube(0f, 0f, 0f, 2f, 3f, 4f);
+
+            Assert.That(cube.Width, Is.EqualTo(2f));
+            Assert.That(cube.Height, Is.EqualTo(3f));
+            Assert.That(cube.Depth, Is.EqualTo(4f));
+            Assert.That(cube.Center, Is.EqualTo(new Point3(1f, 1.5f, 2f)));
+            Assert.That(cube.Volume, Is.EqualTo(24f));
+            Assert.That(cube.SurfaceArea, Is.EqualTo(2f * (2f * 3f) + 2f * (3f * 4f) + 2f * (4f * 2f)));
+        }
+
+        [Test]
+        [Category("Cube")]
+        public void Cube_UnitCube_Pass()
+        {
+            Assert.That(Cube.UnitCube.Width, Is.EqualTo(1f));
+            Assert.That(Cube.UnitCube.Height, Is.EqualTo(1f));
+            Assert.That(Cube.UnitCube.Depth, Is.EqualTo(1f));
+        }
+
+        [Test]
+        [Category("Cube")]
+        public void Cube_CopyConstructor_Pass()
+        {
+            var original = new Cube(0f, 0f, 0f, 1f, 1f, 1f);
+            var copy = new Cube(original);
+
+            Assert.That(copy.Equals(original), Is.True);
+            Assert.Throws<ArgumentNullException>((Action)(() => new Cube((Cube)null)));
+        }
+
+        [Test]
+        [Category("Cube")]
+        public void Cube_ContainsPointAndCoordinates_Pass()
+        {
+            var cube = new Cube(0f, 0f, 0f, 1f, 1f, 1f);
+
+            Assert.That(cube.Contains(new Point3(0.5f, 0.5f, 0.5f)), Is.True);
+            Assert.That(cube.Contains(2f, 0.5f, 0.5f), Is.False);
+            Assert.That(cube.Contains(0.5f, 0.5f, 0.5f), Is.True);
+        }
+
+        [Test]
+        [Category("Cube")]
+        public void Cube_ContainsNullCube_Fail()
+        {
+            var cube = new Cube(0f, 0f, 0f, 1f, 1f, 1f);
+            Assert.Throws<ArgumentNullException>((Action)(() => cube.Contains((Cube)null)));
+        }
+
+        [Test]
+        [Category("Cube")]
+        public void Cube_IntersectsNullCube_Fail()
+        {
+            var cube = new Cube(0f, 0f, 0f, 1f, 1f, 1f);
+            Assert.Throws<ArgumentNullException>((Action)(() => cube.Intersects((Cube)null)));
+        }
+
+        [Test]
+        [Category("Cube")]
+        public void Cube_IntersectsSphere_Pass()
+        {
+            var cube = new Cube(0f, 0f, 0f, 1f, 1f, 1f);
+            var overlapping = new Sphere(new Point3(1.5f, 0.5f, 0.5f), 1f);
+            var separate = new Sphere(new Point3(10f, 10f, 10f), 1f);
+
+            Assert.That(cube.Intersects(overlapping), Is.True);
+            Assert.That(cube.Intersects(separate), Is.False);
+            Assert.Throws<ArgumentNullException>((Action)(() => cube.Intersects((Sphere)null)));
+        }
+
+        [Test]
+        [Category("Cube")]
+        public void Cube_ScaleOperator_Pass()
+        {
+            var cube = new Cube(0f, 0f, 0f, 1f, 1f, 1f);
+            var scaled = cube * 2f;
+
+            Assert.That(scaled.Width, Is.EqualTo(2f));
+            Assert.That(scaled.Height, Is.EqualTo(2f));
+            Assert.That(scaled.Depth, Is.EqualTo(2f));
+        }
+
+        [Test]
+        [Category("Cube")]
+        public void Cube_ScaleOperator_NullOrNegative_Fail()
+        {
+            var cube = new Cube(0f, 0f, 0f, 1f, 1f, 1f);
+
+            Assert.Throws<ArgumentNullException>((Action)(() => { var result = (Cube)null * 2f; }));
+            Assert.Throws<ArgumentOutOfRangeException>((Action)(() => { var result = cube * -1f; }));
+        }
+
+        [Test]
+        [Category("Cube")]
+        public void Cube_Equals_Pass()
+        {
+            var cube = new Cube(0f, 0f, 0f, 1f, 1f, 1f);
+            var same = new Cube(0f, 0f, 0f, 1f, 1f, 1f);
+            var different = new Cube(0f, 0f, 0f, 2f, 1f, 1f);
+
+            Assert.That(cube.Equals(cube), Is.True);
+            Assert.That(cube.Equals(same), Is.True);
+            Assert.That(cube.Equals(different), Is.False);
+
+            Assert.That(cube.Equals((object)same), Is.True);
+            Assert.That(cube.Equals((object)null), Is.False);
+            Assert.That(cube.Equals((object)"not a cube"), Is.False);
+
+            Assert.That(cube.GetHashCode(), Is.EqualTo(same.GetHashCode()));
         }
     }
 }

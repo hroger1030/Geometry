@@ -1,7 +1,7 @@
 ﻿/*
 The MIT License (MIT)
 
-Copyright (c) 2007 Roger Hill
+Copyright (c) 2017 Roger Hill
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files 
 (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, 
@@ -26,6 +26,7 @@ namespace GeometryTests
     public class TriangleTests
     {
         [Test]
+        [Category("Triangle2")]
         public void Triangle_AreaPerimeterType_Pass()
         {
             var equilateral = new Triangle2(new Point2(0f, 0f), new Point2(1f, 0f), new Point2(0.5f, MathF.Sqrt(3) / 2f));
@@ -42,6 +43,7 @@ namespace GeometryTests
         }
 
         [Test]
+        [Category("Triangle2")]
         public void Triangle_NullPoint_Fail()
         {
             Assert.Throws<ArgumentNullException>((Action)(() => new Triangle2(null, new Point2(1f, 0f), new Point2(0f, 1f))));
@@ -50,6 +52,7 @@ namespace GeometryTests
         }
 
         [Test]
+        [Category("Triangle2")]
         public void Triangle_DuplicatePoint_Fail()
         {
             var p = new Point2(0f, 0f);

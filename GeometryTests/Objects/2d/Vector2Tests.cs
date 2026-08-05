@@ -1,7 +1,7 @@
 ﻿/*
 The MIT License (MIT)
 
-Copyright (c) 2007 Roger Hill
+Copyright (c) 2017 Roger Hill
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files 
 (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, 
@@ -73,6 +73,101 @@ namespace GeometryTests
             var v = new Vector2(1f, 1f);
 
             Assert.Throws<DivideByZeroException>((Action)(() => { var result = v / 0f; }));
+        }
+
+        [Test]
+        [Category("Vector2")]
+        public void TestConstructors_Pass()
+        {
+            var defaultVector = new Vector2();
+            Assert.That(defaultVector.X, Is.EqualTo(0f));
+            Assert.That(defaultVector.Y, Is.EqualTo(0f));
+
+            var copy = new Vector2(new Vector2(2f, 3f));
+            Assert.That(copy.X, Is.EqualTo(2f));
+            Assert.That(copy.Y, Is.EqualTo(3f));
+
+            var fromPoint = new Vector2(new Point2(4f, 5f));
+            Assert.That(fromPoint.X, Is.EqualTo(4f));
+            Assert.That(fromPoint.Y, Is.EqualTo(5f));
+
+            var fromRotation = new Vector2(0f);
+            Assert.That(fromRotation.X, Is.EqualTo(1f).Within(Constants.FLOAT_ERROR_MARGIN));
+            Assert.That(fromRotation.Y, Is.EqualTo(0f).Within(Constants.FLOAT_ERROR_MARGIN));
+        }
+
+        [Test]
+        [Category("Vector2")]
+        public void TestStaticFields_Pass()
+        {
+            Assert.That(Vector2.Zero.X, Is.EqualTo(0f));
+            Assert.That(Vector2.Zero.Y, Is.EqualTo(0f));
+            Assert.That(Vector2.One.X, Is.EqualTo(1f));
+            Assert.That(Vector2.One.Y, Is.EqualTo(1f));
+        }
+
+        [Test]
+        [Category("Vector2")]
+        public void TestCross_Pass()
+        {
+            var right = new Vector2(1f, 0f);
+            var up = new Vector2(0f, 1f);
+
+            Assert.That(Vector2.Cross(right, up), Is.EqualTo(1f));
+            Assert.That(Vector2.Cross(up, right), Is.EqualTo(-1f));
+            Assert.That(Vector2.Cross(right, right), Is.EqualTo(0f));
+        }
+
+        [Test]
+        [Category("Vector2")]
+        public void TestOperatorOverloads_NullArguments_Fail()
+        {
+            var v = new Vector2(1f, 1f);
+
+            Assert.Throws<ArgumentNullException>((Action)(() => { var result = (Vector2)null + v; }));
+            Assert.Throws<ArgumentNullException>((Action)(() => { var result = v + (Vector2)null; }));
+            Assert.Throws<ArgumentNullException>((Action)(() => { var result = (Vector2)null - v; }));
+            Assert.Throws<ArgumentNullException>((Action)(() => { var result = v - (Vector2)null; }));
+            Assert.Throws<ArgumentNullException>((Action)(() => { var result = (Vector2)null * 2f; }));
+            Assert.Throws<ArgumentNullException>((Action)(() => { var result = (Vector2)null / 2f; }));
+        }
+
+        [Test]
+        [Category("Vector2")]
+        public void TestNormalize_InPlace_Pass()
+        {
+            var v = new Vector2(3f, 4f);
+            v.Normalize();
+
+            Assert.That(v.Length(), Is.EqualTo(1f).Within(Constants.FLOAT_ERROR_MARGIN));
+        }
+
+        [Test]
+        [Category("Vector2")]
+        public void TestVectorToRotation_Pass()
+        {
+            var v = new Vector2(1f, 0f);
+            Assert.That(v.VectorToRotation(), Is.EqualTo(0f).Within(Constants.FLOAT_ERROR_MARGIN));
+        }
+
+        [Test]
+        [Category("Vector2")]
+        public void TestEquals_Pass()
+        {
+            var v = new Vector2(1f, 2f);
+            var same = new Vector2(1f, 2f);
+            var different = new Vector2(3f, 2f);
+
+            Assert.That(v.Equals(v), Is.True);
+            Assert.That(v.Equals(same), Is.True);
+            Assert.That(v.Equals((Vector2)null), Is.False);
+            Assert.That(v.Equals(different), Is.False);
+
+            Assert.That(v.Equals((object)same), Is.True);
+            Assert.That(v.Equals((object)null), Is.False);
+            Assert.That(v.Equals((object)"not a vector"), Is.False);
+
+            Assert.That(v.GetHashCode(), Is.EqualTo(same.GetHashCode()));
         }
     }
 }

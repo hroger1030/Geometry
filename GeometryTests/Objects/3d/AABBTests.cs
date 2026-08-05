@@ -1,7 +1,7 @@
 ﻿/*
 The MIT License (MIT)
 
-Copyright (c) 2007 Roger Hill
+Copyright (c) 2017 Roger Hill
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files 
 (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, 
@@ -26,6 +26,7 @@ namespace GeometryTests
     public class AABBTests
     {
         [Test]
+        [Category("AABB")]
         public void AABB_ContainsAndIntersects_Pass()
         {
             var box = new AABB(new Point3(0f, 0f, 0f), new Point3(2f, 2f, 2f));
@@ -38,6 +39,7 @@ namespace GeometryTests
         }
 
         [Test]
+        [Category("AABB")]
         public void AABB_InvalidBounds_Fail()
         {
             Assert.Throws<ArgumentException>((Action)(() => new AABB(new Point3(1f, 1f, 1f), new Point3(0f, 0f, 0f))));

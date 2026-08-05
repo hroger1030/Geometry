@@ -1,7 +1,7 @@
 ﻿/*
 The MIT License (MIT)
 
-Copyright (c) 2007 Roger Hill
+Copyright (c) 2017 Roger Hill
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files 
 (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, 
@@ -26,6 +26,7 @@ namespace GeometryTests
     public class VectorNTests
     {
         [Test]
+        [Category("VectorN")]
         public void VectorN_OperatorAndEquality_Pass()
         {
             var v1 = new VectorN(3);
@@ -53,6 +54,7 @@ namespace GeometryTests
         }
 
         [Test]
+        [Category("VectorN")]
         public void VectorN_DifferentOrder_Fail()
         {
             var v1 = new VectorN(2);

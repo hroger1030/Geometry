@@ -1,7 +1,7 @@
 ﻿/*
 The MIT License (MIT)
 
-Copyright (c) 2007 Roger Hill
+Copyright (c) 2017 Roger Hill
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files 
 (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, 
@@ -25,6 +25,7 @@ namespace GeometryTests
     public class Point3Tests
     {
         [Test]
+        [Category("Point3")]
         public void Point3_OperatorsAndEquality_Pass()
         {
             var p1 = new Point3(1f, 2f, 3f);
@@ -36,6 +37,64 @@ namespace GeometryTests
             Assert.That(p4.Equals(p2), Is.True);
             Assert.That(p2.Equals((object)p2), Is.True);
             Assert.That(p2.Equals((object)null), Is.False);
+        }
+
+        [Test]
+        [Category("Point3")]
+        public void Point3_DefaultConstructor_Pass()
+        {
+            var p = new Point3();
+
+            Assert.That(p.X, Is.EqualTo(0f));
+            Assert.That(p.Y, Is.EqualTo(0f));
+            Assert.That(p.Z, Is.EqualTo(0f));
+        }
+
+        [Test]
+        [Category("Point3")]
+        public void Point3_CopyConstructor_Pass()
+        {
+            var original = new Point3(1f, 2f, 3f);
+            var copy = new Point3(original);
+
+            Assert.That(copy.Equals(original), Is.True);
+        }
+
+        [Test]
+        [Category("Point3")]
+        public void Point3_FromPoint2Constructor_Pass()
+        {
+            var point2 = new Point2(1f, 2f);
+            var point3 = new Point3(point2);
+
+            Assert.That(point3.X, Is.EqualTo(1f));
+            Assert.That(point3.Y, Is.EqualTo(2f));
+            Assert.That(point3.Z, Is.EqualTo(0f));
+        }
+
+        [Test]
+        [Category("Point3")]
+        public void Point3_Equals_Pass()
+        {
+            var p = new Point3(1f, 2f, 3f);
+            var same = new Point3(1f, 2f, 3f);
+            var differentX = new Point3(9f, 2f, 3f);
+            var differentY = new Point3(1f, 9f, 3f);
+            var differentZ = new Point3(1f, 2f, 9f);
+
+            Assert.That(p.Equals(p), Is.True);
+            Assert.That(p.Equals(same), Is.True);
+            Assert.That(p.Equals((Point3)null), Is.False);
+            Assert.That(p.Equals(differentX), Is.False);
+            Assert.That(p.Equals(differentY), Is.False);
+            Assert.That(p.Equals(differentZ), Is.False);
+
+            Assert.That(p.Equals((object)p), Is.True);
+            Assert.That(p.Equals((object)same), Is.True);
+            Assert.That(p.Equals((object)null), Is.False);
+            Assert.That(p.Equals((object)"not a point"), Is.False);
+
+            Assert.That(p.GetHashCode(), Is.EqualTo(same.GetHashCode()));
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿/*
 The MIT License (MIT)
 
-Copyright (c) 2007 Roger Hill
+Copyright (c) 2017 Roger Hill
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files 
 (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, 
@@ -25,6 +25,7 @@ namespace GeometryTests
     public class Line2Tests
     {
         [Test]
+        [Category("Line2")]
         public void Line2_LengthAndEquality_Pass()
         {
             var line = new Line2(new Point2(0f, 0f), new Point2(3f, 4f));
@@ -32,6 +33,36 @@ namespace GeometryTests
             Assert.That(line.Length, Is.EqualTo(5f));
             Assert.That(line.Equals(new Line2(new Point2(0f, 0f), new Point2(3f, 4f))), Is.True);
             Assert.That(line.ToString().Contains("Point1"), Is.True);
+        }
+
+        [Test]
+        [Category("Line2")]
+        public void Line2_FloatConstructor_Pass()
+        {
+            var line = new Line2(0f, 0f, 3f, 4f);
+
+            Assert.That(line.Point1, Is.EqualTo(new Point2(0f, 0f)));
+            Assert.That(line.Point2, Is.EqualTo(new Point2(3f, 4f)));
+            Assert.That(line.Length, Is.EqualTo(5f));
+        }
+
+        [Test]
+        [Category("Line2")]
+        public void Line2_Equals_Pass()
+        {
+            var line = new Line2(new Point2(0f, 0f), new Point2(3f, 4f));
+            var same = new Line2(new Point2(0f, 0f), new Point2(3f, 4f));
+            var different = new Line2(new Point2(0f, 0f), new Point2(1f, 1f));
+
+            Assert.That(line.Equals(line), Is.True);
+            Assert.That(line.Equals(same), Is.True);
+            Assert.That(line.Equals(different), Is.False);
+
+            Assert.That(line.Equals((object)same), Is.True);
+            Assert.That(line.Equals((object)null), Is.False);
+            Assert.That(line.Equals((object)"not a line"), Is.False);
+
+            Assert.That(line.GetHashCode(), Is.EqualTo(same.GetHashCode()));
         }
     }
 }
