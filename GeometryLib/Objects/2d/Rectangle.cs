@@ -152,14 +152,6 @@ namespace Geometry
                                          this.Top <= r.Bottom;   // rect1's top side is above or touching rect2's bottom side
 
             return intersectingOrTangent;
-
-            //var topLeft = Contains(r.TopLeftCorner);
-            //var topRight = Contains(r.TopRightCorner);
-            //var bottomLeft = Contains(r.BottomLeftCorner);
-            //var bottomRight = Contains(r.BottomRightCorner);
-
-            //// return true if any one of these are true
-            //return topLeft || topRight || bottomLeft || bottomRight;
         }
 
         /// <summary>
