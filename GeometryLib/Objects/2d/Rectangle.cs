@@ -20,6 +20,8 @@ namespace Geometry
 {
     public readonly struct Rectangle : I2d, IEquatable<Rectangle>
     {
+        public readonly static Rectangle UnitRectangle = new(0f, 0f, 1f, 1f);
+
         /// <summary>
         /// Returns the x coordinate of the left edge of this <see cref="Rectangle"/>.
         /// </summary>
@@ -187,7 +189,6 @@ namespace Geometry
         /// </summary>
         public static Rectangle operator +(Rectangle r, Vector2 v)
         {
-
             return new Rectangle()
             {
                 Left = r.X + v.X,
@@ -199,7 +200,6 @@ namespace Geometry
 
         public static Rectangle operator -(Rectangle r, Vector2 v)
         {
-
             return new Rectangle()
             {
                 Left = r.X - v.X,
