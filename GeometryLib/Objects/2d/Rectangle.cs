@@ -16,11 +16,8 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-using System.Diagnostics;
-
 namespace Geometry
 {
-    [DebuggerDisplay("({Top},{Left},{Bottom},{Right})")]
     public class Rectangle : I2d, IEquatable<Rectangle>
     {
         /// <summary>

@@ -16,11 +16,8 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-using System.Diagnostics;
-
 namespace Geometry
 {
-    [DebuggerDisplay("({Center.X},{Center.Y},{Radius}r)")]
     public class Circle : I2d, IEquatable<Circle>
     {
         public static readonly Circle UnitCircle = new();

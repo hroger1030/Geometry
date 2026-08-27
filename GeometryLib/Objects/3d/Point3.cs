@@ -16,11 +16,8 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-using System.Diagnostics;
-
 namespace Geometry
 {
-    [DebuggerDisplay("({X},{Y},{Z})")]
     public class Point3 : IEquatable<Point3>
     {
         public float X { get; set; }
