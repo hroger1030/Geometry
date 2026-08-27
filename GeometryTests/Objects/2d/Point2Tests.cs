@@ -53,27 +53,6 @@ namespace GeometryTests
 
         [Test]
         [Category("Point2")]
-        public void TestDistance_NullInput_Fail()
-        {
-            var p1 = new Point2(0f, 0f);
-
-            Assert.Throws<ArgumentNullException>((Action)(() => p1.DistanceTo(null)));
-            Assert.Throws<ArgumentNullException>((Action)(() => Point2.DistanceTo(null, new Point2())));
-            Assert.Throws<ArgumentNullException>((Action)(() => Point2.DistanceTo(new Point2(), null)));
-        }
-
-        [Test]
-        [Category("Point2")]
-        public void TestOperatorOverloads_NullVector_Fail()
-        {
-            var p1 = new Point2(0f, 1f);
-
-            Assert.Throws<ArgumentNullException>((Action)(() => { var p2 = p1 + (Vector2)null; }));
-            Assert.Throws<ArgumentNullException>((Action)(() => { var p2 = p1 - (Vector2)null; }));
-        }
-
-        [Test]
-        [Category("Point2")]
         public void TestEqualsAndHashCode()
         {
             var p1 = new Point2(1f, 2f);
@@ -82,7 +61,6 @@ namespace GeometryTests
 
             Assert.That(p1.Equals(p1), Is.True);
             Assert.That(p1.Equals(p2), Is.True);
-            Assert.That(p1.Equals((Point2)null), Is.False);
             Assert.That(p1.Equals(different), Is.False);
 
             Assert.That(p1.Equals((object)p1), Is.True);

@@ -18,7 +18,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 namespace Geometry
 {
-    public class Triangle2 : I2d, IEquatable<Triangle2>
+    public readonly struct Triangle2 : I2d, IEquatable<Triangle2>
     {
         public enum Type
         {
@@ -27,11 +27,11 @@ namespace Geometry
             Scalene,
         }
 
-        public Point2 A { get; set; }
+        public Point2 A { get; init; }
 
-        public Point2 B { get; set; }
+        public Point2 B { get; init; }
 
-        public Point2 C { get; set; }
+        public Point2 C { get; init; }
 
         public float Perimeter
         {
@@ -96,9 +96,6 @@ namespace Geometry
 
         public Triangle2(Point2 p1, Point2 p2, Point2 p3)
         {
-            ArgumentNullException.ThrowIfNull(p1);
-            ArgumentNullException.ThrowIfNull(p2);
-            ArgumentNullException.ThrowIfNull(p3);
 
             if (p1 == p2 || p2 == p3 || p3 == p1)
                 throw new ArgumentException("All points must be distinct points with separate locations");
@@ -110,18 +107,17 @@ namespace Geometry
 
         public override bool Equals(object obj)
         {
-            if (obj is null) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (GetType() != obj.GetType()) return false;
-
-            var new_obj = (Triangle2)obj;
-            return Equals(new_obj);
+            return obj is Triangle2 other && Equals(other);
         }
 
         public bool Equals(Triangle2 t)
         {
-            return (A.Equals(t.A) && B.Equals(t.B) && C.Equals(t.C));
+            return A.Equals(t.A) && B.Equals(t.B) && C.Equals(t.C);
         }
+
+        public static bool operator ==(Triangle2 a, Triangle2 b) => a.Equals(b);
+
+        public static bool operator !=(Triangle2 a, Triangle2 b) => !a.Equals(b);
 
         public override int GetHashCode()
         {

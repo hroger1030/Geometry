@@ -18,18 +18,16 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 namespace Geometry
 {
-    public class Capsule : IEquatable<Capsule>
+    public readonly struct Capsule : IEquatable<Capsule>
     {
-        public Point3 PointA { get; set; }
+        public Point3 PointA { get; init; }
 
-        public Point3 PointB { get; set; }
+        public Point3 PointB { get; init; }
 
-        public float Radius { get; set; }
+        public float Radius { get; init; }
 
         public Capsule(Point3 pointA, Point3 pointB, float radius)
         {
-            ArgumentNullException.ThrowIfNull(pointA);
-            ArgumentNullException.ThrowIfNull(pointB);
             ArgumentOutOfRangeException.ThrowIfNegative(radius);
 
             PointA = pointA;
@@ -39,7 +37,6 @@ namespace Geometry
 
         public bool Contains(Point3 point)
         {
-            ArgumentNullException.ThrowIfNull(point);
 
             var ab = new Vector3(PointA, PointB);
             if (ab.Length() == 0f)
@@ -61,7 +58,6 @@ namespace Geometry
 
         public bool Intersects(Sphere sphere)
         {
-            ArgumentNullException.ThrowIfNull(sphere);
 
             var ab = new Vector3(PointA, PointB);
 
@@ -82,20 +78,19 @@ namespace Geometry
 
         public override bool Equals(object obj)
         {
-            if (obj is null) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (GetType() != obj.GetType()) return false;
-
-            return Equals((Capsule)obj);
+            return obj is Capsule other && Equals(other);
         }
 
         public bool Equals(Capsule other)
         {
-            if (other is null) return false;
             return PointA.Equals(other.PointA)
                 && PointB.Equals(other.PointB)
                 && Radius == other.Radius;
         }
+
+        public static bool operator ==(Capsule a, Capsule b) => a.Equals(b);
+
+        public static bool operator !=(Capsule a, Capsule b) => !a.Equals(b);
 
         public override int GetHashCode()
         {

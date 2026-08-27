@@ -18,13 +18,13 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 namespace Geometry
 {
-    public class Circle : I2d, IEquatable<Circle>
+    public readonly struct Circle : I2d, IEquatable<Circle>
     {
         public static readonly Circle UnitCircle = new();
 
-        public Point2 Center { get; set; }
+        public Point2 Center { get; init; }
 
-        public float Radius { get; set; }
+        public float Radius { get; init; }
 
         public float Left => Center.X - Radius;
 
@@ -76,8 +76,6 @@ namespace Geometry
 
         public bool Intersects(Rectangle r)
         {
-            ArgumentNullException.ThrowIfNull(r);
-
             float closestX = Math.Clamp(Center.X, r.Left, r.Right);
             float closestY = Math.Clamp(Center.Y, r.Top, r.Bottom);
 
@@ -101,6 +99,15 @@ namespace Geometry
             if (!Contains(r.TopRightCorner)) return false;
             if (!Contains(r.BottomRightCorner)) return false;
             if (!Contains(r.BottomLeftCorner)) return false;
+
+            return true;
+        }
+
+        public bool Contains(Triangle2 t)
+        {
+            if (!Contains(t.A)) return false;
+            if (!Contains(t.B)) return false;
+            if (!Contains(t.C)) return false;
 
             return true;
         }
@@ -131,18 +138,17 @@ namespace Geometry
 
         public override bool Equals(object obj)
         {
-            if (obj is null) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (GetType() != obj.GetType()) return false;
-
-            var new_obj = (Circle)obj;
-            return Equals(new_obj);
+            return obj is Circle other && Equals(other);
         }
 
         public bool Equals(Circle c)
         {
-            return (Center.Equals(c.Center) && Radius.Equals(c.Radius));
+            return Center.Equals(c.Center) && Radius.Equals(c.Radius);
         }
+
+        public static bool operator ==(Circle a, Circle b) => a.Equals(b);
+
+        public static bool operator !=(Circle a, Circle b) => !a.Equals(b);
 
         public override int GetHashCode()
         {

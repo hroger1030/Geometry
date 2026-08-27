@@ -84,7 +84,6 @@ namespace GeometryTests
 
             Assert.That(p.Equals(p), Is.True);
             Assert.That(p.Equals(same), Is.True);
-            Assert.That(p.Equals((Point3)null), Is.False);
             Assert.That(p.Equals(differentX), Is.False);
             Assert.That(p.Equals(differentY), Is.False);
             Assert.That(p.Equals(differentZ), Is.False);

@@ -5,6 +5,11 @@ high-precision math. It favors speed and simplicity over precision — values ar
 is **not** a good fit for serious scientific or CAD-grade math. It is, however, fast, easy to use, and easy
 to extend with new shapes.
 
+Every shape is an **immutable value type** (`readonly struct`) except `Polygon` and `VectorN`, which are
+backed by collections. Passing a shape around, reading its `.Center`, or building one per frame costs no
+heap allocation and produces no garbage. See
+[Value types and reference types](#value-types-and-reference-types).
+
 Note that some objects are assumed to be grid-aligned (e.g. `Rectangle`, `Cube`, `AABB`). Making these
 fully general (arbitrary rotation, etc.) is potential future work.
 
@@ -18,6 +23,7 @@ soon as possible.
 - [Requirements](#requirements)
 - [Building and testing](#building-and-testing)
 - [Objects](#objects)
+- [Value types and reference types](#value-types-and-reference-types)
 - [Code examples](#code-examples)
   - [2D: points, vectors, and circles](#2d-points-vectors-and-circles)
   - [3D: bounding volumes](#3d-bounding-volumes)
@@ -92,6 +98,9 @@ dotnet test
 
 ## Objects
 
+Every shape is an immutable value type (`readonly struct`) except where marked _(class)_; see
+[Value types and reference types](#value-types-and-reference-types).
+
 ### 2D (`GeometryLib/Objects/2d`)
 
 - Point2
@@ -101,7 +110,7 @@ dotnet test
 - Ellipse
 - Triangle2
 - Rectangle
-- Polygon
+- Polygon _(class)_
 
 ### 3D (`GeometryLib/Objects/3d`)
 
@@ -117,13 +126,41 @@ dotnet test
 
 ### Higher dimension (`GeometryLib/Objects/Nd`)
 
-- VectorN
+- VectorN _(class)_
 
 ### Interfaces (`GeometryLib/Interfaces`)
 
 - I1d
 - I2d
 - I3d
+
+## Value types and reference types
+
+**Every shape is a `readonly struct`** — an immutable value type — with two exceptions:
+
+- `Polygon` — backed by a `List<Point2>`.
+- `VectorN` — backed by a `float[]`.
+
+Those two stay `class`. Everything else (`Point2`, `Point3`, `Vector2`, `Vector3`, `Line2`, `Circle`,
+`Ellipse`, `Triangle2`, `Triangle3`, `Rectangle`, `Ray`, `Plane3`, `Sphere`, `Cube`, `AABB`, `Capsule`)
+lives on the stack (or inline in its container), is copied by value, is never `null`, and allocates no
+heap memory.
+
+What this means when you use them:
+
+- **No `null`.** A `Point2` parameter can't be null, so there are no null-argument checks or
+  `ArgumentNullException`s for the struct types. `default(Point2)` is the origin `(0, 0)`.
+- **Immutable.** Properties are `{ get; init; }` — set them in a constructor or an object initializer,
+  not afterwards. `rect.Left = 5;` will not compile. Produce a changed copy instead
+  (`rect with { Left = 5 }`, or the `+` / `*` operators).
+- **Value equality.** `==`, `!=`, `.Equals`, and `.GetHashCode` compare field values, so two separately
+  constructed shapes with the same numbers are equal and hash the same. They work correctly as
+  dictionary keys and in hash sets.
+- **Cheap to pass and build.** Reading `rect.Center` or an item's bounding box every frame, or in a
+  tight collision loop, does not allocate. This is the main reason for the conversion.
+
+`Vector2`/`Vector3` used to have an in-place `Normalize()` that mutated the instance; it now returns a
+unit-length copy (`v = v.Normalize();`). `Polygon` still has its mutating helpers.
 
 ## Code examples
 

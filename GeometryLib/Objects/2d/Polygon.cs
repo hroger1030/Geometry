@@ -20,14 +20,7 @@ namespace Geometry
 {
     public class Polygon : I2d, IEquatable<Polygon>
     {
-        public static readonly Polygon UnitPolygon = new(new List<Point2>() 
-        { 
-            new Point2(0, 0), 
-            new Point2(0, 1), 
-            new Point2(0, 1) 
-        });
-
-        public List<Point2> Vertices { get; set; } = new List<Point2>();
+        public List<Point2> Vertices { get; set; } = new();
 
         public float Area
         {
@@ -81,7 +74,6 @@ namespace Geometry
 
         public bool Contains(Point2 point)
         {
-            ArgumentNullException.ThrowIfNull(point);
 
             if (Sides < 3)
                 return false;
@@ -108,7 +100,6 @@ namespace Geometry
         public static Polygon operator +(Polygon p, Vector2 v)
         {
             ArgumentNullException.ThrowIfNull(p);
-            ArgumentNullException.ThrowIfNull(v);
 
             var output = new Polygon();
 
@@ -121,7 +112,6 @@ namespace Geometry
         public static Polygon operator -(Polygon p, Vector2 v)
         {
             ArgumentNullException.ThrowIfNull(p);
-            ArgumentNullException.ThrowIfNull(v);
 
             var output = new Polygon();
 

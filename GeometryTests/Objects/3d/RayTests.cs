@@ -73,14 +73,6 @@ namespace GeometryTests
 
         [Test]
         [Category("Ray")]
-        public void Ray_Constructor_NullArguments_Fail()
-        {
-            Assert.Throws<ArgumentNullException>((Action)(() => new Ray(null, new Vector3(0f, 0f, 1f))));
-            Assert.Throws<ArgumentNullException>((Action)(() => new Ray(new Point3(0f, 0f, 0f), null)));
-        }
-
-        [Test]
-        [Category("Ray")]
         public void Ray_Constructor_ZeroDirection_Fail()
         {
             Assert.Throws<ArgumentException>((Action)(() => new Ray(new Point3(0f, 0f, 0f), new Vector3(0f, 0f, 0f))));
@@ -158,38 +150,6 @@ namespace GeometryTests
 
         [Test]
         [Category("Ray")]
-        public void Ray_IntersectsCube_NullArgument_Fail()
-        {
-            var ray = new Ray(new Point3(0f, 0f, -5f), new Vector3(0f, 0f, 1f));
-            Assert.Throws<ArgumentNullException>((Action)(() => ray.Intersects((Cube)null, out float distance)));
-        }
-
-        [Test]
-        [Category("Ray")]
-        public void Ray_IntersectsSphere_NullArgument_Fail()
-        {
-            var ray = new Ray(new Point3(0f, 0f, -5f), new Vector3(0f, 0f, 1f));
-            Assert.Throws<ArgumentNullException>((Action)(() => ray.Intersects((Sphere)null, out float distance)));
-        }
-
-        [Test]
-        [Category("Ray")]
-        public void Ray_IntersectsAABB_NullArgument_Fail()
-        {
-            var ray = new Ray(new Point3(0f, 0f, -5f), new Vector3(0f, 0f, 1f));
-            Assert.Throws<ArgumentNullException>((Action)(() => ray.Intersects((AABB)null, out float distance)));
-        }
-
-        [Test]
-        [Category("Ray")]
-        public void Ray_IntersectsPlane_NullArgument_Fail()
-        {
-            var ray = new Ray(new Point3(0f, 0f, -5f), new Vector3(0f, 0f, 1f));
-            Assert.Throws<ArgumentNullException>((Action)(() => ray.Intersects((Plane3)null, out float distance)));
-        }
-
-        [Test]
-        [Category("Ray")]
         public void Ray_IntersectsPlane_Parallel_Fail()
         {
             var ray = new Ray(new Point3(0f, 0f, -5f), new Vector3(1f, 0f, 0f));
@@ -219,7 +179,6 @@ namespace GeometryTests
 
             Assert.That(ray.Equals(ray), Is.True);
             Assert.That(ray.Equals(same), Is.True);
-            Assert.That(ray.Equals((Ray)null), Is.False);
             Assert.That(ray.Equals(different), Is.False);
 
             Assert.That(ray.Equals((object)same), Is.True);

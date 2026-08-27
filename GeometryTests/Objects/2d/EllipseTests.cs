@@ -47,21 +47,6 @@ namespace GeometryTests
 
         [Test]
         [Category("Ellipse")]
-        public void Ellipse_NullCenter_Fail()
-        {
-            Assert.Throws<ArgumentNullException>((Action)(() => new Ellipse(null, 1f, 1f)));
-        }
-
-        [Test]
-        [Category("Ellipse")]
-        public void Ellipse_ContainsNullPoint_Fail()
-        {
-            var ellipse = new Ellipse(new Point2(0f, 0f), 2f, 1f);
-            Assert.Throws<ArgumentNullException>((Action)(() => ellipse.Contains(null)));
-        }
-
-        [Test]
-        [Category("Ellipse")]
         public void Ellipse_Perimeter_Pass()
         {
             var circleAsEllipse = new Ellipse(new Point2(0f, 0f), 2f, 2f);
@@ -83,7 +68,6 @@ namespace GeometryTests
 
             Assert.That(ellipse.Equals(ellipse), Is.True);
             Assert.That(ellipse.Equals(same), Is.True);
-            Assert.That(ellipse.Equals((Ellipse)null), Is.False);
             Assert.That(ellipse.Equals(differentCenter), Is.False);
             Assert.That(ellipse.Equals(differentRadiusX), Is.False);
             Assert.That(ellipse.Equals(differentRadiusY), Is.False);

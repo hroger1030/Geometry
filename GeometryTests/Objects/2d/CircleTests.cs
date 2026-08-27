@@ -247,16 +247,6 @@ namespace GeometryTests
         [Test]
         [Category("Circle")]
         [Category("Geometry")]
-        public void Circle_IntersectsRectangle_Null_Fail()
-        {
-            var c = new Circle(0f, 0f, 1f);
-
-            Assert.Throws<ArgumentNullException>((Action)(() => c.Intersects((Rectangle)null)));
-        }
-
-        [Test]
-        [Category("Circle")]
-        [Category("Geometry")]
         public void Circle_ContainsRectangle_Pass()
         {
             var c = new Circle(0f, 0f, 5f);
@@ -274,6 +264,30 @@ namespace GeometryTests
             var r = new Rectangle(0f, 0f, 2f, 2f);
 
             Assert.That(c.Contains(r), Is.False);
+        }
+
+        [Test]
+        [Category("Circle")]
+        [Category("Geometry")]
+        public void Circle_ContainsTriangle_Pass()
+        {
+            var c = new Circle(0f, 0f, 5f);
+            var t = new Triangle2(new Point2(-1f, -1f), new Point2(1f, -1f), new Point2(0f, 2f));
+
+            Assert.That(c.Contains(t), Is.True);
+        }
+
+        [Test]
+        [Category("Circle")]
+        [Category("Geometry")]
+        public void Circle_ContainsTriangle_ThirdVertexOutside_Fail()
+        {
+            // regression: Contains(Triangle2) once tested vertex B twice and never C,
+            // so a triangle whose only outside point is C was wrongly reported contained.
+            var c = new Circle(0f, 0f, 2f);
+            var t = new Triangle2(new Point2(0f, 0f), new Point2(1f, 0f), new Point2(0f, 10f));
+
+            Assert.That(c.Contains(t), Is.False);
         }
 
         [Test]

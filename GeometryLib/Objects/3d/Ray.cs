@@ -18,19 +18,16 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 namespace Geometry
 {
-    public class Ray : IEquatable<Ray>
+    public readonly struct Ray : IEquatable<Ray>
     {
         public static readonly Plane3 ZeroPlane = new(new Vector3(0f, 0f, 1f), 0f);
 
-        public Point3 Origin { get; set; }
+        public Point3 Origin { get; init; }
 
-        public Vector3 Direction { get; set; }
+        public Vector3 Direction { get; init; }
 
         public Ray(Point3 origin, Vector3 direction)
         {
-            ArgumentNullException.ThrowIfNull(origin);
-            ArgumentNullException.ThrowIfNull(direction);
-
             if (direction.Length() == 0f)
                 throw new ArgumentException("Direction vector must be non-zero.", nameof(direction));
 
@@ -48,7 +45,6 @@ namespace Geometry
 
         public bool Intersects(Sphere sphere, out float distance)
         {
-            ArgumentNullException.ThrowIfNull(sphere);
 
             float dx = Origin.X - sphere.Center.X;
             float dy = Origin.Y - sphere.Center.Y;
@@ -86,8 +82,6 @@ namespace Geometry
 
         public bool Intersects(AABB aabb, out float distance)
         {
-            ArgumentNullException.ThrowIfNull(aabb);
-
             float tMin = float.NegativeInfinity;
             float tMax = float.PositiveInfinity;
 
@@ -187,7 +181,6 @@ namespace Geometry
 
         public bool Intersects(Cube cube, out float distance)
         {
-            ArgumentNullException.ThrowIfNull(cube);
 
             return Intersects(
                 new AABB(new Point3(cube.X1, cube.Y1, cube.Z1), new Point3(cube.X2, cube.Y2, cube.Z2)),
@@ -196,8 +189,6 @@ namespace Geometry
 
         public bool Intersects(Plane3 plane, out float distance)
         {
-            ArgumentNullException.ThrowIfNull(plane);
-
             float denominator = plane.Normal.X * Direction.X + plane.Normal.Y * Direction.Y + plane.Normal.Z * Direction.Z;
 
             if (MathF.Abs(denominator) < Constants.FLOAT_ERROR_MARGIN)
@@ -214,18 +205,17 @@ namespace Geometry
 
         public override bool Equals(object obj)
         {
-            if (obj is null) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (GetType() != obj.GetType()) return false;
-
-            return Equals((Ray)obj);
+            return obj is Ray other && Equals(other);
         }
 
         public bool Equals(Ray other)
         {
-            if (other is null) return false;
             return Origin.Equals(other.Origin) && Direction.Equals(other.Direction);
         }
+
+        public static bool operator ==(Ray a, Ray b) => a.Equals(b);
+
+        public static bool operator !=(Ray a, Ray b) => !a.Equals(b);
 
         public override int GetHashCode()
         {

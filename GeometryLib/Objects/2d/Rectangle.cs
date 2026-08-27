@@ -18,27 +18,27 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 namespace Geometry
 {
-    public class Rectangle : I2d, IEquatable<Rectangle>
+    public readonly struct Rectangle : I2d, IEquatable<Rectangle>
     {
         /// <summary>
         /// Returns the x coordinate of the left edge of this <see cref="Rectangle"/>.
         /// </summary>
-        public float Left { get; set; }
+        public float Left { get; init; }
 
         /// <summary>
         /// Returns the x coordinate of the right edge of this <see cref="Rectangle"/>.
         /// </summary>
-        public float Right { get; set; }
+        public float Right { get; init; }
 
         /// <summary>
         /// Returns the y coordinate of the top edge of this <see cref="Rectangle"/>.
         /// </summary>
-        public float Top { get; set; }
+        public float Top { get; init; }
 
         /// <summary>
         /// Returns the y coordinate of the bottom edge of this <see cref="Rectangle"/>.
         /// </summary>
-        public float Bottom { get; set; }
+        public float Bottom { get; init; }
 
         public float X => Left;
 
@@ -92,7 +92,6 @@ namespace Geometry
 
         public Rectangle(Point2 center, float width, float height)
         {
-            ArgumentNullException.ThrowIfNull(center);
             ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(width, 0f);
             ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(height, 0f);
 
@@ -159,17 +158,14 @@ namespace Geometry
         /// </summary>
         public bool Intersects(Circle c)
         {
-            // return true if circle center is in rectangle
-            if (Contains(c.Center))
-                return true;
+            // closest point on (or in) the rectangle to the circle centre
+            float closestX = Math.Clamp(c.Center.X, Left, Right);
+            float closestY = Math.Clamp(c.Center.Y, Top, Bottom);
 
-            var topLeft = c.Contains(TopLeftCorner);
-            var topRight = c.Contains(TopRightCorner);
-            var bottomLeft = c.Contains(BottomLeftCorner);
-            var bottomRight = c.Contains(BottomRightCorner);
+            float dx = c.Center.X - closestX;
+            float dy = c.Center.Y - closestY;
 
-            // return true if circle contains any corner
-            return topLeft || topRight || bottomLeft || bottomRight;
+            return (dx * dx + dy * dy) <= (c.Radius * c.Radius);
         }
 
         /// <summary>
@@ -191,8 +187,6 @@ namespace Geometry
         /// </summary>
         public static Rectangle operator +(Rectangle r, Vector2 v)
         {
-            ArgumentNullException.ThrowIfNull(r);
-            ArgumentNullException.ThrowIfNull(v);
 
             return new Rectangle()
             {
@@ -205,8 +199,6 @@ namespace Geometry
 
         public static Rectangle operator -(Rectangle r, Vector2 v)
         {
-            ArgumentNullException.ThrowIfNull(r);
-            ArgumentNullException.ThrowIfNull(v);
 
             return new Rectangle()
             {
@@ -219,8 +211,6 @@ namespace Geometry
 
         public static Rectangle operator *(Rectangle r, float scale)
         {
-            ArgumentNullException.ThrowIfNull(r);
-
             if (scale < 0)
                 throw new ArgumentException("Scale cannot be less than 0");
 
@@ -243,18 +233,17 @@ namespace Geometry
 
         public override bool Equals(object obj)
         {
-            if (obj is null) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (GetType() != obj.GetType()) return false;
-
-            var newObj = (Rectangle)obj;
-            return Equals(newObj);
+            return obj is Rectangle other && Equals(other);
         }
 
         public bool Equals(Rectangle r)
         {
             return Left == r.Left && Top == r.Top && Right == r.Right && Bottom == r.Bottom;
         }
+
+        public static bool operator ==(Rectangle a, Rectangle b) => a.Equals(b);
+
+        public static bool operator !=(Rectangle a, Rectangle b) => !a.Equals(b);
 
         public override int GetHashCode()
         {

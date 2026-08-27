@@ -63,19 +63,6 @@ namespace GeometryTests
 
         [Test]
         [Category("Triangle3")]
-        public void Triangle3_NullArguments_Fail()
-        {
-            var a = new Point3(0f, 0f, 0f);
-            var b = new Point3(1f, 0f, 0f);
-            var c = new Point3(0f, 1f, 0f);
-
-            Assert.Throws<ArgumentNullException>((Action)(() => new Triangle3(null, b, c)));
-            Assert.Throws<ArgumentNullException>((Action)(() => new Triangle3(a, null, c)));
-            Assert.Throws<ArgumentNullException>((Action)(() => new Triangle3(a, b, null)));
-        }
-
-        [Test]
-        [Category("Triangle3")]
         public void Triangle3_Equals_Pass()
         {
             var triangle = new Triangle3(new Point3(0f, 0f, 0f), new Point3(3f, 0f, 0f), new Point3(0f, 4f, 0f));
@@ -84,7 +71,6 @@ namespace GeometryTests
 
             Assert.That(triangle.Equals(triangle), Is.True);
             Assert.That(triangle.Equals(same), Is.True);
-            Assert.That(triangle.Equals((Triangle3)null), Is.False);
             Assert.That(triangle.Equals(different), Is.False);
 
             Assert.That(triangle.Equals((object)same), Is.True);

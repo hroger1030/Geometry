@@ -92,7 +92,6 @@ namespace GeometryTests
             var copy = new Cube(original);
 
             Assert.That(copy.Equals(original), Is.True);
-            Assert.Throws<ArgumentNullException>((Action)(() => new Cube((Cube)null)));
         }
 
         [Test]
@@ -108,22 +107,6 @@ namespace GeometryTests
 
         [Test]
         [Category("Cube")]
-        public void Cube_ContainsNullCube_Fail()
-        {
-            var cube = new Cube(0f, 0f, 0f, 1f, 1f, 1f);
-            Assert.Throws<ArgumentNullException>((Action)(() => cube.Contains((Cube)null)));
-        }
-
-        [Test]
-        [Category("Cube")]
-        public void Cube_IntersectsNullCube_Fail()
-        {
-            var cube = new Cube(0f, 0f, 0f, 1f, 1f, 1f);
-            Assert.Throws<ArgumentNullException>((Action)(() => cube.Intersects((Cube)null)));
-        }
-
-        [Test]
-        [Category("Cube")]
         public void Cube_IntersectsSphere_Pass()
         {
             var cube = new Cube(0f, 0f, 0f, 1f, 1f, 1f);
@@ -132,7 +115,6 @@ namespace GeometryTests
 
             Assert.That(cube.Intersects(overlapping), Is.True);
             Assert.That(cube.Intersects(separate), Is.False);
-            Assert.Throws<ArgumentNullException>((Action)(() => cube.Intersects((Sphere)null)));
         }
 
         [Test]
@@ -149,11 +131,10 @@ namespace GeometryTests
 
         [Test]
         [Category("Cube")]
-        public void Cube_ScaleOperator_NullOrNegative_Fail()
+        public void Cube_ScaleOperator_NegativeScale_Fail()
         {
             var cube = new Cube(0f, 0f, 0f, 1f, 1f, 1f);
 
-            Assert.Throws<ArgumentNullException>((Action)(() => { var result = (Cube)null * 2f; }));
             Assert.Throws<ArgumentOutOfRangeException>((Action)(() => { var result = cube * -1f; }));
         }
 

@@ -120,26 +120,12 @@ namespace GeometryTests
 
         [Test]
         [Category("Vector2")]
-        public void TestOperatorOverloads_NullArguments_Fail()
-        {
-            var v = new Vector2(1f, 1f);
-
-            Assert.Throws<ArgumentNullException>((Action)(() => { var result = (Vector2)null + v; }));
-            Assert.Throws<ArgumentNullException>((Action)(() => { var result = v + (Vector2)null; }));
-            Assert.Throws<ArgumentNullException>((Action)(() => { var result = (Vector2)null - v; }));
-            Assert.Throws<ArgumentNullException>((Action)(() => { var result = v - (Vector2)null; }));
-            Assert.Throws<ArgumentNullException>((Action)(() => { var result = (Vector2)null * 2f; }));
-            Assert.Throws<ArgumentNullException>((Action)(() => { var result = (Vector2)null / 2f; }));
-        }
-
-        [Test]
-        [Category("Vector2")]
-        public void TestNormalize_InPlace_Pass()
+        public void TestNormalize_Instance_Pass()
         {
             var v = new Vector2(3f, 4f);
-            v.Normalize();
+            var unit = v.Normalize();
 
-            Assert.That(v.Length(), Is.EqualTo(1f).Within(Constants.FLOAT_ERROR_MARGIN));
+            Assert.That(unit.Length(), Is.EqualTo(1f).Within(Constants.FLOAT_ERROR_MARGIN));
         }
 
         [Test]
@@ -160,7 +146,6 @@ namespace GeometryTests
 
             Assert.That(v.Equals(v), Is.True);
             Assert.That(v.Equals(same), Is.True);
-            Assert.That(v.Equals((Vector2)null), Is.False);
             Assert.That(v.Equals(different), Is.False);
 
             Assert.That(v.Equals((object)same), Is.True);

@@ -18,13 +18,13 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 namespace Geometry
 {
-    public class Ellipse : I2d, IEquatable<Ellipse>
+    public readonly struct Ellipse : I2d, IEquatable<Ellipse>
     {
-        public Point2 Center { get; set; }
+        public Point2 Center { get; init; }
 
-        public float RadiusX { get; set; }
+        public float RadiusX { get; init; }
 
-        public float RadiusY { get; set; }
+        public float RadiusY { get; init; }
 
         public float Area => MathF.PI * RadiusX * RadiusY;
 
@@ -42,7 +42,6 @@ namespace Geometry
 
         public Ellipse(Point2 center, float radiusX, float radiusY)
         {
-            ArgumentNullException.ThrowIfNull(center);
             ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(radiusX, 0f);
             ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(radiusY, 0f);
 
@@ -53,7 +52,6 @@ namespace Geometry
 
         public bool Contains(Point2 point)
         {
-            ArgumentNullException.ThrowIfNull(point);
 
             float dx = point.X - Center.X;
             float dy = point.Y - Center.Y;
@@ -63,18 +61,17 @@ namespace Geometry
 
         public override bool Equals(object obj)
         {
-            if (obj is null) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (GetType() != obj.GetType()) return false;
-
-            return Equals((Ellipse)obj);
+            return obj is Ellipse other && Equals(other);
         }
 
         public bool Equals(Ellipse other)
         {
-            if (other is null) return false;
             return Center.Equals(other.Center) && RadiusX.Equals(other.RadiusX) && RadiusY.Equals(other.RadiusY);
         }
+
+        public static bool operator ==(Ellipse a, Ellipse b) => a.Equals(b);
+
+        public static bool operator !=(Ellipse a, Ellipse b) => !a.Equals(b);
 
         public override int GetHashCode()
         {

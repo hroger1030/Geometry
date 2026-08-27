@@ -18,14 +18,14 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 namespace Geometry
 {
-    public class Vector2 : IEquatable<Vector2>
+    public readonly struct Vector2 : IEquatable<Vector2>
     {
         public static readonly Vector2 Zero = new(0, 0);
         public static readonly Vector2 One = new(1, 1);
 
-        public float X { get; set; }
+        public float X { get; init; }
 
-        public float Y { get; set; }
+        public float Y { get; init; }
 
         public Vector2() : this(0, 0) { }
 
@@ -43,30 +43,21 @@ namespace Geometry
 
         public static Vector2 operator +(Vector2 v1, Vector2 v2)
         {
-            ArgumentNullException.ThrowIfNull(v1);
-            ArgumentNullException.ThrowIfNull(v2);
-
             return new Vector2(v1.X + v2.X, v1.Y + v2.Y);
         }
 
         public static Vector2 operator -(Vector2 v1, Vector2 v2)
         {
-            ArgumentNullException.ThrowIfNull(v1);
-            ArgumentNullException.ThrowIfNull(v2);
-
             return new Vector2(v1.X - v2.X, v1.Y - v2.Y);
         }
 
         public static Vector2 operator *(Vector2 v, float scale)
         {
-            ArgumentNullException.ThrowIfNull(v);
-
             return new Vector2(v.X * scale, v.Y * scale);
         }
 
         public static Vector2 operator /(Vector2 v, float scale)
         {
-            ArgumentNullException.ThrowIfNull(v);
             if (scale == 0f) throw new DivideByZeroException(nameof(scale));
 
             return new Vector2(v.X / scale, v.Y / scale);
@@ -74,23 +65,13 @@ namespace Geometry
 
         public static Vector2 Normalize(Vector2 v)
         {
-            ArgumentNullException.ThrowIfNull(v);
-
-            var length = v.Length();
-
-            if (length == 0)
-                throw new DivideByZeroException("Cannot normalize a vector when it's magnitude is zero");
-
-            float inverse = 1f / length;
-
-            return new Vector2
-            (
-                v.X * inverse,
-                v.Y * inverse
-            );
+            return v.Normalize();
         }
 
-        public void Normalize()
+        /// <summary>
+        /// Returns a unit-length copy of this vector. Throws if the vector's magnitude is zero.
+        /// </summary>
+        public Vector2 Normalize()
         {
             float length = Length();
 
@@ -99,8 +80,7 @@ namespace Geometry
 
             float inverse = 1f / length;
 
-            X *= inverse;
-            Y *= inverse;
+            return new Vector2(X * inverse, Y * inverse);
         }
 
         public float VectorToRotation()
@@ -122,21 +102,17 @@ namespace Geometry
 
         public override bool Equals(object obj)
         {
-            if (obj is null) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (GetType() != obj.GetType()) return false;
-
-            var new_obj = (Vector2)obj;
-            return Equals(new_obj);
+            return obj is Vector2 other && Equals(other);
         }
 
         public bool Equals(Vector2 v)
         {
-            if (v == null)
-                return false;
-
-            return v.X == X && v.Y == Y;
+            return X == v.X && Y == v.Y;
         }
+
+        public static bool operator ==(Vector2 a, Vector2 b) => a.Equals(b);
+
+        public static bool operator !=(Vector2 a, Vector2 b) => !a.Equals(b);
 
         public override int GetHashCode()
         {

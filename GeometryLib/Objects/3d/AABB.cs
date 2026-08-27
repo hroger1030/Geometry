@@ -18,11 +18,11 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 namespace Geometry
 {
-    public class AABB : I3d, IEquatable<AABB>
+    public readonly struct AABB : I3d, IEquatable<AABB>
     {
-        public Point3 Min { get; set; }
+        public Point3 Min { get; init; }
 
-        public Point3 Max { get; set; }
+        public Point3 Max { get; init; }
 
         public float Volume => MathF.Abs(Max.X - Min.X) * MathF.Abs(Max.Y - Min.Y) * MathF.Abs(Max.Z - Min.Z);
 
@@ -39,8 +39,6 @@ namespace Geometry
 
         public AABB(Point3 min, Point3 max)
         {
-            ArgumentNullException.ThrowIfNull(min);
-            ArgumentNullException.ThrowIfNull(max);
 
             if (max.X < min.X || max.Y < min.Y || max.Z < min.Z)
                 throw new ArgumentException("Max must be greater than or equal to Min.");
@@ -51,7 +49,6 @@ namespace Geometry
 
         public bool Contains(Point3 point)
         {
-            ArgumentNullException.ThrowIfNull(point);
 
             return point.X >= Min.X && point.X <= Max.X &&
                    point.Y >= Min.Y && point.Y <= Max.Y &&
@@ -60,8 +57,6 @@ namespace Geometry
 
         public bool Intersects(AABB other)
         {
-            ArgumentNullException.ThrowIfNull(other);
-
             return Min.X <= other.Max.X && Max.X >= other.Min.X &&
                    Min.Y <= other.Max.Y && Max.Y >= other.Min.Y &&
                    Min.Z <= other.Max.Z && Max.Z >= other.Min.Z;
@@ -69,18 +64,17 @@ namespace Geometry
 
         public override bool Equals(object obj)
         {
-            if (obj is null) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (GetType() != obj.GetType()) return false;
-
-            return Equals((AABB)obj);
+            return obj is AABB other && Equals(other);
         }
 
         public bool Equals(AABB other)
         {
-            if (other is null) return false;
             return Min.Equals(other.Min) && Max.Equals(other.Max);
         }
+
+        public static bool operator ==(AABB a, AABB b) => a.Equals(b);
+
+        public static bool operator !=(AABB a, AABB b) => !a.Equals(b);
 
         public override int GetHashCode()
         {

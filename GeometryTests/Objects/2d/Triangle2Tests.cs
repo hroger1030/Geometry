@@ -44,15 +44,6 @@ namespace GeometryTests
 
         [Test]
         [Category("Triangle2")]
-        public void Triangle_NullPoint_Fail()
-        {
-            Assert.Throws<ArgumentNullException>((Action)(() => new Triangle2(null, new Point2(1f, 0f), new Point2(0f, 1f))));
-            Assert.Throws<ArgumentNullException>((Action)(() => new Triangle2(new Point2(0f, 0f), null, new Point2(0f, 1f))));
-            Assert.Throws<ArgumentNullException>((Action)(() => new Triangle2(new Point2(0f, 0f), new Point2(1f, 0f), null)));
-        }
-
-        [Test]
-        [Category("Triangle2")]
         public void Triangle_DuplicatePoint_Fail()
         {
             var p = new Point2(0f, 0f);

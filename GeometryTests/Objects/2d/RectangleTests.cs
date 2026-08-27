@@ -203,13 +203,6 @@ namespace GeometryTests
 
         [Test]
         [Category("Rectangle")]
-        public void Rectangle_ConstructorCenterNull_Fail()
-        {
-            Assert.Throws<ArgumentNullException>((Action)(() => new Rectangle((Point2)null, 1f, 1f)));
-        }
-
-        [Test]
-        [Category("Rectangle")]
         public void Rectangle_Union_Pass()
         {
             var r1 = new Rectangle(1, 1, 2, 2);
@@ -232,15 +225,6 @@ namespace GeometryTests
             Assert.That(r.Intersects(c), Is.False);
         }
 
-        [Test]
-        [Category("Rectangle")]
-        public void Rectangle_OperatorNullVector_Fail()
-        {
-            var r = new Rectangle(0, 0, 2, 2);
-
-            Assert.Throws<ArgumentNullException>((Action)(() => { var result = r + (Vector2)null; }));
-            Assert.Throws<ArgumentNullException>((Action)(() => { var result = r - (Vector2)null; }));
-        }
     }
 }
 

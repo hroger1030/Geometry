@@ -18,16 +18,16 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 namespace Geometry
 {
-    public class Vector3 : IEquatable<Vector3>
+    public readonly struct Vector3 : IEquatable<Vector3>
     {
         public static readonly Vector3 Zero = new(0, 0, 0);
         public static readonly Vector3 One = new(1, 1, 1);
 
-        public float X { get; set; }
+        public float X { get; init; }
 
-        public float Y { get; set; }
+        public float Y { get; init; }
 
-        public float Z { get; set; }
+        public float Z { get; init; }
 
         public Vector3() : this(0, 0, 0) { }
 
@@ -107,18 +107,17 @@ namespace Geometry
 
         public override bool Equals(object obj)
         {
-            if (obj is null) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (GetType() != obj.GetType()) return false;
-
-            var v = (Vector3)obj;
-            return Equals(v);
+            return obj is Vector3 other && Equals(other);
         }
 
         public bool Equals(Vector3 v)
         {
-            return v.X == X && v.Y == Y && v.Z == Z;
+            return X == v.X && Y == v.Y && Z == v.Z;
         }
+
+        public static bool operator ==(Vector3 a, Vector3 b) => a.Equals(b);
+
+        public static bool operator !=(Vector3 a, Vector3 b) => !a.Equals(b);
 
         public override int GetHashCode()
         {

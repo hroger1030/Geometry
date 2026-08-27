@@ -18,11 +18,11 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 namespace Geometry
 {
-    public class Line2 : I1d, IEquatable<Line2>
+    public readonly struct Line2 : I1d, IEquatable<Line2>
     {
-        public Point2 Point1 { get; set; }
+        public Point2 Point1 { get; init; }
 
-        public Point2 Point2 { get; set; }
+        public Point2 Point2 { get; init; }
 
         public float Length => Point1.DistanceTo(Point2);
 
@@ -36,18 +36,17 @@ namespace Geometry
 
         public override bool Equals(object obj)
         {
-            if (obj is null) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (GetType() != obj.GetType()) return false;
-
-            var new_obj = (Line2)obj;
-            return Equals(new_obj);
+            return obj is Line2 other && Equals(other);
         }
 
         public bool Equals(Line2 l)
         {
             return Point1.Equals(l.Point1) && Point2.Equals(l.Point2);
         }
+
+        public static bool operator ==(Line2 a, Line2 b) => a.Equals(b);
+
+        public static bool operator !=(Line2 a, Line2 b) => !a.Equals(b);
 
         public override int GetHashCode()
         {

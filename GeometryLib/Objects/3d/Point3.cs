@@ -18,13 +18,13 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 namespace Geometry
 {
-    public class Point3 : IEquatable<Point3>
+    public readonly struct Point3 : IEquatable<Point3>
     {
-        public float X { get; set; }
+        public float X { get; init; }
 
-        public float Y { get; set; }
+        public float Y { get; init; }
 
-        public float Z { get; set; }
+        public float Z { get; init; }
 
         public Point3() : this(0f, 0f, 0f) { }
 
@@ -51,43 +51,27 @@ namespace Geometry
 
         public static Point3 operator +(Point3 p1, Point3 p2)
         {
-            return new Point3
-            {
-                X = p1.X + p2.X,
-                Y = p1.Y + p2.Y,
-                Z = p1.Z + p2.Z
-            };
+            return new Point3(p1.X + p2.X, p1.Y + p2.Y, p1.Z + p2.Z);
         }
 
         public static Point3 operator -(Point3 p1, Point3 p2)
         {
-            return new Point3
-            {
-                X = p1.X - p2.X,
-                Y = p1.Y - p2.Y,
-                Z = p1.Z - p2.Z
-            };
+            return new Point3(p1.X - p2.X, p1.Y - p2.Y, p1.Z - p2.Z);
         }
 
         public override bool Equals(object obj)
         {
-            if (obj is null) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (GetType() != obj.GetType()) return false;
-
-            var new_obj = (Point3)obj;
-            return Equals(new_obj);
+            return obj is Point3 other && Equals(other);
         }
 
         public bool Equals(Point3 p)
         {
-            if (p is null) return false;
-            if (X != p.X) return false;
-            if (Y != p.Y) return false;
-            if (Z != p.Z) return false;
-
-            return true;
+            return X == p.X && Y == p.Y && Z == p.Z;
         }
+
+        public static bool operator ==(Point3 a, Point3 b) => a.Equals(b);
+
+        public static bool operator !=(Point3 a, Point3 b) => !a.Equals(b);
 
         public override int GetHashCode()
         {

@@ -50,25 +50,6 @@ namespace GeometryTests
 
         [Test]
         [Category("Sphere")]
-        public void Sphere_NullCenter_Fail()
-        {
-            Assert.Throws<ArgumentNullException>((Action)(() => new Sphere(null, 1f)));
-        }
-
-        [Test]
-        [Category("Sphere")]
-        public void Sphere_NullArguments_Fail()
-        {
-            var sphere = new Sphere(new Point3(0f, 0f, 0f), 1f);
-
-            Assert.Throws<ArgumentNullException>((Action)(() => sphere.Contains((Point3)null)));
-            Assert.Throws<ArgumentNullException>((Action)(() => sphere.Intersects((Sphere)null)));
-            Assert.Throws<ArgumentNullException>((Action)(() => sphere.Intersects((Cube)null)));
-            Assert.Throws<ArgumentNullException>((Action)(() => sphere.Contains((Cube)null)));
-        }
-
-        [Test]
-        [Category("Sphere")]
         public void Sphere_IntersectsCube_Pass()
         {
             var sphere = new Sphere(new Point3(0f, 0f, 0f), 1f);
@@ -102,7 +83,6 @@ namespace GeometryTests
 
             Assert.That(sphere.Equals(sphere), Is.True);
             Assert.That(sphere.Equals(same), Is.True);
-            Assert.That(sphere.Equals((Sphere)null), Is.False);
             Assert.That(sphere.Equals(differentCenter), Is.False);
             Assert.That(sphere.Equals(differentRadius), Is.False);
 

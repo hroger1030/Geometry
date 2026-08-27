@@ -18,21 +18,21 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 namespace Geometry
 {
-    public class Cube : I3d, IEquatable<Cube>
+    public readonly struct Cube : I3d, IEquatable<Cube>
     {
         public readonly static Cube UnitCube = new(0f, 0f, 0f, 1f, 1f, 1f);
 
-        public float X1 { get; set; }
+        public float X1 { get; init; }
 
-        public float X2 { get; set; }
+        public float X2 { get; init; }
 
-        public float Y1 { get; set; }
+        public float Y1 { get; init; }
 
-        public float Y2 { get; set; }
+        public float Y2 { get; init; }
 
-        public float Z1 { get; set; }
+        public float Z1 { get; init; }
 
-        public float Z2 { get; set; }
+        public float Z2 { get; init; }
 
         /// <summary>
         /// Returns a C object corresponding to the 3d coordinates of a corner of the cube object
@@ -100,8 +100,6 @@ namespace Geometry
 
         public Cube(Cube cube)
         {
-            ArgumentNullException.ThrowIfNull(cube);
-
             X1 = cube.X1;
             Y1 = cube.Y1;
             Z1 = cube.Z1;
@@ -122,8 +120,6 @@ namespace Geometry
 
         public bool Contains(Cube c)
         {
-            ArgumentNullException.ThrowIfNull(c);
-
             return Contains(c.X1, c.Y1, c.Z1) &&
                    Contains(c.X1, c.Y1, c.Z2) &&
                    Contains(c.X1, c.Y2, c.Z2) &&
@@ -136,8 +132,6 @@ namespace Geometry
 
         public bool Intersects(Cube c)
         {
-            ArgumentNullException.ThrowIfNull(c);
-
             return X1 <= c.X2 && X2 >= c.X1 &&
                    Y1 <= c.Y2 && Y2 >= c.Y1 &&
                    Z1 <= c.Z2 && Z2 >= c.Z1;
@@ -148,8 +142,6 @@ namespace Geometry
         /// </summary>
         public bool Intersects(Sphere s)
         {
-            ArgumentNullException.ThrowIfNull(s);
-
             float closestX = Math.Clamp(s.Center.X, X1, X2);
             float closestY = Math.Clamp(s.Center.Y, Y1, Y2);
             float closestZ = Math.Clamp(s.Center.Z, Z1, Z2);
@@ -167,7 +159,6 @@ namespace Geometry
         /// </summary>
         public static Cube operator *(Cube c, float scale)
         {
-            ArgumentNullException.ThrowIfNull(c);
             ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(scale, 0f);
 
             return new Cube(c.X1, c.Y1, c.Z1, c.X1 + (c.Width * scale), c.Y1 + (c.Height * scale), c.Z1 + (c.Depth * scale));
@@ -175,25 +166,17 @@ namespace Geometry
 
         public override bool Equals(object obj)
         {
-            if (obj is null) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (GetType() != obj.GetType()) return false;
-
-            var new_obj = (Cube)obj;
-            return Equals(new_obj);
+            return obj is Cube other && Equals(other);
         }
 
         public bool Equals(Cube c)
         {
-            if (X1 != c.X1) return false;
-            if (X2 != c.X2) return false;
-            if (Y1 != c.Y1) return false;
-            if (Y2 != c.Y2) return false;
-            if (Z1 != c.Z1) return false;
-            if (Z2 != c.Z2) return false;
-
-            return true;
+            return X1 == c.X1 && X2 == c.X2 && Y1 == c.Y1 && Y2 == c.Y2 && Z1 == c.Z1 && Z2 == c.Z2;
         }
+
+        public static bool operator ==(Cube a, Cube b) => a.Equals(b);
+
+        public static bool operator !=(Cube a, Cube b) => !a.Equals(b);
 
         public override int GetHashCode()
         {

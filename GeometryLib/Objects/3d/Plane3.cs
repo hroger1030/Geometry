@@ -18,16 +18,14 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 namespace Geometry
 {
-    public class Plane3 : IEquatable<Plane3>
+    public readonly struct Plane3 : IEquatable<Plane3>
     {
-        public Vector3 Normal { get; set; }
+        public Vector3 Normal { get; init; }
 
-        public float D { get; set; }
+        public float D { get; init; }
 
         public Plane3(Vector3 normal, float d)
         {
-            ArgumentNullException.ThrowIfNull(normal);
-
             if (normal.X == 0f && normal.Y == 0f && normal.Z == 0f)
                 throw new ArgumentException("Normal must be non-zero.", nameof(normal));
 
@@ -37,7 +35,6 @@ namespace Geometry
 
         public float DistanceTo(Point3 point)
         {
-            ArgumentNullException.ThrowIfNull(point);
 
             float length = MathF.Sqrt(Normal.X * Normal.X + Normal.Y * Normal.Y + Normal.Z * Normal.Z);
 
@@ -54,19 +51,17 @@ namespace Geometry
 
         public override bool Equals(object obj)
         {
-            if (obj is null) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (GetType() != obj.GetType()) return false;
-
-            return Equals((Plane3)obj);
+            return obj is Plane3 other && Equals(other);
         }
 
         public bool Equals(Plane3 other)
         {
-            if (other is null) return false;
-
             return Normal.Equals(other.Normal) && D.Equals(other.D);
         }
+
+        public static bool operator ==(Plane3 a, Plane3 b) => a.Equals(b);
+
+        public static bool operator !=(Plane3 a, Plane3 b) => !a.Equals(b);
 
         public override int GetHashCode() => HashCode.Combine(Normal, D);
     }

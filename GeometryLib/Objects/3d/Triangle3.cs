@@ -18,13 +18,13 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 namespace Geometry
 {
-    public class Triangle3 : IEquatable<Triangle3>
+    public readonly struct Triangle3 : IEquatable<Triangle3>
     {
-        public Point3 A { get; set; }
+        public Point3 A { get; init; }
 
-        public Point3 B { get; set; }
+        public Point3 B { get; init; }
 
-        public Point3 C { get; set; }
+        public Point3 C { get; init; }
 
         public float Perimeter =>
             Vector3.DistanceTo(new Vector3(A), new Vector3(B)) +
@@ -44,9 +44,6 @@ namespace Geometry
 
         public Triangle3(Point3 a, Point3 b, Point3 c)
         {
-            ArgumentNullException.ThrowIfNull(a);
-            ArgumentNullException.ThrowIfNull(b);
-            ArgumentNullException.ThrowIfNull(c);
 
             if (a.Equals(b) || b.Equals(c) || c.Equals(a))
                 throw new ArgumentException("All points must be distinct points with separate locations");
@@ -58,17 +55,17 @@ namespace Geometry
 
         public override bool Equals(object obj)
         {
-            if (obj is null) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (GetType() != obj.GetType()) return false;
-
-            return Equals((Triangle3)obj);
+            return obj is Triangle3 other && Equals(other);
         }
 
         public bool Equals(Triangle3 other)
         {
-            return other is not null && A.Equals(other.A) && B.Equals(other.B) && C.Equals(other.C);
+            return A.Equals(other.A) && B.Equals(other.B) && C.Equals(other.C);
         }
+
+        public static bool operator ==(Triangle3 a, Triangle3 b) => a.Equals(b);
+
+        public static bool operator !=(Triangle3 a, Triangle3 b) => !a.Equals(b);
 
         public override int GetHashCode()
         {

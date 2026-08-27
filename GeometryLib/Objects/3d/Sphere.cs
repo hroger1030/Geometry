@@ -18,11 +18,11 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 namespace Geometry
 {
-    public class Sphere : I3d, IEquatable<Sphere>
+    public readonly struct Sphere : I3d, IEquatable<Sphere>
     {
-        public Point3 Center { get; set; }
+        public Point3 Center { get; init; }
 
-        public float Radius { get; set; }
+        public float Radius { get; init; }
 
         public float Volume => (4f / 3f) * MathF.PI * Radius * Radius * Radius;
 
@@ -30,7 +30,6 @@ namespace Geometry
 
         public Sphere(Point3 center, float radius)
         {
-            ArgumentNullException.ThrowIfNull(center);
             ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(radius, 0f);
 
             Center = center;
@@ -39,8 +38,6 @@ namespace Geometry
 
         public bool Contains(Point3 point)
         {
-            ArgumentNullException.ThrowIfNull(point);
-
             float dx = point.X - Center.X;
             float dy = point.Y - Center.Y;
             float dz = point.Z - Center.Z;
@@ -50,8 +47,6 @@ namespace Geometry
 
         public bool Intersects(Sphere other)
         {
-            ArgumentNullException.ThrowIfNull(other);
-
             float dx = other.Center.X - Center.X;
             float dy = other.Center.Y - Center.Y;
             float dz = other.Center.Z - Center.Z;
@@ -66,15 +61,11 @@ namespace Geometry
         /// </summary>
         public bool Intersects(Cube c)
         {
-            ArgumentNullException.ThrowIfNull(c);
-
             return c.Intersects(this);
         }
 
         public bool Contains(Cube c)
         {
-            ArgumentNullException.ThrowIfNull(c);
-
             for (int i = 0; i < 8; i++)
             {
                 if (!Contains(c[i]))
@@ -86,18 +77,17 @@ namespace Geometry
 
         public override bool Equals(object obj)
         {
-            if (obj is null) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (GetType() != obj.GetType()) return false;
-
-            return Equals((Sphere)obj);
+            return obj is Sphere other && Equals(other);
         }
 
         public bool Equals(Sphere other)
         {
-            if (other is null) return false;
             return Center.Equals(other.Center) && Radius.Equals(other.Radius);
         }
+
+        public static bool operator ==(Sphere a, Sphere b) => a.Equals(b);
+
+        public static bool operator !=(Sphere a, Sphere b) => !a.Equals(b);
 
         public override int GetHashCode()
         {
