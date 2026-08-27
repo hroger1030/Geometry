@@ -74,7 +74,6 @@ namespace Geometry
 
         public bool Contains(Point2 point)
         {
-
             if (Sides < 3)
                 return false;
 
@@ -90,9 +89,6 @@ namespace Geometry
 
             return isInside;
         }
-
-        // contains
-        // intersects
 
         /// <summary>
         /// Creates a new <see cref="Polygon"/> that is shifted by a vector.
