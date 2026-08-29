@@ -26,11 +26,15 @@ namespace Geometry
 
         public Point3 C { get; init; }
 
+        /// <summary>The sum of the three side lengths.</summary>
         public float Perimeter =>
             Vector3.DistanceTo(new Vector3(A), new Vector3(B)) +
             Vector3.DistanceTo(new Vector3(B), new Vector3(C)) +
             Vector3.DistanceTo(new Vector3(C), new Vector3(A));
 
+        /// <summary>
+        /// The area of the triangle, computed as half the magnitude of the cross product of two edge vectors.
+        /// </summary>
         public float Area
         {
             get
@@ -42,6 +46,9 @@ namespace Geometry
             }
         }
 
+        /// <summary>
+        /// Creates a triangle from three vertices. Throws <see cref="ArgumentException"/> if any two vertices coincide.
+        /// </summary>
         public Triangle3(Point3 a, Point3 b, Point3 c)
         {
 
@@ -53,20 +60,35 @@ namespace Geometry
             C = c;
         }
 
+        /// <summary>
+        /// Returns true if <paramref name="obj"/> is a <see cref="Triangle3"/> with the same vertices in the same order.
+        /// </summary>
         public override bool Equals(object obj)
         {
             return obj is Triangle3 other && Equals(other);
         }
 
+        /// <summary>
+        /// Returns true if the other triangle has the same vertices in the same order (A, B, C positionally equal).
+        /// </summary>
         public bool Equals(Triangle3 other)
         {
             return A.Equals(other.A) && B.Equals(other.B) && C.Equals(other.C);
         }
 
+        /// <summary>
+        /// Returns true if both triangles have the same vertices in the same order.
+        /// </summary>
         public static bool operator ==(Triangle3 a, Triangle3 b) => a.Equals(b);
 
+        /// <summary>
+        /// Returns true if the triangles differ in any vertex or vertex ordering.
+        /// </summary>
         public static bool operator !=(Triangle3 a, Triangle3 b) => !a.Equals(b);
 
+        /// <summary>
+        /// Returns a hash code derived from the three vertices.
+        /// </summary>
         public override int GetHashCode()
         {
             return HashCode.Combine(A, B, C);

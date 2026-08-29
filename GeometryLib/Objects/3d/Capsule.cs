@@ -26,6 +26,10 @@ namespace Geometry
 
         public float Radius { get; init; }
 
+        /// <summary>
+        /// Creates a capsule: the set of points within <paramref name="radius"/> of the segment from <paramref name="pointA"/> to <paramref name="pointB"/>.
+        /// Throws <see cref="ArgumentOutOfRangeException"/> if <paramref name="radius"/> is negative.
+        /// </summary>
         public Capsule(Point3 pointA, Point3 pointB, float radius)
         {
             ArgumentOutOfRangeException.ThrowIfNegative(radius);
@@ -35,6 +39,10 @@ namespace Geometry
             Radius = radius;
         }
 
+        /// <summary>
+        /// Returns true if <paramref name="point"/> lies inside or on this capsule. A degenerate capsule
+        /// (PointA == PointB) is treated as a sphere.
+        /// </summary>
         public bool Contains(Point3 point)
         {
 
@@ -56,6 +64,10 @@ namespace Geometry
             return new Sphere(closest, Radius).Contains(point);
         }
 
+        /// <summary>
+        /// Returns true if this capsule overlaps or touches <paramref name="sphere"/>, tested via the closest point
+        /// on the capsule's core segment to the sphere center. A degenerate capsule is treated as a sphere.
+        /// </summary>
         public bool Intersects(Sphere sphere)
         {
 
@@ -76,11 +88,17 @@ namespace Geometry
             return new Sphere(closest, Radius).Intersects(sphere);
         }
 
+        /// <summary>
+        /// Returns true if <paramref name="obj"/> is a <see cref="Capsule"/> with the same endpoints and radius.
+        /// </summary>
         public override bool Equals(object obj)
         {
             return obj is Capsule other && Equals(other);
         }
 
+        /// <summary>
+        /// Returns true if the other capsule has the same endpoints (in the same order) and radius (no tolerance).
+        /// </summary>
         public bool Equals(Capsule other)
         {
             return PointA.Equals(other.PointA)
@@ -88,10 +106,19 @@ namespace Geometry
                 && Radius == other.Radius;
         }
 
+        /// <summary>
+        /// Returns true if both capsules have the same endpoints and radius.
+        /// </summary>
         public static bool operator ==(Capsule a, Capsule b) => a.Equals(b);
 
+        /// <summary>
+        /// Returns true if the capsules differ in either endpoint or radius.
+        /// </summary>
         public static bool operator !=(Capsule a, Capsule b) => !a.Equals(b);
 
+        /// <summary>
+        /// Returns a hash code derived from the two endpoints and the radius.
+        /// </summary>
         public override int GetHashCode()
         {
             return HashCode.Combine(PointA, PointB, Radius);

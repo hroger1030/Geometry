@@ -20,10 +20,16 @@ namespace Geometry
 {
     public readonly struct Plane3 : IEquatable<Plane3>
     {
+        /// <summary>The plane normal. Not required to be unit length; see <see cref="Normalize"/>.</summary>
         public Vector3 Normal { get; init; }
 
+        /// <summary>The plane constant D in the equation Normal.X*x + Normal.Y*y + Normal.Z*z + D = 0.</summary>
         public float D { get; init; }
 
+        /// <summary>
+        /// Creates a plane from a normal and the constant D of the equation dot(Normal, p) + D = 0.
+        /// Throws <see cref="ArgumentException"/> if <paramref name="normal"/> is the zero vector.
+        /// </summary>
         public Plane3(Vector3 normal, float d)
         {
             if (normal.X == 0f && normal.Y == 0f && normal.Z == 0f)
@@ -33,6 +39,10 @@ namespace Geometry
             D = d;
         }
 
+        /// <summary>
+        /// Returns the signed distance from <paramref name="point"/> to this plane. Positive on the side the
+        /// normal points toward, negative on the other side. Correct for a non-unit normal (it divides by the normal length).
+        /// </summary>
         public float DistanceTo(Point3 point)
         {
 
@@ -41,6 +51,9 @@ namespace Geometry
             return (Normal.X * point.X + Normal.Y * point.Y + Normal.Z * point.Z + D) / length;
         }
 
+        /// <summary>
+        /// Returns an equivalent plane whose normal has unit length (normal and D both divided by the current normal length).
+        /// </summary>
         public Plane3 Normalize()
         {
             float length = MathF.Sqrt(Normal.X * Normal.X + Normal.Y * Normal.Y + Normal.Z * Normal.Z);
@@ -49,20 +62,36 @@ namespace Geometry
             return new Plane3(normalized, D / length);
         }
 
+        /// <summary>
+        /// Returns true if <paramref name="obj"/> is a <see cref="Plane3"/> with the same normal and D.
+        /// </summary>
         public override bool Equals(object obj)
         {
             return obj is Plane3 other && Equals(other);
         }
 
+        /// <summary>
+        /// Returns true if the other plane has the same normal and D (no tolerance; equivalent planes with
+        /// scaled coefficients are not considered equal).
+        /// </summary>
         public bool Equals(Plane3 other)
         {
             return Normal.Equals(other.Normal) && D.Equals(other.D);
         }
 
+        /// <summary>
+        /// Returns true if both planes have the same normal and D.
+        /// </summary>
         public static bool operator ==(Plane3 a, Plane3 b) => a.Equals(b);
 
+        /// <summary>
+        /// Returns true if the planes differ in normal or D.
+        /// </summary>
         public static bool operator !=(Plane3 a, Plane3 b) => !a.Equals(b);
 
+        /// <summary>
+        /// Returns a hash code derived from the normal and D.
+        /// </summary>
         public override int GetHashCode() => HashCode.Combine(Normal, D);
     }
 }

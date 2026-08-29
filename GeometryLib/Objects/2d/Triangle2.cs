@@ -20,10 +20,16 @@ namespace Geometry
 {
     public readonly struct Triangle2 : I2d, IEquatable<Triangle2>
     {
+        /// <summary>
+        /// Classification of a triangle by its side lengths.
+        /// </summary>
         public enum Type
         {
+            /// <summary>All three sides equal.</summary>
             Equilateral,
+            /// <summary>Exactly two sides equal.</summary>
             Isosceles,
+            /// <summary>No two sides equal.</summary>
             Scalene,
         }
 
@@ -33,11 +39,16 @@ namespace Geometry
 
         public Point2 C { get; init; }
 
+        /// <summary>The sum of the three side lengths.</summary>
         public float Perimeter
         {
             get { return A.DistanceTo(B) + B.DistanceTo(C) + C.DistanceTo(A); }
         }
 
+        /// <summary>
+        /// The area of the triangle, computed with a numerically stable form of Heron's formula
+        /// (sides sorted descending before the subtraction terms).
+        /// </summary>
         public float Area
         {
             get
@@ -76,6 +87,10 @@ namespace Geometry
             }
         }
 
+        /// <summary>
+        /// Classifies this triangle as <see cref="Type.Equilateral"/>, <see cref="Type.Isosceles"/> or <see cref="Type.Scalene"/>
+        /// based on exact side-length equality.
+        /// </summary>
         public Type TriangleType
         {
             get
@@ -94,6 +109,9 @@ namespace Geometry
             }
         }
 
+        /// <summary>
+        /// Creates a triangle from three vertices. Throws <see cref="ArgumentException"/> if any two vertices coincide.
+        /// </summary>
         public Triangle2(Point2 p1, Point2 p2, Point2 p3)
         {
 
@@ -105,20 +123,35 @@ namespace Geometry
             C = p3;
         }
 
+        /// <summary>
+        /// Returns true if <paramref name="obj"/> is a <see cref="Triangle2"/> with the same vertices in the same order.
+        /// </summary>
         public override bool Equals(object obj)
         {
             return obj is Triangle2 other && Equals(other);
         }
 
+        /// <summary>
+        /// Returns true if the other triangle has the same vertices in the same order (A, B, C positionally equal).
+        /// </summary>
         public bool Equals(Triangle2 t)
         {
             return A.Equals(t.A) && B.Equals(t.B) && C.Equals(t.C);
         }
 
+        /// <summary>
+        /// Returns true if both triangles have the same vertices in the same order.
+        /// </summary>
         public static bool operator ==(Triangle2 a, Triangle2 b) => a.Equals(b);
 
+        /// <summary>
+        /// Returns true if the triangles differ in any vertex or vertex ordering.
+        /// </summary>
         public static bool operator !=(Triangle2 a, Triangle2 b) => !a.Equals(b);
 
+        /// <summary>
+        /// Returns a hash code derived from the three vertices.
+        /// </summary>
         public override int GetHashCode()
         {
             return HashCode.Combine(A, B, C);

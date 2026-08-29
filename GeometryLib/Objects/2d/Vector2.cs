@@ -20,42 +20,71 @@ namespace Geometry
 {
     public readonly struct Vector2 : IEquatable<Vector2>
     {
+        /// <summary>A vector with both components set to zero.</summary>
         public static readonly Vector2 Zero = new(0, 0);
+        /// <summary>A vector with both components set to one.</summary>
         public static readonly Vector2 One = new(1, 1);
 
         public float X { get; init; }
 
         public float Y { get; init; }
 
+        /// <summary>
+        /// Creates a zero vector (0, 0).
+        /// </summary>
         public Vector2() : this(0, 0) { }
 
+        /// <summary>
+        /// Creates a copy of an existing vector.
+        /// </summary>
         public Vector2(Vector2 v1) : this(v1.X, v1.Y) { }
 
+        /// <summary>
+        /// Creates a vector from the X and Y components of a <see cref="Point2"/>.
+        /// </summary>
         public Vector2(Point2 p1) : this(p1.X, p1.Y) { }
 
+        /// <summary>
+        /// Creates a unit vector pointing along the given rotation, in radians (counter-clockwise from the +X axis).
+        /// </summary>
         public Vector2(float rotation) : this(MathF.Cos(rotation), MathF.Sin(rotation)) { }
 
+        /// <summary>
+        /// Creates a vector from explicit X and Y components.
+        /// </summary>
         public Vector2(float x, float y)
         {
             X = x;
             Y = y;
         }
 
+        /// <summary>
+        /// Adds two vectors component-wise.
+        /// </summary>
         public static Vector2 operator +(Vector2 v1, Vector2 v2)
         {
             return new Vector2(v1.X + v2.X, v1.Y + v2.Y);
         }
 
+        /// <summary>
+        /// Subtracts <paramref name="v2"/> from <paramref name="v1"/> component-wise.
+        /// </summary>
         public static Vector2 operator -(Vector2 v1, Vector2 v2)
         {
             return new Vector2(v1.X - v2.X, v1.Y - v2.Y);
         }
 
+        /// <summary>
+        /// Multiplies each component of the vector by a scalar.
+        /// </summary>
         public static Vector2 operator *(Vector2 v, float scale)
         {
             return new Vector2(v.X * scale, v.Y * scale);
         }
 
+        /// <summary>
+        /// Divides each component of the vector by a scalar. Throws <see cref="DivideByZeroException"/> if <paramref name="scale"/> is zero.
+        /// </summary>
         public static Vector2 operator /(Vector2 v, float scale)
         {
             if (scale == 0f) throw new DivideByZeroException(nameof(scale));
@@ -63,6 +92,9 @@ namespace Geometry
             return new Vector2(v.X / scale, v.Y / scale);
         }
 
+        /// <summary>
+        /// Returns a unit-length copy of <paramref name="v"/>. Throws if the vector's magnitude is zero.
+        /// </summary>
         public static Vector2 Normalize(Vector2 v)
         {
             return v.Normalize();
@@ -83,37 +115,61 @@ namespace Geometry
             return new Vector2(X * inverse, Y * inverse);
         }
 
+        /// <summary>
+        /// Returns the rotation of this vector in radians, measured counter-clockwise from the +X axis (range -PI to PI).
+        /// </summary>
         public float VectorToRotation()
         {
             return MathF.Atan2(Y, X);
         }
 
-        // 2D cross product has no perpendicular axis to return a vector along, so the result is the
-        // scalar Z component that a 3D cross product would produce; sign indicates winding/orientation.
+        /// <summary>
+        /// Returns the 2D cross product (perp-dot) of two vectors.
+        /// A 2D cross product has no perpendicular axis to return a vector along, so the result is the
+        /// scalar Z component that a 3D cross product would produce; sign indicates winding/orientation.
+        /// </summary>
         public static float Cross(Vector2 v1, Vector2 v2)
         {
             return (v1.X * v2.Y) - (v1.Y * v2.X);
         }
 
+        /// <summary>
+        /// Returns the magnitude (Euclidean length) of this vector.
+        /// </summary>
         public float Length()
         {
             return MathF.Sqrt((X * X) + (Y * Y));
         }
 
+        /// <summary>
+        /// Returns true if <paramref name="obj"/> is a <see cref="Vector2"/> with the same components.
+        /// </summary>
         public override bool Equals(object obj)
         {
             return obj is Vector2 other && Equals(other);
         }
 
+        /// <summary>
+        /// Returns true if the other vector has exactly equal X and Y components (no tolerance).
+        /// </summary>
         public bool Equals(Vector2 v)
         {
             return X == v.X && Y == v.Y;
         }
 
+        /// <summary>
+        /// Returns true if both vectors have exactly equal components.
+        /// </summary>
         public static bool operator ==(Vector2 a, Vector2 b) => a.Equals(b);
 
+        /// <summary>
+        /// Returns true if the vectors differ in either component.
+        /// </summary>
         public static bool operator !=(Vector2 a, Vector2 b) => !a.Equals(b);
 
+        /// <summary>
+        /// Returns a hash code derived from the X and Y components.
+        /// </summary>
         public override int GetHashCode()
         {
             return HashCode.Combine(X, Y);

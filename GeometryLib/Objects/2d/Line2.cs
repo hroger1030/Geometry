@@ -24,35 +24,60 @@ namespace Geometry
 
         public Point2 Point2 { get; init; }
 
+        /// <summary>The distance between the two endpoints (length of the segment).</summary>
         public float Length => Point1.DistanceTo(Point2);
 
+        /// <summary>
+        /// Creates a line segment from the raw coordinates of its two endpoints.
+        /// </summary>
         public Line2(float p1x, float p1y, float p2x, float p2y) : this(new Point2(p1x, p1y), new Point2(p2x, p2y)) { }
 
+        /// <summary>
+        /// Creates a line segment between two endpoints.
+        /// </summary>
         public Line2(Point2 p1, Point2 p2)
         {
             Point1 = p1;
             Point2 = p2;
         }
 
+        /// <summary>
+        /// Returns true if <paramref name="obj"/> is a <see cref="Line2"/> with the same endpoints in the same order.
+        /// </summary>
         public override bool Equals(object obj)
         {
             return obj is Line2 other && Equals(other);
         }
 
+        /// <summary>
+        /// Returns true if the other line has the same endpoints in the same order (direction-sensitive).
+        /// </summary>
         public bool Equals(Line2 l)
         {
             return Point1.Equals(l.Point1) && Point2.Equals(l.Point2);
         }
 
+        /// <summary>
+        /// Returns true if both lines have the same endpoints in the same order.
+        /// </summary>
         public static bool operator ==(Line2 a, Line2 b) => a.Equals(b);
 
+        /// <summary>
+        /// Returns true if the lines differ in either endpoint or ordering.
+        /// </summary>
         public static bool operator !=(Line2 a, Line2 b) => !a.Equals(b);
 
+        /// <summary>
+        /// Returns a hash code derived from the two endpoints.
+        /// </summary>
         public override int GetHashCode()
         {
             return HashCode.Combine(Point1, Point2);
         }
 
+        /// <summary>
+        /// Returns a string of the form "Point1: (x, y), Point2: (x, y)".
+        /// </summary>
         public override string ToString()
         {
             return $"Point1: {Point1}, Point2: {Point2}";

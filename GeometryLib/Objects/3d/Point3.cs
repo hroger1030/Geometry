@@ -26,8 +26,14 @@ namespace Geometry
 
         public float Z { get; init; }
 
+        /// <summary>
+        /// Creates the origin point (0, 0, 0).
+        /// </summary>
         public Point3() : this(0f, 0f, 0f) { }
 
+        /// <summary>
+        /// Creates a point from explicit X, Y and Z coordinates.
+        /// </summary>
         public Point3(float x, float y, float z)
         {
             X = x;
@@ -35,6 +41,9 @@ namespace Geometry
             Z = z;
         }
 
+        /// <summary>
+        /// Creates a copy of an existing point.
+        /// </summary>
         public Point3(Point3 p)
         {
             X = p.X;
@@ -42,6 +51,9 @@ namespace Geometry
             Z = p.Z;
         }
 
+        /// <summary>
+        /// Creates a point from a 2D point, placing it on the Z = 0 plane.
+        /// </summary>
         public Point3(Point2 p)
         {
             X = p.X;
@@ -49,30 +61,51 @@ namespace Geometry
             Z = 0;
         }
 
+        /// <summary>
+        /// Adds two points coordinate-wise.
+        /// </summary>
         public static Point3 operator +(Point3 p1, Point3 p2)
         {
             return new Point3(p1.X + p2.X, p1.Y + p2.Y, p1.Z + p2.Z);
         }
 
+        /// <summary>
+        /// Subtracts <paramref name="p2"/> from <paramref name="p1"/> coordinate-wise.
+        /// </summary>
         public static Point3 operator -(Point3 p1, Point3 p2)
         {
             return new Point3(p1.X - p2.X, p1.Y - p2.Y, p1.Z - p2.Z);
         }
 
+        /// <summary>
+        /// Returns true if <paramref name="obj"/> is a <see cref="Point3"/> at the same coordinates.
+        /// </summary>
         public override bool Equals(object obj)
         {
             return obj is Point3 other && Equals(other);
         }
 
+        /// <summary>
+        /// Returns true if the other point has exactly equal X, Y and Z coordinates (no tolerance).
+        /// </summary>
         public bool Equals(Point3 p)
         {
             return X == p.X && Y == p.Y && Z == p.Z;
         }
 
+        /// <summary>
+        /// Returns true if both points share the same coordinates.
+        /// </summary>
         public static bool operator ==(Point3 a, Point3 b) => a.Equals(b);
 
+        /// <summary>
+        /// Returns true if the points differ in any coordinate.
+        /// </summary>
         public static bool operator !=(Point3 a, Point3 b) => !a.Equals(b);
 
+        /// <summary>
+        /// Returns a hash code derived from the X, Y and Z coordinates.
+        /// </summary>
         public override int GetHashCode()
         {
             return HashCode.Combine(X, Y, Z);

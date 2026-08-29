@@ -23,7 +23,7 @@ namespace Geometry
         public float[] Axis { get; set; } = Array.Empty<float>();
 
         /// <summary>
-        /// Empty vector CTOR
+        /// Creates a zero-filled vector with the given number of axes (dimensions).
         /// </summary>
         public VectorN(int length)
         {
@@ -34,7 +34,7 @@ namespace Geometry
         }
 
         /// <summary>
-        /// Copy CTOR
+        /// Creates a deep copy of an existing vector (its axis array is cloned).
         /// </summary>
         public VectorN(VectorN v)
         {
@@ -44,6 +44,9 @@ namespace Geometry
                 Axis[i] = v.Axis[i];
         }
 
+        /// <summary>
+        /// Adds two vectors component-wise. Throws <see cref="InvalidOperationException"/> if the vectors have different dimensions.
+        /// </summary>
         public static VectorN operator +(VectorN v1, VectorN v2)
         {
             if (v1.Axis.Length != v2.Axis.Length)
@@ -57,6 +60,9 @@ namespace Geometry
             return output;
         }
 
+        /// <summary>
+        /// Subtracts <paramref name="v2"/> from <paramref name="v1"/> component-wise. Throws <see cref="InvalidOperationException"/> if the vectors have different dimensions.
+        /// </summary>
         public static VectorN operator -(VectorN v1, VectorN v2)
         {
             if (v1.Axis.Length != v2.Axis.Length)
@@ -70,6 +76,9 @@ namespace Geometry
             return output;
         }
 
+        /// <summary>
+        /// Multiplies each component of the vector by a scalar.
+        /// </summary>
         public static VectorN operator *(VectorN v, float scalar)
         {
             var output = new VectorN(v.Axis.Length);
@@ -80,6 +89,9 @@ namespace Geometry
             return output;
         }
 
+        /// <summary>
+        /// Divides each component of the vector by a scalar.
+        /// </summary>
         public static VectorN operator /(VectorN v, float scalar)
         {
             var output = new VectorN(v.Axis.Length);
@@ -90,6 +102,9 @@ namespace Geometry
             return output;
         }
 
+        /// <summary>
+        /// Returns true if <paramref name="obj"/> is a <see cref="VectorN"/> of the same dimension and equal components.
+        /// </summary>
         public override bool Equals(object obj)
         {
             if (obj is null) return false;
@@ -100,6 +115,9 @@ namespace Geometry
             return Equals(new_obj);
         }
 
+        /// <summary>
+        /// Returns true if the other vector has the same dimension and exactly equal components (no tolerance).
+        /// </summary>
         public bool Equals(VectorN v)
         {
             if (Axis.Length != v.Axis.Length)
@@ -114,6 +132,9 @@ namespace Geometry
             return true;
         }
 
+        /// <summary>
+        /// Returns the identity hash code of the underlying axis array (reference-based, not value-based).
+        /// </summary>
         public override int GetHashCode()
         {
             return Axis.GetHashCode();

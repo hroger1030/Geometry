@@ -24,8 +24,10 @@ namespace Geometry
 
         public Point3 Max { get; init; }
 
+        /// <summary>The volume of the box (width * height * depth).</summary>
         public float Volume => MathF.Abs(Max.X - Min.X) * MathF.Abs(Max.Y - Min.Y) * MathF.Abs(Max.Z - Min.Z);
 
+        /// <summary>The total surface area of the box's six faces.</summary>
         public float SurfaceArea
         {
             get
@@ -37,6 +39,10 @@ namespace Geometry
             }
         }
 
+        /// <summary>
+        /// Creates an axis-aligned bounding box from its minimum and maximum corners.
+        /// Throws <see cref="ArgumentException"/> if any component of <paramref name="max"/> is less than the matching component of <paramref name="min"/>.
+        /// </summary>
         public AABB(Point3 min, Point3 max)
         {
 
@@ -47,6 +53,9 @@ namespace Geometry
             Max = max;
         }
 
+        /// <summary>
+        /// Returns true if <paramref name="point"/> lies inside or on the faces of this box.
+        /// </summary>
         public bool Contains(Point3 point)
         {
 
@@ -55,6 +64,9 @@ namespace Geometry
                    point.Z >= Min.Z && point.Z <= Max.Z;
         }
 
+        /// <summary>
+        /// Returns true if this box overlaps or touches <paramref name="other"/> on all three axes.
+        /// </summary>
         public bool Intersects(AABB other)
         {
             return Min.X <= other.Max.X && Max.X >= other.Min.X &&
@@ -62,20 +74,35 @@ namespace Geometry
                    Min.Z <= other.Max.Z && Max.Z >= other.Min.Z;
         }
 
+        /// <summary>
+        /// Returns true if <paramref name="obj"/> is an <see cref="AABB"/> with the same corners.
+        /// </summary>
         public override bool Equals(object obj)
         {
             return obj is AABB other && Equals(other);
         }
 
+        /// <summary>
+        /// Returns true if the other box has the same min and max corners (no tolerance).
+        /// </summary>
         public bool Equals(AABB other)
         {
             return Min.Equals(other.Min) && Max.Equals(other.Max);
         }
 
+        /// <summary>
+        /// Returns true if both boxes have the same corners.
+        /// </summary>
         public static bool operator ==(AABB a, AABB b) => a.Equals(b);
 
+        /// <summary>
+        /// Returns true if the boxes differ in either corner.
+        /// </summary>
         public static bool operator !=(AABB a, AABB b) => !a.Equals(b);
 
+        /// <summary>
+        /// Returns a hash code derived from the min and max corners.
+        /// </summary>
         public override int GetHashCode()
         {
             return HashCode.Combine(Min, Max);

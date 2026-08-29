@@ -28,6 +28,9 @@ namespace Geometry
 
         public float Area => MathF.PI * RadiusX * RadiusY;
 
+        /// <summary>
+        /// The approximate circumference of the ellipse, using Ramanujan's second approximation.
+        /// </summary>
         public float Perimeter
         {
             get
@@ -40,6 +43,10 @@ namespace Geometry
             }
         }
 
+        /// <summary>
+        /// Creates an axis-aligned ellipse centered at <paramref name="center"/> with the given semi-axis lengths.
+        /// Throws <see cref="ArgumentOutOfRangeException"/> if either radius is zero or negative.
+        /// </summary>
         public Ellipse(Point2 center, float radiusX, float radiusY)
         {
             ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(radiusX, 0f);
@@ -50,6 +57,9 @@ namespace Geometry
             RadiusY = radiusY;
         }
 
+        /// <summary>
+        /// Returns true if <paramref name="point"/> lies inside or on this ellipse.
+        /// </summary>
         public bool Contains(Point2 point)
         {
 
@@ -59,20 +69,35 @@ namespace Geometry
             return (dx * dx) / (RadiusX * RadiusX) + (dy * dy) / (RadiusY * RadiusY) <= 1f;
         }
 
+        /// <summary>
+        /// Returns true if <paramref name="obj"/> is an <see cref="Ellipse"/> with the same center and semi-axes.
+        /// </summary>
         public override bool Equals(object obj)
         {
             return obj is Ellipse other && Equals(other);
         }
 
+        /// <summary>
+        /// Returns true if the other ellipse has the same center and semi-axis lengths (no tolerance).
+        /// </summary>
         public bool Equals(Ellipse other)
         {
             return Center.Equals(other.Center) && RadiusX.Equals(other.RadiusX) && RadiusY.Equals(other.RadiusY);
         }
 
+        /// <summary>
+        /// Returns true if both ellipses have the same center and semi-axes.
+        /// </summary>
         public static bool operator ==(Ellipse a, Ellipse b) => a.Equals(b);
 
+        /// <summary>
+        /// Returns true if the ellipses differ in center or either semi-axis.
+        /// </summary>
         public static bool operator !=(Ellipse a, Ellipse b) => !a.Equals(b);
 
+        /// <summary>
+        /// Returns a hash code derived from the center and both semi-axis lengths.
+        /// </summary>
         public override int GetHashCode()
         {
             return HashCode.Combine(Center, RadiusX, RadiusY);

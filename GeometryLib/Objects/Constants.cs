@@ -18,7 +18,10 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 namespace Geometry
 {
-    public class Constants 
+    /// <summary>
+    /// Library-wide numeric constants.
+    /// </summary>
+    public class Constants
     {
         /// <summary>
         /// Float math can be a little inaccurate, so this is the margin of error we will use when comparing floats.

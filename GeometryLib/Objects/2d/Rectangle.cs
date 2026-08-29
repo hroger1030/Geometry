@@ -20,6 +20,7 @@ namespace Geometry
 {
     public readonly struct Rectangle : I2d, IEquatable<Rectangle>
     {
+        /// <summary>A 1x1 rectangle with its top-left corner at the origin.</summary>
         public readonly static Rectangle UnitRectangle = new(0f, 0f, 1f, 1f);
 
         /// <summary>
@@ -77,10 +78,20 @@ namespace Geometry
 
         public float Perimeter => (Width + Height) * 2f;
 
+        /// <summary>
+        /// Creates a 1x1 rectangle with its top-left corner at the origin.
+        /// </summary>
         public Rectangle() : this(0f, 0f, 1f, 1f) { }
 
+        /// <summary>
+        /// Creates a rectangle of the given size with its top-left corner at the origin.
+        /// </summary>
         public Rectangle(float width, float height) : this(0f, 0f, width, height) { }
 
+        /// <summary>
+        /// Creates a rectangle from its top-left corner and size.
+        /// Throws <see cref="ArgumentOutOfRangeException"/> if <paramref name="width"/> or <paramref name="height"/> is zero or negative.
+        /// </summary>
         public Rectangle(float left, float top, float width, float height)
         {
             ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(width, 0f);
@@ -92,6 +103,10 @@ namespace Geometry
             Bottom = top + height;
         }
 
+        /// <summary>
+        /// Creates a rectangle of the given size centered on <paramref name="center"/>.
+        /// Throws <see cref="ArgumentOutOfRangeException"/> if <paramref name="width"/> or <paramref name="height"/> is zero or negative.
+        /// </summary>
         public Rectangle(Point2 center, float width, float height)
         {
             ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(width, 0f);
@@ -103,6 +118,9 @@ namespace Geometry
             Bottom = center.Y + height / 2;
         }
 
+        /// <summary>
+        /// Creates a copy of an existing rectangle.
+        /// </summary>
         public Rectangle(Rectangle rectangle)
         {
             Left = rectangle.Left;
@@ -111,16 +129,25 @@ namespace Geometry
             Bottom = rectangle.Bottom;
         }
 
+        /// <summary>
+        /// Returns true if <paramref name="point"/> lies inside or on the edges of this rectangle.
+        /// </summary>
         public bool Contains(Point2 point)
         {
             return Contains(point.X, point.Y);
         }
 
+        /// <summary>
+        /// Returns true if (<paramref name="x"/>, <paramref name="y"/>) lies inside or on the edges of this rectangle.
+        /// </summary>
         public bool Contains(float x, float y)
         {
             return x >= Left && x <= Right && y >= Top && y <= Bottom;
         }
 
+        /// <summary>
+        /// Returns true if <paramref name="value"/> lies entirely inside or on the edges of this rectangle.
+        /// </summary>
         public bool Contains(Rectangle value)
         {
             return value.Left >= Left && value.Right <= Right && value.Top >= Top && value.Bottom <= Bottom;
@@ -187,6 +214,8 @@ namespace Geometry
         /// <summary>
         /// Creates a new <see cref="Rectangle"/> that is shifted by a vector.
         /// </summary>
+        /// <param name="r">The rectangle to shift.</param>
+        /// <param name="v">The translation to apply.</param>
         public static Rectangle operator +(Rectangle r, Vector2 v)
         {
             return new Rectangle()
@@ -198,6 +227,9 @@ namespace Geometry
             };
         }
 
+        /// <summary>
+        /// Creates a new <see cref="Rectangle"/> that is shifted by the negation of a vector.
+        /// </summary>
         public static Rectangle operator -(Rectangle r, Vector2 v)
         {
             return new Rectangle()
@@ -209,6 +241,10 @@ namespace Geometry
             };
         }
 
+        /// <summary>
+        /// Returns a copy of the rectangle scaled about its top-left corner (width and height multiplied by <paramref name="scale"/>).
+        /// Throws <see cref="ArgumentException"/> if <paramref name="scale"/> is negative.
+        /// </summary>
         public static Rectangle operator *(Rectangle r, float scale)
         {
             if (scale < 0)
@@ -223,6 +259,10 @@ namespace Geometry
             };
         }
 
+        /// <summary>
+        /// Returns a copy of the rectangle scaled about its top-left corner by 1/<paramref name="scale"/>.
+        /// Throws <see cref="DivideByZeroException"/> if <paramref name="scale"/> is zero.
+        /// </summary>
         public static Rectangle operator /(Rectangle r, float scale)
         {
             if (scale == 0)
@@ -231,20 +271,35 @@ namespace Geometry
             return r * (1 / scale);
         }
 
+        /// <summary>
+        /// Returns true if <paramref name="obj"/> is a <see cref="Rectangle"/> with the same edges.
+        /// </summary>
         public override bool Equals(object obj)
         {
             return obj is Rectangle other && Equals(other);
         }
 
+        /// <summary>
+        /// Returns true if the other rectangle has the same left, top, right and bottom edges (no tolerance).
+        /// </summary>
         public bool Equals(Rectangle r)
         {
             return Left == r.Left && Top == r.Top && Right == r.Right && Bottom == r.Bottom;
         }
 
+        /// <summary>
+        /// Returns true if both rectangles have the same edges.
+        /// </summary>
         public static bool operator ==(Rectangle a, Rectangle b) => a.Equals(b);
 
+        /// <summary>
+        /// Returns true if the rectangles differ in any edge.
+        /// </summary>
         public static bool operator !=(Rectangle a, Rectangle b) => !a.Equals(b);
 
+        /// <summary>
+        /// Returns a hash code derived from the four edge coordinates.
+        /// </summary>
         public override int GetHashCode()
         {
             return HashCode.Combine(Left, Right, Top, Bottom);

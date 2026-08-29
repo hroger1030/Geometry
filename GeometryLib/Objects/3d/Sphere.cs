@@ -24,10 +24,16 @@ namespace Geometry
 
         public float Radius { get; init; }
 
+        /// <summary>The volume of the sphere (4/3 * PI * r^3).</summary>
         public float Volume => (4f / 3f) * MathF.PI * Radius * Radius * Radius;
 
+        /// <summary>The surface area of the sphere (4 * PI * r^2).</summary>
         public float SurfaceArea => 4f * MathF.PI * Radius * Radius;
 
+        /// <summary>
+        /// Creates a sphere from a center and radius.
+        /// Throws <see cref="ArgumentOutOfRangeException"/> if <paramref name="radius"/> is zero or negative.
+        /// </summary>
         public Sphere(Point3 center, float radius)
         {
             ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(radius, 0f);
@@ -36,6 +42,9 @@ namespace Geometry
             Radius = radius;
         }
 
+        /// <summary>
+        /// Returns true if <paramref name="point"/> lies inside or on this sphere.
+        /// </summary>
         public bool Contains(Point3 point)
         {
             float dx = point.X - Center.X;
@@ -45,6 +54,9 @@ namespace Geometry
             return (dx * dx + dy * dy + dz * dz) <= (Radius * Radius);
         }
 
+        /// <summary>
+        /// Returns true if this sphere overlaps or touches <paramref name="other"/> (distance between centers &lt;= sum of radii).
+        /// </summary>
         public bool Intersects(Sphere other)
         {
             float dx = other.Center.X - Center.X;
@@ -64,6 +76,9 @@ namespace Geometry
             return c.Intersects(this);
         }
 
+        /// <summary>
+        /// Returns true if all eight corners of <paramref name="c"/> lie inside or on this sphere (i.e. the cube is fully enclosed).
+        /// </summary>
         public bool Contains(Cube c)
         {
             for (int i = 0; i < 8; i++)
@@ -75,20 +90,35 @@ namespace Geometry
             return true;
         }
 
+        /// <summary>
+        /// Returns true if <paramref name="obj"/> is a <see cref="Sphere"/> with the same center and radius.
+        /// </summary>
         public override bool Equals(object obj)
         {
             return obj is Sphere other && Equals(other);
         }
 
+        /// <summary>
+        /// Returns true if the other sphere has the same center and radius (no tolerance).
+        /// </summary>
         public bool Equals(Sphere other)
         {
             return Center.Equals(other.Center) && Radius.Equals(other.Radius);
         }
 
+        /// <summary>
+        /// Returns true if both spheres have the same center and radius.
+        /// </summary>
         public static bool operator ==(Sphere a, Sphere b) => a.Equals(b);
 
+        /// <summary>
+        /// Returns true if the spheres differ in center or radius.
+        /// </summary>
         public static bool operator !=(Sphere a, Sphere b) => !a.Equals(b);
 
+        /// <summary>
+        /// Returns a hash code derived from the center and radius.
+        /// </summary>
         public override int GetHashCode()
         {
             return HashCode.Combine(Center, Radius);

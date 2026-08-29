@@ -22,6 +22,10 @@ namespace Geometry
     {
         public List<Point2> Vertices { get; set; } = new();
 
+        /// <summary>
+        /// The area enclosed by the polygon, computed with the shoelace formula. Result is unsigned,
+        /// so winding order does not matter; self-intersecting polygons give an ill-defined value.
+        /// </summary>
         public float Area
         {
             get
@@ -39,6 +43,9 @@ namespace Geometry
             }
         }
 
+        /// <summary>
+        /// The total edge length of the polygon, including the closing edge from the last vertex back to the first.
+        /// </summary>
         public float Perimeter
         {
             get
@@ -56,10 +63,18 @@ namespace Geometry
             }
         }
 
+        /// <summary>The number of vertices (equivalently, the number of edges).</summary>
         public int Sides => Vertices.Count;
 
+        /// <summary>
+        /// Creates an empty polygon with no vertices.
+        /// </summary>
         public Polygon() { }
 
+        /// <summary>
+        /// Creates a polygon that wraps the given vertex list (the list is stored by reference, not copied).
+        /// Throws <see cref="ArgumentNullException"/> if <paramref name="vertices"/> is null.
+        /// </summary>
         public Polygon(List<Point2> vertices)
         {
             ArgumentNullException.ThrowIfNull(vertices);
@@ -67,11 +82,18 @@ namespace Geometry
             Vertices = vertices;
         }
 
+        /// <summary>
+        /// Returns true if (<paramref name="x"/>, <paramref name="y"/>) lies inside the polygon.
+        /// </summary>
         public bool Contains(float x, float y)
         {
             return Contains(new Point2(x, y));
         }
 
+        /// <summary>
+        /// Returns true if <paramref name="point"/> lies inside the polygon, using a ray-casting (even-odd) test.
+        /// Always returns false for polygons with fewer than three vertices; behavior on the boundary is not guaranteed.
+        /// </summary>
         public bool Contains(Point2 point)
         {
             if (Sides < 3)
@@ -105,6 +127,9 @@ namespace Geometry
             return output;
         }
 
+        /// <summary>
+        /// Creates a new <see cref="Polygon"/> with every vertex shifted by the negation of a vector.
+        /// </summary>
         public static Polygon operator -(Polygon p, Vector2 v)
         {
             ArgumentNullException.ThrowIfNull(p);
@@ -117,6 +142,9 @@ namespace Geometry
             return output;
         }
 
+        /// <summary>
+        /// Creates a new <see cref="Polygon"/> with every vertex scaled about the origin by <paramref name="scale"/>.
+        /// </summary>
         public static Polygon operator *(Polygon p, float scale)
         {
             ArgumentNullException.ThrowIfNull(p);
@@ -129,6 +157,10 @@ namespace Geometry
             return output;
         }
 
+        /// <summary>
+        /// Creates a new <see cref="Polygon"/> with every vertex divided about the origin by <paramref name="scale"/>.
+        /// Throws <see cref="DivideByZeroException"/> if <paramref name="scale"/> is zero.
+        /// </summary>
         public static Polygon operator /(Polygon p, float scale)
         {
             ArgumentNullException.ThrowIfNull(p);
@@ -144,6 +176,9 @@ namespace Geometry
             return output;
         }
 
+        /// <summary>
+        /// Returns true if <paramref name="obj"/> is a <see cref="Polygon"/> with the same vertices in the same order.
+        /// </summary>
         public override bool Equals(object obj)
         {
             if (obj is null) return false;
@@ -154,6 +189,9 @@ namespace Geometry
             return Equals(new_obj);
         }
 
+        /// <summary>
+        /// Returns true if the other polygon has the same vertex count and identical vertices in the same order.
+        /// </summary>
         public bool Equals(Polygon p)
         {
             if (Vertices.Count != p.Vertices.Count)
@@ -168,6 +206,9 @@ namespace Geometry
             return true;
         }
 
+        /// <summary>
+        /// Returns a hash code formed by XOR-ing the hash codes of all vertices (order-independent).
+        /// </summary>
         public override int GetHashCode()
         {
             unchecked

@@ -20,12 +20,19 @@ namespace Geometry
 {
     public readonly struct Ray : IEquatable<Ray>
     {
+        /// <summary>The XY plane (normal +Z, through the origin), provided as a convenience constant.</summary>
         public static readonly Plane3 ZeroPlane = new(new Vector3(0f, 0f, 1f), 0f);
 
+        /// <summary>The point the ray starts from.</summary>
         public Point3 Origin { get; init; }
 
+        /// <summary>The ray direction, always stored as a unit vector.</summary>
         public Vector3 Direction { get; init; }
 
+        /// <summary>
+        /// Creates a ray from an origin and a direction. The direction is normalized on construction.
+        /// Throws <see cref="ArgumentException"/> if <paramref name="direction"/> is the zero vector.
+        /// </summary>
         public Ray(Point3 origin, Vector3 direction)
         {
             if (direction.Length() == 0f)
@@ -35,6 +42,9 @@ namespace Geometry
             Direction = Vector3.Normalize(direction);
         }
 
+        /// <summary>
+        /// Returns the point at the given signed <paramref name="distance"/> along the ray from its origin.
+        /// </summary>
         public Point3 PointAt(float distance)
         {
             return new Point3(
@@ -43,6 +53,11 @@ namespace Geometry
                 Origin.Z + Direction.Z * distance);
         }
 
+        /// <summary>
+        /// Tests for intersection with a sphere. On a hit, returns true and sets <paramref name="distance"/> to the
+        /// distance along the ray of the nearest non-negative intersection; otherwise returns false and sets it to 0.
+        /// An origin inside the sphere counts as a hit at the exit point.
+        /// </summary>
         public bool Intersects(Sphere sphere, out float distance)
         {
 
@@ -80,6 +95,11 @@ namespace Geometry
             return false;
         }
 
+        /// <summary>
+        /// Tests for intersection with an axis-aligned box using the slab method. On a hit, returns true and sets
+        /// <paramref name="distance"/> to the entry distance along the ray (clamped to 0 when the origin is inside);
+        /// otherwise returns false and sets it to 0.
+        /// </summary>
         public bool Intersects(AABB aabb, out float distance)
         {
             float tMin = float.NegativeInfinity;
@@ -179,6 +199,10 @@ namespace Geometry
             return true;
         }
 
+        /// <summary>
+        /// Tests for intersection with a cube by treating it as an axis-aligned box. See <see cref="Intersects(AABB, out float)"/>
+        /// for the meaning of <paramref name="distance"/>.
+        /// </summary>
         public bool Intersects(Cube cube, out float distance)
         {
 
@@ -187,6 +211,11 @@ namespace Geometry
                 out distance);
         }
 
+        /// <summary>
+        /// Tests for intersection with a plane. On a hit in front of the origin, returns true and sets
+        /// <paramref name="distance"/> to the distance along the ray; returns false (distance 0) when the ray is
+        /// parallel to the plane or the intersection lies behind the origin.
+        /// </summary>
         public bool Intersects(Plane3 plane, out float distance)
         {
             float denominator = plane.Normal.X * Direction.X + plane.Normal.Y * Direction.Y + plane.Normal.Z * Direction.Z;
@@ -203,20 +232,35 @@ namespace Geometry
             return distance >= 0f;
         }
 
+        /// <summary>
+        /// Returns true if <paramref name="obj"/> is a <see cref="Ray"/> with the same origin and direction.
+        /// </summary>
         public override bool Equals(object obj)
         {
             return obj is Ray other && Equals(other);
         }
 
+        /// <summary>
+        /// Returns true if the other ray has the same origin and (normalized) direction (no tolerance).
+        /// </summary>
         public bool Equals(Ray other)
         {
             return Origin.Equals(other.Origin) && Direction.Equals(other.Direction);
         }
 
+        /// <summary>
+        /// Returns true if both rays have the same origin and direction.
+        /// </summary>
         public static bool operator ==(Ray a, Ray b) => a.Equals(b);
 
+        /// <summary>
+        /// Returns true if the rays differ in origin or direction.
+        /// </summary>
         public static bool operator !=(Ray a, Ray b) => !a.Equals(b);
 
+        /// <summary>
+        /// Returns a hash code derived from the origin and direction.
+        /// </summary>
         public override int GetHashCode()
         {
             return HashCode.Combine(Origin, Direction);
