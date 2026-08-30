@@ -43,33 +43,38 @@ namespace Geometry
         {
             get
             {
-                switch (i)
+                return i switch
                 {
                     // top face
-                    case 0: return new Point3(X1, Y1, Z1);
-                    case 1: return new Point3(X1, Y2, Z1);
-                    case 2: return new Point3(X2, Y1, Z1);
-                    case 3: return new Point3(X2, Y2, Z1);
+                    0 => new Point3(X1, Y1, Z1),
+                    1 => new Point3(X1, Y2, Z1),
+                    2 => new Point3(X2, Y1, Z1),
+                    3 => new Point3(X2, Y2, Z1),
 
                     // bottom face
-                    case 4: return new Point3(X1, Y1, Z2);
-                    case 5: return new Point3(X1, Y2, Z2);
-                    case 6: return new Point3(X2, Y1, Z2);
-                    case 7: return new Point3(X2, Y2, Z2);
+                    4 => new Point3(X1, Y1, Z2),
+                    5 => new Point3(X1, Y2, Z2),
+                    6 => new Point3(X2, Y1, Z2),
+                    7 => new Point3(X2, Y2, Z2),
 
-                    default:
-                        throw new IndexOutOfRangeException($"Unknown index {i}");
-                }
+                    _ => throw new IndexOutOfRangeException($"Unknown index {i}"),
+                };
             }
         }
 
-        /// <summary>The extent along X (X2 - X1); may be negative if the corners are not min/max ordered.</summary>
+        /// <summary>
+        /// The extent along X (X2 - X1); may be negative if the corners are not min/max ordered.
+        /// </summary>
         public float Width => X2 - X1;
 
-        /// <summary>The extent along Y (Y2 - Y1); may be negative if the corners are not min/max ordered.</summary>
+        /// <summary>
+        /// The extent along Y (Y2 - Y1); may be negative if the corners are not min/max ordered.
+        /// </summary>
         public float Height => Y2 - Y1;
 
-        /// <summary>The extent along Z (Z2 - Z1); may be negative if the corners are not min/max ordered.</summary>
+        /// <summary>
+        /// The extent along Z (Z2 - Z1); may be negative if the corners are not min/max ordered.
+        /// </summary>
         public float Depth => Z2 - Z1;
 
         /// <summary>
@@ -77,10 +82,14 @@ namespace Geometry
         /// </summary>
         public Point3 Center => new((X1 + X2) / 2, (Y1 + Y2) / 2, (Z1 + Z2) / 2);
 
-        /// <summary>The volume of the cube (absolute width * height * depth).</summary>
+        /// <summary>
+        /// The volume of the cube (absolute width * height * depth).
+        /// </summary>
         public float Volume => MathF.Abs(X2 - X1) * MathF.Abs(Y2 - Y1) * MathF.Abs(Z2 - Z1);
 
-        /// <summary>The total surface area of the cube's six faces.</summary>
+        /// <summary>
+        /// The total surface area of the cube's six faces.
+        /// </summary>
         public float SurfaceArea
         {
             get

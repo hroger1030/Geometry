@@ -174,10 +174,10 @@ namespace Geometry
         public bool Intersects(Rectangle r)
         {
             // Check if the rectangles are intersecting or tangent
-            bool intersectingOrTangent = this.Right >= r.Left && // rect1's right side is to the right of or touching rect2's left side
-                                         this.Left <= r.Right && // rect1's left side is to the left of or touching rect2's right side
-                                         this.Bottom >= r.Top && // rect1's bottom side is below or touching rect2's top side
-                                         this.Top <= r.Bottom;   // rect1's top side is above or touching rect2's bottom side
+            bool intersectingOrTangent = Right >= r.Left && // rect1's right side is to the right of or touching rect2's left side
+                                         Left <= r.Right && // rect1's left side is to the left of or touching rect2's right side
+                                         Bottom >= r.Top && // rect1's bottom side is below or touching rect2's top side
+                                         Top <= r.Bottom;   // rect1's top side is above or touching rect2's bottom side
 
             return intersectingOrTangent;
         }
