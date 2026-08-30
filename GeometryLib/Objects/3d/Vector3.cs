@@ -20,10 +20,15 @@ namespace Geometry
 {
     public readonly struct Vector3 : IEquatable<Vector3>
     {
-        /// <summary>A vector with all components set to zero.</summary>
-        public static readonly Vector3 Zero = new(0, 0, 0);
-        /// <summary>A vector with all components set to one.</summary>
-        public static readonly Vector3 One = new(1, 1, 1);
+        /// <summary>
+        /// A vector with all components set to zero.
+        /// </summary>
+        public static readonly Vector3 ZERO = new(0, 0, 0);
+
+        /// <summary>
+        /// A vector with all components set to one.
+        /// </summary>
+        public static readonly Vector3 ONE = new(1, 1, 1);
 
         public float X { get; init; }
 
@@ -35,11 +40,6 @@ namespace Geometry
         /// Creates a zero vector (0, 0, 0).
         /// </summary>
         public Vector3() : this(0, 0, 0) { }
-
-        /// <summary>
-        /// Creates a copy of an existing vector.
-        /// </summary>
-        public Vector3(Vector3 v1) : this(v1.X, v1.Y, v1.Z) { }
 
         /// <summary>
         /// Creates a vector from the X, Y and Z components of a <see cref="Point3"/> (a position vector).
@@ -125,15 +125,33 @@ namespace Geometry
         }
 
         /// <summary>
-        /// Returns the Euclidean distance between the points that the two vectors represent.
+        /// Returns the squared Euclidean distance between the points that the two vectors represent.
+        /// Cheaper than <see cref="DistanceTo(Vector3, Vector3)"/> (no square root).
         /// </summary>
-        public static float DistanceTo(Vector3 v1, Vector3 v2)
+        public static float DistanceSquaredTo(Vector3 v1, Vector3 v2)
         {
             float delta_x = v1.X - v2.X;
             float delta_y = v1.Y - v2.Y;
             float delta_z = v1.Z - v2.Z;
 
-            return MathF.Sqrt((delta_x * delta_x) + (delta_y * delta_y) + (delta_z * delta_z));
+            return (delta_x * delta_x) + (delta_y * delta_y) + (delta_z * delta_z);
+        }
+
+        /// <summary>
+        /// Returns the Euclidean distance between the points that the two vectors represent.
+        /// </summary>
+        public static float DistanceTo(Vector3 v1, Vector3 v2)
+        {
+            return MathF.Sqrt(DistanceSquaredTo(v1, v2));
+        }
+
+        /// <summary>
+        /// Returns the squared Euclidean distance between this vector and <paramref name="other"/>.
+        /// Cheaper than <see cref="DistanceTo(Vector3)"/> (no square root).
+        /// </summary>
+        public float DistanceSquaredTo(Vector3 other)
+        {
+            return DistanceSquaredTo(this, other);
         }
 
         /// <summary>
@@ -145,9 +163,15 @@ namespace Geometry
         }
 
         /// <summary>
+        /// Returns the squared magnitude of this vector. Cheaper than <see cref="Length"/> (no square root);
+        /// prefer it when comparing magnitudes or testing against a squared threshold.
+        /// </summary>
+        public float LengthSquared() => (X * X) + (Y * Y) + (Z * Z);
+
+        /// <summary>
         /// Returns the magnitude (Euclidean length) of this vector.
         /// </summary>
-        public float Length() => MathF.Sqrt((X * X) + (Y * Y) + (Z * Z));
+        public float Length() => MathF.Sqrt(LengthSquared());
 
         /// <summary>
         /// Returns true if <paramref name="obj"/> is a <see cref="Vector3"/> with the same components.
@@ -181,6 +205,14 @@ namespace Geometry
         public override int GetHashCode()
         {
             return HashCode.Combine(X, Y, Z);
+        }
+
+        /// <summary>
+        /// Returns a string of the form "&lt;x, y, z&gt;".
+        /// </summary>
+        public override string ToString()
+        {
+            return $"<{X}, {Y}, {Z}>";
         }
     }
 }

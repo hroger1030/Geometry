@@ -40,6 +40,13 @@ namespace Geometry
         }
 
         /// <summary>
+        /// Creates a capsule from the raw coordinates of its two segment endpoints and a radius.
+        /// Throws <see cref="ArgumentOutOfRangeException"/> if <paramref name="radius"/> is negative.
+        /// </summary>
+        public Capsule(float pointAX, float pointAY, float pointAZ, float pointBX, float pointBY, float pointBZ, float radius)
+            : this(new Point3(pointAX, pointAY, pointAZ), new Point3(pointBX, pointBY, pointBZ), radius) { }
+
+        /// <summary>
         /// Returns true if <paramref name="point"/> lies inside or on this capsule. A degenerate capsule
         /// (PointA == PointB) is treated as a sphere.
         /// </summary>
@@ -47,7 +54,7 @@ namespace Geometry
         {
 
             var ab = new Vector3(PointA, PointB);
-            if (ab.Length() == 0f)
+            if (ab.LengthSquared() == 0f)
             {
                 return new Sphere(PointA, Radius).Contains(point);
             }
@@ -73,7 +80,7 @@ namespace Geometry
 
             var ab = new Vector3(PointA, PointB);
 
-            if (ab.Length() == 0f)
+            if (ab.LengthSquared() == 0f)
                 return new Sphere(PointA, Radius).Intersects(sphere);
 
             var ac = new Vector3(PointA, sphere.Center);
@@ -122,6 +129,14 @@ namespace Geometry
         public override int GetHashCode()
         {
             return HashCode.Combine(PointA, PointB, Radius);
+        }
+
+        /// <summary>
+        /// Returns a string of the form "Capsule(PointA: (x, y, z), PointB: (x, y, z), Radius: r)".
+        /// </summary>
+        public override string ToString()
+        {
+            return $"Capsule(PointA: {PointA}, PointB: {PointB}, Radius: {Radius})";
         }
     }
 }

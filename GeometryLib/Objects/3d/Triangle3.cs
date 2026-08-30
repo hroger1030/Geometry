@@ -26,7 +26,9 @@ namespace Geometry
 
         public Point3 C { get; init; }
 
-        /// <summary>The sum of the three side lengths.</summary>
+        /// <summary>
+        /// The sum of the three side lengths.
+        /// </summary>
         public float Perimeter =>
             Vector3.DistanceTo(new Vector3(A), new Vector3(B)) +
             Vector3.DistanceTo(new Vector3(B), new Vector3(C)) +
@@ -61,6 +63,13 @@ namespace Geometry
         }
 
         /// <summary>
+        /// Creates a triangle from the raw coordinates of its three vertices.
+        /// Throws <see cref="ArgumentException"/> if any two vertices coincide.
+        /// </summary>
+        public Triangle3(float ax, float ay, float az, float bx, float by, float bz, float cx, float cy, float cz)
+            : this(new Point3(ax, ay, az), new Point3(bx, by, bz), new Point3(cx, cy, cz)) { }
+
+        /// <summary>
         /// Returns true if <paramref name="obj"/> is a <see cref="Triangle3"/> with the same vertices in the same order.
         /// </summary>
         public override bool Equals(object obj)
@@ -92,6 +101,14 @@ namespace Geometry
         public override int GetHashCode()
         {
             return HashCode.Combine(A, B, C);
+        }
+
+        /// <summary>
+        /// Returns a string of the form "Triangle3(A: (x, y, z), B: (x, y, z), C: (x, y, z))".
+        /// </summary>
+        public override string ToString()
+        {
+            return $"Triangle3(A: {A}, B: {B}, C: {C})";
         }
     }
 }

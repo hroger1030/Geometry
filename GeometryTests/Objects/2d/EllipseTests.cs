@@ -16,9 +16,9 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-using System;
 using Geometry;
 using NUnit.Framework;
+using System;
 
 namespace GeometryTests
 {
@@ -77,6 +77,36 @@ namespace GeometryTests
             Assert.That(ellipse.Equals((object)"not an ellipse"), Is.False);
 
             Assert.That(ellipse.GetHashCode(), Is.EqualTo(same.GetHashCode()));
+        }
+
+        [Test]
+        [Category("Ellipse")]
+        public void Ellipse_ReferenceEllipse_Pass()
+        {
+            Assert.That(Ellipse.REFERENCE_ELLIPSE.Center.X, Is.EqualTo(0f));
+            Assert.That(Ellipse.REFERENCE_ELLIPSE.Center.Y, Is.EqualTo(0f));
+            Assert.That(Ellipse.REFERENCE_ELLIPSE.RadiusX, Is.EqualTo(1f));
+            Assert.That(Ellipse.REFERENCE_ELLIPSE.RadiusY, Is.EqualTo(2f));
+        }
+
+        [Test]
+        [Category("Ellipse")]
+        public void Ellipse_RawFloatConstructor_Pass()
+        {
+            var fromFloats = new Ellipse(1f, 2f, 3f, 4f);
+            var fromPoint = new Ellipse(new Point2(1f, 2f), 3f, 4f);
+
+            Assert.That(fromFloats, Is.EqualTo(fromPoint));
+            Assert.Throws<ArgumentOutOfRangeException>((Action)(() => new Ellipse(0f, 0f, 0f, 1f)));
+        }
+
+        [Test]
+        [Category("Ellipse")]
+        public void Ellipse_ToString_Pass()
+        {
+            var ellipse = new Ellipse(1f, 2f, 3f, 4f);
+
+            Assert.That(ellipse.ToString(), Is.EqualTo("Ellipse(Center: (1, 2), RadiusX: 3, RadiusY: 4)"));
         }
     }
 }

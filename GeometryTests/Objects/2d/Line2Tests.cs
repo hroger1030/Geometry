@@ -64,6 +64,22 @@ namespace GeometryTests
 
             Assert.That(line.GetHashCode(), Is.EqualTo(same.GetHashCode()));
         }
+
+        [Test]
+        [Category("Line2")]
+        public void Line2_UnitLine_Pass()
+        {
+            Assert.That(Line2.UNIT_LINE.Point1, Is.EqualTo(Point2.ZERO));
+            Assert.That(Line2.UNIT_LINE.Point2, Is.EqualTo(Point2.ONE));
+            Assert.That(Line2.UNIT_LINE.Length, Is.EqualTo(1.41421356f).Within(Constants.FLOAT_ERROR_MARGIN));
+        }
+
+        [Test]
+        [Category("Line2")]
+        public void Line2_ToString_Pass()
+        {
+            Assert.That(new Line2(0f, 1f, 2f, 3f).ToString(), Is.EqualTo("Line2(Point1: (0, 1), Point2: (2, 3))"));
+        }
     }
 }
 

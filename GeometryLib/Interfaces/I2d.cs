@@ -5,9 +5,14 @@
     /// </summary>
     interface I2d
     {
-        /// <summary>The length of the shape's boundary.</summary>
+        /// <summary>
+        /// The length of the shape's boundary.
+        /// </summary>
         float Perimeter { get; }
-        /// <summary>The area enclosed by the shape.</summary>
+
+        /// <summary>
+        /// The area enclosed by the shape.
+        /// </summary>
         float Area { get; }
     }
 }

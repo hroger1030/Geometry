@@ -44,6 +44,35 @@ namespace GeometryTests
         {
             Assert.Throws<ArgumentException>((Action)(() => new AABB(new Point3(1f, 1f, 1f), new Point3(0f, 0f, 0f))));
         }
+
+        [Test]
+        [Category("AABB")]
+        public void AABB_UnitAABB_Pass()
+        {
+            Assert.That(AABB.UNIT_AABB.Min, Is.EqualTo(new Point3(0f, 0f, 0f)));
+            Assert.That(AABB.UNIT_AABB.Max, Is.EqualTo(new Point3(1f, 1f, 1f)));
+            Assert.That(AABB.UNIT_AABB.Volume, Is.EqualTo(1f));
+        }
+
+        [Test]
+        [Category("AABB")]
+        public void AABB_RawFloatConstructor_Pass()
+        {
+            var fromFloats = new AABB(0f, 0f, 0f, 1f, 2f, 3f);
+            var fromPoints = new AABB(new Point3(0f, 0f, 0f), new Point3(1f, 2f, 3f));
+
+            Assert.That(fromFloats, Is.EqualTo(fromPoints));
+            Assert.Throws<ArgumentException>((Action)(() => new AABB(0f, 0f, 0f, -1f, 1f, 1f)));
+        }
+
+        [Test]
+        [Category("AABB")]
+        public void AABB_ToString_Pass()
+        {
+            var box = new AABB(0f, 0f, 0f, 1f, 2f, 3f);
+
+            Assert.That(box.ToString(), Is.EqualTo("AABB(Min: (0, 0, 0), Max: (1, 2, 3))"));
+        }
     }
 }
 

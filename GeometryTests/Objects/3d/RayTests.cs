@@ -16,9 +16,9 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-using System;
 using Geometry;
 using NUnit.Framework;
+using System;
 
 namespace GeometryTests
 {
@@ -76,13 +76,6 @@ namespace GeometryTests
         public void Ray_Constructor_ZeroDirection_Fail()
         {
             Assert.Throws<ArgumentException>((Action)(() => new Ray(new Point3(0f, 0f, 0f), new Vector3(0f, 0f, 0f))));
-        }
-
-        [Test]
-        [Category("Ray")]
-        public void Ray_ZeroPlane_Pass()
-        {
-            Assert.That(Ray.ZeroPlane.Normal, Is.EqualTo(new Vector3(0f, 0f, 1f)));
         }
 
         [Test]
@@ -186,6 +179,41 @@ namespace GeometryTests
             Assert.That(ray.Equals((object)"not a ray"), Is.False);
 
             Assert.That(ray.GetHashCode(), Is.EqualTo(same.GetHashCode()));
+        }
+
+        [Test]
+        [Category("Ray")]
+        public void Ray_UnitRay_Pass()
+        {
+            Assert.That(Ray.UNIT_RAY.Origin, Is.EqualTo(Point3.ZERO));
+
+            float component = 1f / MathF.Sqrt(3f);
+            Assert.That(Ray.UNIT_RAY.Direction.X, Is.EqualTo(component).Within(Constants.FLOAT_ERROR_MARGIN));
+            Assert.That(Ray.UNIT_RAY.Direction.Y, Is.EqualTo(component).Within(Constants.FLOAT_ERROR_MARGIN));
+            Assert.That(Ray.UNIT_RAY.Direction.Z, Is.EqualTo(component).Within(Constants.FLOAT_ERROR_MARGIN));
+            Assert.That(Ray.UNIT_RAY.Direction.Length(), Is.EqualTo(1f).Within(Constants.FLOAT_ERROR_MARGIN));
+        }
+
+        [Test]
+        [Category("Ray")]
+        public void Ray_RawFloatConstructor_Pass()
+        {
+            var fromFloats = new Ray(1f, 2f, 3f, 0f, 0f, 2f);
+            var fromObjects = new Ray(new Point3(1f, 2f, 3f), new Vector3(0f, 0f, 2f));
+
+            Assert.That(fromFloats, Is.EqualTo(fromObjects));
+            // direction is normalized on construction
+            Assert.That(fromFloats.Direction, Is.EqualTo(new Vector3(0f, 0f, 1f)));
+            Assert.Throws<ArgumentException>((Action)(() => new Ray(0f, 0f, 0f, 0f, 0f, 0f)));
+        }
+
+        [Test]
+        [Category("Ray")]
+        public void Ray_ToString_Pass()
+        {
+            var ray = new Ray(1f, 2f, 3f, 0f, 0f, 1f);
+
+            Assert.That(ray.ToString(), Is.EqualTo("Ray(Origin: (1, 2, 3), Direction: <0, 0, 1>)"));
         }
     }
 }

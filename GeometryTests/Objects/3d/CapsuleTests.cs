@@ -18,6 +18,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using Geometry;
 using NUnit.Framework;
+using System;
 
 namespace GeometryTests
 {
@@ -36,6 +37,26 @@ namespace GeometryTests
             var sphere = new Sphere(new Point3(0f, 0f, 3f), 1f);
             Assert.That(capsule.Intersects(sphere), Is.True);
             Assert.That(capsule.Intersects(new Sphere(new Point3(0f, 0f, 5f), 0.5f)), Is.False);
+        }
+
+        [Test]
+        [Category("Capsule")]
+        public void Capsule_RawFloatConstructor_Pass()
+        {
+            var fromFloats = new Capsule(0f, 0f, 0f, 0f, 0f, 2f, 1f);
+            var fromPoints = new Capsule(new Point3(0f, 0f, 0f), new Point3(0f, 0f, 2f), 1f);
+
+            Assert.That(fromFloats, Is.EqualTo(fromPoints));
+            Assert.Throws<ArgumentOutOfRangeException>((Action)(() => new Capsule(0f, 0f, 0f, 0f, 0f, 2f, -1f)));
+        }
+
+        [Test]
+        [Category("Capsule")]
+        public void Capsule_ToString_Pass()
+        {
+            var capsule = new Capsule(0f, 0f, 0f, 0f, 0f, 2f, 1f);
+
+            Assert.That(capsule.ToString(), Is.EqualTo("Capsule(PointA: (0, 0, 0), PointB: (0, 0, 2), Radius: 1)"));
         }
     }
 }

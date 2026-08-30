@@ -16,9 +16,9 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-using System;
 using Geometry;
 using NUnit.Framework;
+using System;
 
 namespace GeometryTests
 {
@@ -62,6 +62,46 @@ namespace GeometryTests
 
             Assert.Throws<InvalidOperationException>((Action)(() => { var _ = v1 + v2; }));
             Assert.Throws<InvalidOperationException>((Action)(() => { var _ = v1 - v2; }));
+        }
+
+        [Test]
+        [Category("VectorN")]
+        public void VectorN_EqualsHashCodeAndOperators_Pass()
+        {
+            var v1 = new VectorN(3) { Axis = [1f, 2f, 3f] };
+            var same = new VectorN(3) { Axis = [1f, 2f, 3f] };
+            var different = new VectorN(3) { Axis = [1f, 2f, 4f] };
+            var shorter = new VectorN(2) { Axis = [1f, 2f] };
+
+            Assert.That(v1.Equals(same), Is.True);
+            Assert.That(v1.Equals(different), Is.False);
+            Assert.That(v1.Equals(shorter), Is.False);
+            Assert.That(v1.Equals((VectorN)null), Is.False);
+            Assert.That(v1.Equals((object)same), Is.True);
+            Assert.That(v1.Equals((object)null), Is.False);
+            Assert.That(v1.Equals((object)"not a vector"), Is.False);
+
+            // equal vectors must produce equal hash codes
+            Assert.That(v1.GetHashCode(), Is.EqualTo(same.GetHashCode()));
+
+            Assert.That(v1 == same, Is.True);
+            Assert.That(v1 != different, Is.True);
+            Assert.That((VectorN)null == (VectorN)null, Is.True);
+            Assert.That(v1 == (VectorN)null, Is.False);
+            Assert.That((VectorN)null == v1, Is.False);
+        }
+
+        [Test]
+        [Category("VectorN")]
+        public void VectorN_CopyConstructorAndToString_Pass()
+        {
+            var original = new VectorN(3) { Axis = [1f, 2f, 3f] };
+            var copy = new VectorN(original);
+
+            Assert.That(copy, Is.EqualTo(original));
+            Assert.That(copy.Axis, Is.Not.SameAs(original.Axis));
+
+            Assert.That(original.ToString(), Is.EqualTo("VectorN[1, 2, 3]"));
         }
     }
 }

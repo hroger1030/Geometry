@@ -33,31 +33,31 @@ namespace GeometryTests
             float distance;
 
             v1 = new Vector3(0, 0, 3);
-            distance = Vector3.Zero.DistanceTo(v1);
+            distance = Vector3.ZERO.DistanceTo(v1);
             Assert.That(distance == 3f, Is.True, "Expected distance of 3");
 
             v1 = new Vector3(3, 4, 0);
-            distance = Vector3.Zero.DistanceTo(v1);
+            distance = Vector3.ZERO.DistanceTo(v1);
             Assert.That(distance == 5f, Is.True, "Expected distance of 5");
 
             v1 = new Vector3(-1, 0, 0);
-            distance = Vector3.Zero.DistanceTo(v1);
+            distance = Vector3.ZERO.DistanceTo(v1);
             Assert.That(distance == 1f, Is.True, "Expected distance of 1");
 
-            v1 = Vector3.Zero;
-            distance = Vector3.Zero.DistanceTo(v1);
+            v1 = Vector3.ZERO;
+            distance = Vector3.ZERO.DistanceTo(v1);
             Assert.That(distance == 0f, Is.True, "Expected distance of 0");
 
             v1 = new Vector3(float.NaN, 0, 0);
-            distance = Vector3.Zero.DistanceTo(v1);
+            distance = Vector3.ZERO.DistanceTo(v1);
             Assert.That(float.IsNaN(distance), Is.True, "Expected distance of float.NaN");
 
             v1 = new Vector3(float.PositiveInfinity, 0, 0);
-            distance = Vector3.Zero.DistanceTo(v1);
+            distance = Vector3.ZERO.DistanceTo(v1);
             Assert.That(float.IsPositiveInfinity(distance), Is.True, "Expected distance of float.PositiveInfinity");
 
             v1 = new Vector3(float.NegativeInfinity, 0, 0);
-            distance = Vector3.Zero.DistanceTo(v1);
+            distance = Vector3.ZERO.DistanceTo(v1);
             Assert.That(float.IsPositiveInfinity(distance), Is.True, "Expected distance of float.PositiveInfinity");
         }
 
@@ -101,6 +101,42 @@ namespace GeometryTests
             Assert.That(v1.Equals((object)v2), Is.True);
             Assert.That(v1.GetHashCode(), Is.EqualTo(v2.GetHashCode()));
             Assert.That(v1.Equals((object)null), Is.False);
+        }
+
+        [Test]
+        [Category("Vector3")]
+        public void Vector3_ZeroAndOne_Pass()
+        {
+            Assert.That(Vector3.ZERO.X, Is.EqualTo(0f));
+            Assert.That(Vector3.ZERO.Y, Is.EqualTo(0f));
+            Assert.That(Vector3.ZERO.Z, Is.EqualTo(0f));
+
+            Assert.That(Vector3.ONE.X, Is.EqualTo(1f));
+            Assert.That(Vector3.ONE.Y, Is.EqualTo(1f));
+            Assert.That(Vector3.ONE.Z, Is.EqualTo(1f));
+        }
+
+        [Test]
+        [Category("Vector3")]
+        public void Vector3_ToString_Pass()
+        {
+            Assert.That(new Vector3(1f, -2f, 3f).ToString(), Is.EqualTo("<1, -2, 3>"));
+        }
+
+        [Test]
+        [Category("Vector3")]
+        public void Vector3_LengthSquaredAndDistanceSquared_Pass()
+        {
+            var v = new Vector3(2f, 3f, 6f);
+
+            Assert.That(v.LengthSquared(), Is.EqualTo(49f));
+            Assert.That(v.Length(), Is.EqualTo(7f));
+
+            var a = new Vector3(1f, 2f, 3f);
+            var b = new Vector3(1f, 6f, 6f);
+            Assert.That(a.DistanceSquaredTo(b), Is.EqualTo(25f));
+            Assert.That(Vector3.DistanceSquaredTo(a, b), Is.EqualTo(25f));
+            Assert.That(a.DistanceTo(b), Is.EqualTo(5f));
         }
     }
 }

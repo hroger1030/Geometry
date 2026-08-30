@@ -20,9 +20,14 @@ namespace Geometry
 {
     public readonly struct Point2 : IEquatable<Point2>
     {
-        /// <summary>The origin point (0, 0).</summary>
+        /// <summary>
+        /// The origin point (0, 0).
+        /// </summary>
         public static readonly Point2 ZERO = new(0, 0);
-        /// <summary>The point (1, 1).</summary>
+
+        /// <summary>
+        /// The point (1, 1).
+        /// </summary>
         public static readonly Point2 ONE = new(1, 1);
 
         public float X { get; init; }
@@ -67,11 +72,32 @@ namespace Geometry
         }
 
         /// <summary>
+        /// Returns the squared Euclidean distance from this point to <paramref name="p"/>.
+        /// Cheaper than <see cref="DistanceTo(Point2)"/> (no square root); prefer it when comparing distances.
+        /// </summary>
+        public float DistanceSquaredTo(Point2 p)
+        {
+            return DistanceSquaredTo(this, p);
+        }
+
+        /// <summary>
         /// Returns the Euclidean distance between two points.
         /// </summary>
         public static float DistanceTo(Point2 p1, Point2 p2)
         {
-            return MathF.Sqrt((p1.X - p2.X) * (p1.X - p2.X) + (p1.Y - p2.Y) * (p1.Y - p2.Y));
+            return MathF.Sqrt(DistanceSquaredTo(p1, p2));
+        }
+
+        /// <summary>
+        /// Returns the squared Euclidean distance between two points. Cheaper than
+        /// <see cref="DistanceTo(Point2, Point2)"/> (no square root); prefer it when comparing distances.
+        /// </summary>
+        public static float DistanceSquaredTo(Point2 p1, Point2 p2)
+        {
+            float dx = p1.X - p2.X;
+            float dy = p1.Y - p2.Y;
+
+            return (dx * dx) + (dy * dy);
         }
 
         /// <summary>
@@ -124,6 +150,14 @@ namespace Geometry
         public override int GetHashCode()
         {
             return HashCode.Combine(X, Y);
+        }
+
+        /// <summary>
+        /// Returns a string of the form "(x, y)".
+        /// </summary>
+        public override string ToString()
+        {
+            return $"({X}, {Y})";
         }
     }
 }

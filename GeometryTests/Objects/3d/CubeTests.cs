@@ -16,9 +16,9 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-using System;
 using Geometry;
 using NUnit.Framework;
+using System;
 
 namespace GeometryTests
 {
@@ -35,6 +35,12 @@ namespace GeometryTests
             Assert.That(outer.Contains(inner), Is.True);
             Assert.That(inner.Intersects(outer), Is.True);
             Assert.That(outer.Intersects(new Cube(new Point3(3f, 3f, 3f), new Point3(4f, 4f, 4f))), Is.False);
+
+            // partial overlap and full-miss must not count as containment
+            Assert.That(inner.Contains(outer), Is.False);
+            Assert.That(outer.Contains(new Cube(new Point3(1f, 1f, 1f), new Point3(3f, 3f, 3f))), Is.False);
+            Assert.That(outer.Contains(new Cube(new Point3(10f, 10f, 10f), new Point3(11f, 11f, 11f))), Is.False);
+            Assert.That(outer.Contains(outer), Is.True);
         }
 
         [Test]
@@ -79,19 +85,9 @@ namespace GeometryTests
         [Category("Cube")]
         public void Cube_UnitCube_Pass()
         {
-            Assert.That(Cube.UnitCube.Width, Is.EqualTo(1f));
-            Assert.That(Cube.UnitCube.Height, Is.EqualTo(1f));
-            Assert.That(Cube.UnitCube.Depth, Is.EqualTo(1f));
-        }
-
-        [Test]
-        [Category("Cube")]
-        public void Cube_CopyConstructor_Pass()
-        {
-            var original = new Cube(0f, 0f, 0f, 1f, 1f, 1f);
-            var copy = new Cube(original);
-
-            Assert.That(copy.Equals(original), Is.True);
+            Assert.That(Cube.UNIT_CUBE.Width, Is.EqualTo(1f));
+            Assert.That(Cube.UNIT_CUBE.Height, Is.EqualTo(1f));
+            Assert.That(Cube.UNIT_CUBE.Depth, Is.EqualTo(1f));
         }
 
         [Test]
@@ -155,6 +151,15 @@ namespace GeometryTests
             Assert.That(cube.Equals((object)"not a cube"), Is.False);
 
             Assert.That(cube.GetHashCode(), Is.EqualTo(same.GetHashCode()));
+        }
+
+        [Test]
+        [Category("Cube")]
+        public void Cube_ToString_Pass()
+        {
+            var cube = new Cube(0f, 0f, 0f, 1f, 2f, 3f);
+
+            Assert.That(cube.ToString(), Is.EqualTo("Cube(P1: (0, 0, 0), P2: (1, 2, 3))"));
         }
     }
 }

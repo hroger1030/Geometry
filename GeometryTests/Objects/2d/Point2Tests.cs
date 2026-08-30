@@ -18,7 +18,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using Geometry;
 using NUnit.Framework;
-using System;
 
 namespace GeometryTests
 {
@@ -108,6 +107,25 @@ namespace GeometryTests
 
             Assert.That(p2.X, Is.EqualTo(2f));
             Assert.That(p2.Y, Is.EqualTo(2f));
+        }
+
+        [Test]
+        [Category("Point2")]
+        public void Point2_ToString_Pass()
+        {
+            Assert.That(new Point2(1f, -2f).ToString(), Is.EqualTo("(1, -2)"));
+        }
+
+        [Test]
+        [Category("Point2")]
+        public void Point2_DistanceSquaredTo_Pass()
+        {
+            var a = new Point2(0f, 0f);
+            var b = new Point2(3f, 4f);
+
+            Assert.That(a.DistanceSquaredTo(b), Is.EqualTo(25f));
+            Assert.That(Point2.DistanceSquaredTo(a, b), Is.EqualTo(25f));
+            Assert.That(a.DistanceTo(b), Is.EqualTo(5f));
         }
     }
 }

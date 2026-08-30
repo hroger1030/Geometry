@@ -16,9 +16,9 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-using System;
 using Geometry;
 using NUnit.Framework;
+using System;
 
 namespace GeometryTests
 {
@@ -187,8 +187,8 @@ namespace GeometryTests
         public void TestIntersectsRectangle2()
         {
             // doesn't intersect
-            var rectangle1 = new Rectangle(0, 0, 1, 1) + Vector2.One;
-            var rectangle2 = new Rectangle(0, 0, 1, 1) - Vector2.One;
+            var rectangle1 = new Rectangle(0, 0, 1, 1) + Vector2.ONE;
+            var rectangle2 = new Rectangle(0, 0, 1, 1) - Vector2.ONE;
 
             Assert.That(rectangle1.Intersects(rectangle2), Is.False);
         }
@@ -223,6 +223,24 @@ namespace GeometryTests
             var c = new Circle(3f, 3f, 0.5f);
 
             Assert.That(r.Intersects(c), Is.False);
+        }
+
+        [Test]
+        [Category("Rectangle")]
+        public void Rectangle_UnitRectangle_Pass()
+        {
+            Assert.That(Rectangle.UNIT_RECTANGLE.Left, Is.EqualTo(0f));
+            Assert.That(Rectangle.UNIT_RECTANGLE.Top, Is.EqualTo(0f));
+            Assert.That(Rectangle.UNIT_RECTANGLE.Width, Is.EqualTo(1f));
+            Assert.That(Rectangle.UNIT_RECTANGLE.Height, Is.EqualTo(1f));
+            Assert.That(Rectangle.UNIT_RECTANGLE.Area, Is.EqualTo(1f));
+        }
+
+        [Test]
+        [Category("Rectangle")]
+        public void Rectangle_ToString_Pass()
+        {
+            Assert.That(new Rectangle(1f, 2f, 3f, 4f).ToString(), Is.EqualTo("Rectangle(Left: 1, Top: 2, Width: 3, Height: 4)"));
         }
 
     }

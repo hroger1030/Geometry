@@ -5,9 +5,14 @@
     /// </summary>
     interface I3d
     {
-        /// <summary>The volume enclosed by the shape.</summary>
+        /// <summary>
+        /// The volume enclosed by the shape.
+        /// </summary>
         float Volume { get; }
-        /// <summary>The total area of the shape's surface.</summary>
+
+        /// <summary>
+        /// The total area of the shape's surface.
+        /// </summary>
         float SurfaceArea { get; }
     }
 }

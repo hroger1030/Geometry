@@ -20,14 +20,23 @@ namespace Geometry
 {
     public readonly struct Sphere : I3d, IEquatable<Sphere>
     {
+        /// <summary>
+        /// A sphere of radius 1 centered at the origin.
+        /// </summary>
+        public static readonly Sphere UNIT_SPHERE = new(Point3.ZERO, 1f);
+
         public Point3 Center { get; init; }
 
         public float Radius { get; init; }
 
-        /// <summary>The volume of the sphere (4/3 * PI * r^3).</summary>
+        /// <summary>
+        /// The volume of the sphere (4/3 * PI * r^3).
+        /// </summary>
         public float Volume => (4f / 3f) * MathF.PI * Radius * Radius * Radius;
 
-        /// <summary>The surface area of the sphere (4 * PI * r^2).</summary>
+        /// <summary>
+        /// The surface area of the sphere (4 * PI * r^2).
+        /// </summary>
         public float SurfaceArea => 4f * MathF.PI * Radius * Radius;
 
         /// <summary>
@@ -41,6 +50,13 @@ namespace Geometry
             Center = center;
             Radius = radius;
         }
+
+        /// <summary>
+        /// Creates a sphere from the raw coordinates of its center and a radius.
+        /// Throws <see cref="ArgumentOutOfRangeException"/> if <paramref name="radius"/> is zero or negative.
+        /// </summary>
+        public Sphere(float centerX, float centerY, float centerZ, float radius)
+            : this(new Point3(centerX, centerY, centerZ), radius) { }
 
         /// <summary>
         /// Returns true if <paramref name="point"/> lies inside or on this sphere.
@@ -122,6 +138,14 @@ namespace Geometry
         public override int GetHashCode()
         {
             return HashCode.Combine(Center, Radius);
+        }
+
+        /// <summary>
+        /// Returns a string of the form "Sphere(Center: (x, y, z), Radius: r)".
+        /// </summary>
+        public override string ToString()
+        {
+            return $"Sphere(Center: {Center}, Radius: {Radius})";
         }
     }
 }

@@ -16,9 +16,9 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-using System;
 using Geometry;
 using NUnit.Framework;
+using System;
 
 namespace GeometryTests
 {
@@ -48,6 +48,38 @@ namespace GeometryTests
         {
             var p = new Point2(0f, 0f);
             Assert.Throws<ArgumentException>((Action)(() => new Triangle2(p, p, new Point2(1f, 0f))));
+        }
+
+        [Test]
+        [Category("Triangle2")]
+        public void Triangle_UnitTriangle_Pass()
+        {
+            Assert.That(Triangle2.UNIT_TRIANGLE.A, Is.EqualTo(new Point2(0f, 0f)));
+            Assert.That(Triangle2.UNIT_TRIANGLE.B, Is.EqualTo(new Point2(0f, 1f)));
+            Assert.That(Triangle2.UNIT_TRIANGLE.C, Is.EqualTo(new Point2(1f, 0f)));
+
+            Assert.That(Triangle2.UNIT_TRIANGLE.Area, Is.EqualTo(0.5f).Within(Constants.FLOAT_ERROR_MARGIN));
+            Assert.That(Triangle2.UNIT_TRIANGLE.Perimeter, Is.EqualTo(2f + MathF.Sqrt(2f)).Within(Constants.FLOAT_ERROR_MARGIN));
+        }
+
+        [Test]
+        [Category("Triangle2")]
+        public void Triangle_RawFloatConstructor_Pass()
+        {
+            var fromFloats = new Triangle2(0f, 0f, 0f, 1f, 1f, 0f);
+            var fromPoints = new Triangle2(new Point2(0f, 0f), new Point2(0f, 1f), new Point2(1f, 0f));
+
+            Assert.That(fromFloats, Is.EqualTo(fromPoints));
+            Assert.Throws<ArgumentException>((Action)(() => new Triangle2(0f, 0f, 0f, 0f, 1f, 0f)));
+        }
+
+        [Test]
+        [Category("Triangle2")]
+        public void Triangle_ToString_Pass()
+        {
+            var triangle = new Triangle2(0f, 0f, 0f, 1f, 1f, 0f);
+
+            Assert.That(triangle.ToString(), Is.EqualTo("Triangle2(A: (0, 0), B: (0, 1), C: (1, 0))"));
         }
     }
 }

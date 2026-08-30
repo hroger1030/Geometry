@@ -20,11 +20,18 @@ namespace Geometry
 {
     public readonly struct Line2 : I1d, IEquatable<Line2>
     {
+        /// <summary>
+        /// A line segment from the origin (0, 0) to the point (1, 1).
+        /// </summary>
+        public static readonly Line2 UNIT_LINE = new(Point2.ZERO, Point2.ONE);
+
         public Point2 Point1 { get; init; }
 
         public Point2 Point2 { get; init; }
 
-        /// <summary>The distance between the two endpoints (length of the segment).</summary>
+        /// <summary>
+        /// The distance between the two endpoints (length of the segment).
+        /// </summary>
         public float Length => Point1.DistanceTo(Point2);
 
         /// <summary>
@@ -76,11 +83,11 @@ namespace Geometry
         }
 
         /// <summary>
-        /// Returns a string of the form "Point1: (x, y), Point2: (x, y)".
+        /// Returns a string of the form "Line2(Point1: (x, y), Point2: (x, y))".
         /// </summary>
         public override string ToString()
         {
-            return $"Point1: {Point1}, Point2: {Point2}";
+            return $"Line2(Point1: {Point1}, Point2: {Point2})";
         }
     }
 }

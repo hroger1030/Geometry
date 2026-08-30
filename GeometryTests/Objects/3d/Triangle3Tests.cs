@@ -79,5 +79,25 @@ namespace GeometryTests
 
             Assert.That(triangle.GetHashCode(), Is.EqualTo(same.GetHashCode()));
         }
+
+        [Test]
+        [Category("Triangle3")]
+        public void Triangle3_RawFloatConstructor_Pass()
+        {
+            var fromFloats = new Triangle3(0f, 0f, 0f, 1f, 0f, 0f, 0f, 1f, 0f);
+            var fromPoints = new Triangle3(new Point3(0f, 0f, 0f), new Point3(1f, 0f, 0f), new Point3(0f, 1f, 0f));
+
+            Assert.That(fromFloats, Is.EqualTo(fromPoints));
+            Assert.Throws<ArgumentException>((Action)(() => new Triangle3(0f, 0f, 0f, 0f, 0f, 0f, 0f, 1f, 0f)));
+        }
+
+        [Test]
+        [Category("Triangle3")]
+        public void Triangle3_ToString_Pass()
+        {
+            var triangle = new Triangle3(0f, 0f, 0f, 1f, 0f, 0f, 0f, 1f, 0f);
+
+            Assert.That(triangle.ToString(), Is.EqualTo("Triangle3(A: (0, 0, 0), B: (1, 0, 0), C: (0, 1, 0))"));
+        }
     }
 }

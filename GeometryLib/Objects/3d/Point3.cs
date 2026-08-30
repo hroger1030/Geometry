@@ -20,6 +20,16 @@ namespace Geometry
 {
     public readonly struct Point3 : IEquatable<Point3>
     {
+        /// <summary>
+        /// The origin point (0, 0, 0).
+        /// </summary>
+        public static readonly Point3 ZERO = new(0, 0, 0);
+
+        /// <summary>
+        /// The point (1, 1, 1).
+        /// </summary>
+        public static readonly Point3 ONE = new(1, 1, 1);
+
         public float X { get; init; }
 
         public float Y { get; init; }
@@ -39,16 +49,6 @@ namespace Geometry
             X = x;
             Y = y;
             Z = z;
-        }
-
-        /// <summary>
-        /// Creates a copy of an existing point.
-        /// </summary>
-        public Point3(Point3 p)
-        {
-            X = p.X;
-            Y = p.Y;
-            Z = p.Z;
         }
 
         /// <summary>
@@ -109,6 +109,14 @@ namespace Geometry
         public override int GetHashCode()
         {
             return HashCode.Combine(X, Y, Z);
+        }
+
+        /// <summary>
+        /// Returns a string of the form "(x, y, z)".
+        /// </summary>
+        public override string ToString()
+        {
+            return $"({X}, {Y}, {Z})";
         }
     }
 }

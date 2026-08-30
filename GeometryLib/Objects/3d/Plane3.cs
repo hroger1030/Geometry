@@ -20,10 +20,19 @@ namespace Geometry
 {
     public readonly struct Plane3 : IEquatable<Plane3>
     {
-        /// <summary>The plane normal. Not required to be unit length; see <see cref="Normalize"/>.</summary>
+        /// <summary>
+        /// The XY plane (normal +Z, through the origin), provided as a convenience constant.
+        /// </summary>
+        public static readonly Plane3 ZERO_PLANE = new(new Vector3(0f, 0f, 1f), 0f);
+
+        /// <summary>
+        /// The plane normal. Not required to be unit length; see <see cref="Normalize"/>.
+        /// </summary>
         public Vector3 Normal { get; init; }
 
-        /// <summary>The plane constant D in the equation Normal.X*x + Normal.Y*y + Normal.Z*z + D = 0.</summary>
+        /// <summary>
+        /// The plane constant D in the equation: Normal.X*x + Normal.Y*y + Normal.Z*z + D = 0.
+        /// </summary>
         public float D { get; init; }
 
         /// <summary>
@@ -38,6 +47,13 @@ namespace Geometry
             Normal = normal;
             D = d;
         }
+
+        /// <summary>
+        /// Creates a plane from the raw components of its normal and the constant D of the equation dot(Normal, p) + D = 0.
+        /// Throws <see cref="ArgumentException"/> if the normal is the zero vector.
+        /// </summary>
+        public Plane3(float normalX, float normalY, float normalZ, float d)
+            : this(new Vector3(normalX, normalY, normalZ), d) { }
 
         /// <summary>
         /// Returns the signed distance from <paramref name="point"/> to this plane. Positive on the side the
@@ -93,5 +109,13 @@ namespace Geometry
         /// Returns a hash code derived from the normal and D.
         /// </summary>
         public override int GetHashCode() => HashCode.Combine(Normal, D);
+
+        /// <summary>
+        /// Returns a string of the form "Plane3(Normal: &lt;x, y, z&gt;, D: d)".
+        /// </summary>
+        public override string ToString()
+        {
+            return $"Plane3(Normal: {Normal}, D: {D})";
+        }
     }
 }

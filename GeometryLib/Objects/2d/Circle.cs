@@ -20,8 +20,10 @@ namespace Geometry
 {
     public readonly struct Circle : I2d, IEquatable<Circle>
     {
-        /// <summary>A circle of radius 1 centered at the origin.</summary>
-        public static readonly Circle UnitCircle = new();
+        /// <summary>
+        /// A circle of radius 1 centered at the origin.
+        /// </summary>
+        public static readonly Circle UNIT_CIRCLE = new();
 
         public Point2 Center { get; init; }
 
@@ -59,11 +61,6 @@ namespace Geometry
         public Circle(float radius) : this(0f, 0f, radius) { }
 
         /// <summary>
-        /// Creates a copy of an existing circle.
-        /// </summary>
-        public Circle(Circle circle) : this(circle.Center.X, circle.Center.Y, circle.Radius) { }
-
-        /// <summary>
         /// Creates a circle centered at (<paramref name="x"/>, <paramref name="y"/>) with the given radius.
         /// Throws <see cref="ArgumentOutOfRangeException"/> if <paramref name="radius"/> is zero or negative.
         /// </summary>
@@ -81,9 +78,6 @@ namespace Geometry
         /// </summary>
         public bool Intersects(Circle c)
         {
-            if (c.Center == Center)
-                return true;
-
             float distance_x = c.Center.X - Center.X;
             float distance_y = c.Center.Y - Center.Y;
             float sum_radius = Radius + c.Radius;
@@ -113,7 +107,8 @@ namespace Geometry
             float distance_x = p.X - Center.X;
             float distance_y = p.Y - Center.Y;
 
-            return ((Radius * Radius) >= MathF.Abs(distance_x * distance_x + distance_y * distance_y));
+            // distance_x^2 + distance_y^2 is already non-negative, so no MathF.Abs is needed.
+            return (Radius * Radius) >= (distance_x * distance_x + distance_y * distance_y);
         }
 
         /// <summary>
@@ -211,6 +206,14 @@ namespace Geometry
         public override int GetHashCode()
         {
             return HashCode.Combine(Center, Radius);
+        }
+
+        /// <summary>
+        /// Returns a string of the form "Circle(Center: (x, y), Radius: r)".
+        /// </summary>
+        public override string ToString()
+        {
+            return $"Circle(Center: {Center}, Radius: {Radius})";
         }
     }
 }

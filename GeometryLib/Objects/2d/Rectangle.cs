@@ -20,8 +20,10 @@ namespace Geometry
 {
     public readonly struct Rectangle : I2d, IEquatable<Rectangle>
     {
-        /// <summary>A 1x1 rectangle with its top-left corner at the origin.</summary>
-        public readonly static Rectangle UnitRectangle = new(0f, 0f, 1f, 1f);
+        /// <summary>
+        /// A 1x1 rectangle with its top-left corner at the origin.
+        /// </summary>
+        public static readonly Rectangle UNIT_RECTANGLE = new(0f, 0f, 1f, 1f);
 
         /// <summary>
         /// Returns the x coordinate of the left edge of this <see cref="Rectangle"/>.
@@ -116,17 +118,6 @@ namespace Geometry
             Top = center.Y - height / 2;
             Right = center.X + width / 2;
             Bottom = center.Y + height / 2;
-        }
-
-        /// <summary>
-        /// Creates a copy of an existing rectangle.
-        /// </summary>
-        public Rectangle(Rectangle rectangle)
-        {
-            Left = rectangle.Left;
-            Top = rectangle.Top;
-            Right = rectangle.Right;
-            Bottom = rectangle.Bottom;
         }
 
         /// <summary>
@@ -303,6 +294,14 @@ namespace Geometry
         public override int GetHashCode()
         {
             return HashCode.Combine(Left, Right, Top, Bottom);
+        }
+
+        /// <summary>
+        /// Returns a string of the form "Rectangle(Left: l, Top: t, Width: w, Height: h)".
+        /// </summary>
+        public override string ToString()
+        {
+            return $"Rectangle(Left: {Left}, Top: {Top}, Width: {Width}, Height: {Height})";
         }
     }
 }

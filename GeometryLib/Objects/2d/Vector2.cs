@@ -20,10 +20,15 @@ namespace Geometry
 {
     public readonly struct Vector2 : IEquatable<Vector2>
     {
-        /// <summary>A vector with both components set to zero.</summary>
-        public static readonly Vector2 Zero = new(0, 0);
-        /// <summary>A vector with both components set to one.</summary>
-        public static readonly Vector2 One = new(1, 1);
+        /// <summary>
+        /// A vector with both components set to zero.
+        /// </summary>
+        public static readonly Vector2 ZERO = new(0, 0);
+
+        /// <summary>
+        /// A vector with both components set to one.
+        /// </summary>
+        public static readonly Vector2 ONE = new(1, 1);
 
         public float X { get; init; }
 
@@ -33,11 +38,6 @@ namespace Geometry
         /// Creates a zero vector (0, 0).
         /// </summary>
         public Vector2() : this(0, 0) { }
-
-        /// <summary>
-        /// Creates a copy of an existing vector.
-        /// </summary>
-        public Vector2(Vector2 v1) : this(v1.X, v1.Y) { }
 
         /// <summary>
         /// Creates a vector from the X and Y components of a <see cref="Point2"/>.
@@ -134,11 +134,20 @@ namespace Geometry
         }
 
         /// <summary>
+        /// Returns the squared magnitude of this vector. Cheaper than <see cref="Length"/> (no square root);
+        /// prefer it when comparing magnitudes or testing against a squared threshold.
+        /// </summary>
+        public float LengthSquared()
+        {
+            return (X * X) + (Y * Y);
+        }
+
+        /// <summary>
         /// Returns the magnitude (Euclidean length) of this vector.
         /// </summary>
         public float Length()
         {
-            return MathF.Sqrt((X * X) + (Y * Y));
+            return MathF.Sqrt(LengthSquared());
         }
 
         /// <summary>
@@ -173,6 +182,14 @@ namespace Geometry
         public override int GetHashCode()
         {
             return HashCode.Combine(X, Y);
+        }
+
+        /// <summary>
+        /// Returns a string of the form "&lt;x, y&gt;".
+        /// </summary>
+        public override string ToString()
+        {
+            return $"<{X}, {Y}>";
         }
     }
 }

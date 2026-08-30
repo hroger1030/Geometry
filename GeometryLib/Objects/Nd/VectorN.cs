@@ -120,6 +120,9 @@ namespace Geometry
         /// </summary>
         public bool Equals(VectorN v)
         {
+            if (v is null)
+                return false;
+
             if (Axis.Length != v.Axis.Length)
                 return false;
 
@@ -133,11 +136,40 @@ namespace Geometry
         }
 
         /// <summary>
-        /// Returns the identity hash code of the underlying axis array (reference-based, not value-based).
+        /// Returns a hash code derived from every component, so vectors that compare equal hash equal.
         /// </summary>
         public override int GetHashCode()
         {
-            return Axis.GetHashCode();
+            var hash = new HashCode();
+
+            foreach (float component in Axis)
+                hash.Add(component);
+
+            return hash.ToHashCode();
+        }
+
+        /// <summary>
+        /// Returns true if both vectors are null, or have the same dimension and equal components.
+        /// </summary>
+        public static bool operator ==(VectorN a, VectorN b)
+        {
+            if (a is null)
+                return b is null;
+
+            return a.Equals(b);
+        }
+
+        /// <summary>
+        /// Returns true if exactly one vector is null, or their dimensions or components differ.
+        /// </summary>
+        public static bool operator !=(VectorN a, VectorN b) => !(a == b);
+
+        /// <summary>
+        /// Returns a string of the form "VectorN[a, b, c]".
+        /// </summary>
+        public override string ToString()
+        {
+            return $"VectorN[{string.Join(", ", Axis)}]";
         }
     }
 }

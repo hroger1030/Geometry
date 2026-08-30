@@ -83,9 +83,9 @@ namespace GeometryTests
             Assert.That(defaultVector.X, Is.EqualTo(0f));
             Assert.That(defaultVector.Y, Is.EqualTo(0f));
 
-            var copy = new Vector2(new Vector2(2f, 3f));
-            Assert.That(copy.X, Is.EqualTo(2f));
-            Assert.That(copy.Y, Is.EqualTo(3f));
+            var fromComponents = new Vector2(2f, 3f);
+            Assert.That(fromComponents.X, Is.EqualTo(2f));
+            Assert.That(fromComponents.Y, Is.EqualTo(3f));
 
             var fromPoint = new Vector2(new Point2(4f, 5f));
             Assert.That(fromPoint.X, Is.EqualTo(4f));
@@ -100,10 +100,10 @@ namespace GeometryTests
         [Category("Vector2")]
         public void TestStaticFields_Pass()
         {
-            Assert.That(Vector2.Zero.X, Is.EqualTo(0f));
-            Assert.That(Vector2.Zero.Y, Is.EqualTo(0f));
-            Assert.That(Vector2.One.X, Is.EqualTo(1f));
-            Assert.That(Vector2.One.Y, Is.EqualTo(1f));
+            Assert.That(Vector2.ZERO.X, Is.EqualTo(0f));
+            Assert.That(Vector2.ZERO.Y, Is.EqualTo(0f));
+            Assert.That(Vector2.ONE.X, Is.EqualTo(1f));
+            Assert.That(Vector2.ONE.Y, Is.EqualTo(1f));
         }
 
         [Test]
@@ -153,6 +153,23 @@ namespace GeometryTests
             Assert.That(v.Equals((object)"not a vector"), Is.False);
 
             Assert.That(v.GetHashCode(), Is.EqualTo(same.GetHashCode()));
+        }
+
+        [Test]
+        [Category("Vector2")]
+        public void Vector2_ToString_Pass()
+        {
+            Assert.That(new Vector2(1f, -2f).ToString(), Is.EqualTo("<1, -2>"));
+        }
+
+        [Test]
+        [Category("Vector2")]
+        public void Vector2_LengthSquared_Pass()
+        {
+            var v = new Vector2(3f, 4f);
+
+            Assert.That(v.LengthSquared(), Is.EqualTo(25f));
+            Assert.That(v.Length(), Is.EqualTo(5f));
         }
     }
 }

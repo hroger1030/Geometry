@@ -20,6 +20,16 @@ namespace Geometry
 {
     public class Polygon : I2d, IEquatable<Polygon>
     {
+        /// <summary>
+        /// A five-sided polygon with vertices spanning the unit square (0..1 on both axes).
+        /// </summary>
+        public static readonly Polygon PENTAGON = new() { Vertices = [new() { X = 0.5f, Y = 0f }, new() { X = 1f, Y = 0.381966f }, new() { X = 0.809017f, Y = 1f }, new() { X = 0.190983f, Y = 1f }, new() { X = 0f, Y = 0.381966f }] };
+
+        /// <summary>
+        /// A six-sided polygon with vertices spanning the unit square (0..1 on both axes).
+        /// </summary>
+        public static readonly Polygon HEXAGON = new() { Vertices = [new() { X = 0.5f, Y = 0f }, new() { X = 1f, Y = 0.25f }, new() { X = 1f, Y = 0.75f }, new() { X = 0.5f, Y = 1f }, new() { X = 0f, Y = 0.75f }, new() { X = 0f, Y = 0.25f }] };
+
         public List<Point2> Vertices { get; set; } = new();
 
         /// <summary>
@@ -30,12 +40,13 @@ namespace Geometry
         {
             get
             {
+                var vertices = System.Runtime.InteropServices.CollectionsMarshal.AsSpan(Vertices);
                 float area = 0;
 
-                for (int i = 0; i < Vertices.Count; i++)
+                for (int i = 0, j = vertices.Length - 1; i < vertices.Length; j = i++)
                 {
-                    var p1 = Vertices[i];
-                    var p2 = Vertices[(i + 1) % Vertices.Count];
+                    var p1 = vertices[j];
+                    var p2 = vertices[i];
                     area += (p1.X * p2.Y) - (p1.Y * p2.X);
                 }
 
@@ -50,20 +61,19 @@ namespace Geometry
         {
             get
             {
+                var vertices = System.Runtime.InteropServices.CollectionsMarshal.AsSpan(Vertices);
                 float perimeter = 0;
 
-                for (int i = 0; i < Vertices.Count; i++)
-                {
-                    var p1 = Vertices[i];
-                    var p2 = Vertices[(i + 1) % Vertices.Count];
-                    perimeter += p1.DistanceTo(p2);
-                }
+                for (int i = 0, j = vertices.Length - 1; i < vertices.Length; j = i++)
+                    perimeter += vertices[j].DistanceTo(vertices[i]);
 
                 return perimeter;
             }
         }
 
-        /// <summary>The number of vertices (equivalently, the number of edges).</summary>
+        /// <summary>
+        /// The number of vertices (equivalently, the number of edges).
+        /// </summary>
         public int Sides => Vertices.Count;
 
         /// <summary>
@@ -80,6 +90,17 @@ namespace Geometry
             ArgumentNullException.ThrowIfNull(vertices);
 
             Vertices = vertices;
+        }
+
+        /// <summary>
+        /// Creates a deep copy of an existing polygon (its vertex list is copied into a new list).
+        /// Throws <see cref="ArgumentNullException"/> if <paramref name="polygon"/> is null.
+        /// </summary>
+        public Polygon(Polygon polygon)
+        {
+            ArgumentNullException.ThrowIfNull(polygon);
+
+            Vertices = [.. polygon.Vertices];
         }
 
         /// <summary>
@@ -100,10 +121,14 @@ namespace Geometry
                 return false;
 
             bool isInside = false;
+            var vertices = System.Runtime.InteropServices.CollectionsMarshal.AsSpan(Vertices);
 
-            for (int i = 0, j = Vertices.Count - 1; i < Vertices.Count; j = i++)
+            for (int i = 0, j = vertices.Length - 1; i < vertices.Length; j = i++)
             {
-                if ((Vertices[i].Y > point.Y) != (Vertices[j].Y > point.Y) && point.X < (Vertices[j].X - Vertices[i].X) * (point.Y - Vertices[i].Y) / (Vertices[j].Y - Vertices[i].Y) + Vertices[i].X)
+                var vi = vertices[i];
+                var vj = vertices[j];
+
+                if ((vi.Y > point.Y) != (vj.Y > point.Y) && point.X < (vj.X - vi.X) * (point.Y - vi.Y) / (vj.Y - vi.Y) + vi.X)
                 {
                     isInside = !isInside;
                 }
@@ -194,6 +219,9 @@ namespace Geometry
         /// </summary>
         public bool Equals(Polygon p)
         {
+            if (p is null)
+                return false;
+
             if (Vertices.Count != p.Vertices.Count)
                 return false;
 
@@ -220,6 +248,30 @@ namespace Geometry
 
                 return output;
             }
+        }
+
+        /// <summary>
+        /// Returns true if both polygons are null, or have the same vertices in the same order.
+        /// </summary>
+        public static bool operator ==(Polygon a, Polygon b)
+        {
+            if (a is null)
+                return b is null;
+
+            return a.Equals(b);
+        }
+
+        /// <summary>
+        /// Returns true if exactly one polygon is null, or their vertices differ.
+        /// </summary>
+        public static bool operator !=(Polygon a, Polygon b) => !(a == b);
+
+        /// <summary>
+        /// Returns a string of the form "Polygon[(x, y), (x, y), ...]".
+        /// </summary>
+        public override string ToString()
+        {
+            return $"Polygon[{string.Join(", ", Vertices)}]";
         }
     }
 }

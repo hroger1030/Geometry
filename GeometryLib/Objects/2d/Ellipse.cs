@@ -18,8 +18,19 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 namespace Geometry
 {
+    /// <summary>
+    /// This is an axis aligned Ellipse object. For a general ellipse, we need a rotation element.
+    /// </summary>
     public readonly struct Ellipse : I2d, IEquatable<Ellipse>
     {
+        // TODO: Extend this to a general ellipse object. 
+
+        /// <summary>
+        /// An ellipse X radius 1, Y radius 2 centered at the origin. 
+        /// Math doesn't often make use of a 'unit ellipse', but it is worth defining. 
+        /// </summary>
+        public static readonly Ellipse REFERENCE_ELLIPSE = new(Point2.ZERO, 1f, 2f);
+
         public Point2 Center { get; init; }
 
         public float RadiusX { get; init; }
@@ -37,7 +48,9 @@ namespace Geometry
             {
                 float a = MathF.Max(RadiusX, RadiusY);
                 float b = MathF.Min(RadiusX, RadiusY);
-                float h = MathF.Pow((a - b), 2) / MathF.Pow((a + b), 2);
+                float sum = a + b;
+                float difference = a - b;
+                float h = (difference * difference) / (sum * sum);
 
                 return MathF.PI * (a + b) * (1 + (3f * h) / (10f + MathF.Sqrt(4f - 3f * h)));
             }
@@ -58,15 +71,25 @@ namespace Geometry
         }
 
         /// <summary>
+        /// Creates an axis-aligned ellipse centered at (<paramref name="centerX"/>, <paramref name="centerY"/>) with the given semi-axis lengths.
+        /// Throws <see cref="ArgumentOutOfRangeException"/> if either radius is zero or negative.
+        /// </summary>
+        public Ellipse(float centerX, float centerY, float radiusX, float radiusY)
+            : this(new Point2(centerX, centerY), radiusX, radiusY) { }
+
+        /// <summary>
         /// Returns true if <paramref name="point"/> lies inside or on this ellipse.
         /// </summary>
         public bool Contains(Point2 point)
         {
-
             float dx = point.X - Center.X;
             float dy = point.Y - Center.Y;
 
-            return (dx * dx) / (RadiusX * RadiusX) + (dy * dy) / (RadiusY * RadiusY) <= 1f;
+            // these two terms could be precomputed for perf if needed.
+            float invRadiusXSquared = 1 / (RadiusX * RadiusX);
+            float invRadiusYSquared = 1 / (RadiusY * RadiusY);
+
+            return (dx * dx * invRadiusXSquared) + (dy * dy * invRadiusYSquared) <= 1f;
         }
 
         /// <summary>
@@ -101,6 +124,14 @@ namespace Geometry
         public override int GetHashCode()
         {
             return HashCode.Combine(Center, RadiusX, RadiusY);
+        }
+
+        /// <summary>
+        /// Returns a string of the form "Ellipse(Center: (x, y), RadiusX: rx, RadiusY: ry)".
+        /// </summary>
+        public override string ToString()
+        {
+            return $"Ellipse(Center: {Center}, RadiusX: {RadiusX}, RadiusY: {RadiusY})";
         }
     }
 }

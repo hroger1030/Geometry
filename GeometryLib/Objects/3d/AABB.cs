@@ -20,21 +20,31 @@ namespace Geometry
 {
     public readonly struct AABB : I3d, IEquatable<AABB>
     {
+        /// <summary>
+        /// A 1x1x1 AABB with one corner at the origin and the opposite corner at (1, 1, 1).
+        /// </summary>
+        public static readonly AABB UNIT_AABB = new(new Point3(0f, 0f, 0f), new Point3(1f, 1f, 1f));
+
         public Point3 Min { get; init; }
 
         public Point3 Max { get; init; }
 
-        /// <summary>The volume of the box (width * height * depth).</summary>
-        public float Volume => MathF.Abs(Max.X - Min.X) * MathF.Abs(Max.Y - Min.Y) * MathF.Abs(Max.Z - Min.Z);
+        /// <summary>
+        /// The volume of the box (width * height * depth). The constructor guarantees Max >= Min on every axis.
+        /// </summary>
+        public float Volume => (Max.X - Min.X) * (Max.Y - Min.Y) * (Max.Z - Min.Z);
 
-        /// <summary>The total surface area of the box's six faces.</summary>
+        /// <summary>
+        /// The total surface area of the box's six faces.
+        /// </summary>
         public float SurfaceArea
         {
             get
             {
-                float width = MathF.Abs(Max.X - Min.X);
-                float height = MathF.Abs(Max.Y - Min.Y);
-                float depth = MathF.Abs(Max.Z - Min.Z);
+                float width = Max.X - Min.X;
+                float height = Max.Y - Min.Y;
+                float depth = Max.Z - Min.Z;
+
                 return 2f * (width * height + height * depth + depth * width);
             }
         }
@@ -45,7 +55,6 @@ namespace Geometry
         /// </summary>
         public AABB(Point3 min, Point3 max)
         {
-
             if (max.X < min.X || max.Y < min.Y || max.Z < min.Z)
                 throw new ArgumentException("Max must be greater than or equal to Min.");
 
@@ -54,11 +63,17 @@ namespace Geometry
         }
 
         /// <summary>
+        /// Creates an axis-aligned bounding box from the raw coordinates of its minimum and maximum corners.
+        /// Throws <see cref="ArgumentException"/> if any max component is less than the matching min component.
+        /// </summary>
+        public AABB(float minX, float minY, float minZ, float maxX, float maxY, float maxZ)
+            : this(new Point3(minX, minY, minZ), new Point3(maxX, maxY, maxZ)) { }
+
+        /// <summary>
         /// Returns true if <paramref name="point"/> lies inside or on the faces of this box.
         /// </summary>
         public bool Contains(Point3 point)
         {
-
             return point.X >= Min.X && point.X <= Max.X &&
                    point.Y >= Min.Y && point.Y <= Max.Y &&
                    point.Z >= Min.Z && point.Z <= Max.Z;
@@ -106,6 +121,14 @@ namespace Geometry
         public override int GetHashCode()
         {
             return HashCode.Combine(Min, Max);
+        }
+
+        /// <summary>
+        /// Returns a string of the form "AABB(Min: (x, y, z), Max: (x, y, z))".
+        /// </summary>
+        public override string ToString()
+        {
+            return $"AABB(Min: {Min}, Max: {Max})";
         }
     }
 }

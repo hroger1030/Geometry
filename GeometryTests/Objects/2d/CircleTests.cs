@@ -160,7 +160,7 @@ namespace GeometryTests
         [Category("Math")]
         public void TestArea()
         {
-            var c = Circle.UnitCircle;
+            var c = Circle.UNIT_CIRCLE;
 
             Assert.That(c.Area == MathF.PI * c.Radius * c.Radius, Is.True);
         }
@@ -170,7 +170,7 @@ namespace GeometryTests
         [Category("Math")]
         public void TestPerimeter()
         {
-            var c = Circle.UnitCircle;
+            var c = Circle.UNIT_CIRCLE;
 
             Assert.That(c.Circumference == MathF.PI * c.Radius * 2, Is.True);
         }
@@ -301,6 +301,22 @@ namespace GeometryTests
             Assert.That(c1.Equals((object)c2), Is.True);
             Assert.That(c1.GetHashCode(), Is.EqualTo(c2.GetHashCode()));
             Assert.That(c1.Equals((object)null), Is.False);
+        }
+
+        [Test]
+        [Category("Circle")]
+        public void Circle_UnitCircle_Pass()
+        {
+            Assert.That(Circle.UNIT_CIRCLE.Center.X, Is.EqualTo(0f));
+            Assert.That(Circle.UNIT_CIRCLE.Center.Y, Is.EqualTo(0f));
+            Assert.That(Circle.UNIT_CIRCLE.Radius, Is.EqualTo(1f));
+        }
+
+        [Test]
+        [Category("Circle")]
+        public void Circle_ToString_Pass()
+        {
+            Assert.That(new Circle(1f, 2f, 3f).ToString(), Is.EqualTo("Circle(Center: (1, 2), Radius: 3)"));
         }
     }
 }

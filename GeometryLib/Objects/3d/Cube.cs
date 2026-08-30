@@ -20,8 +20,10 @@ namespace Geometry
 {
     public readonly struct Cube : I3d, IEquatable<Cube>
     {
-        /// <summary>A 1x1x1 cube with one corner at the origin and the opposite corner at (1, 1, 1).</summary>
-        public readonly static Cube UnitCube = new(0f, 0f, 0f, 1f, 1f, 1f);
+        /// <summary>
+        /// A 1x1x1 cube with one corner at the origin and the opposite corner at (1, 1, 1).
+        /// </summary>
+        public static readonly Cube UNIT_CUBE = new(0f, 0f, 0f, 1f, 1f, 1f);
 
         public float X1 { get; init; }
 
@@ -122,19 +124,6 @@ namespace Geometry
         }
 
         /// <summary>
-        /// Creates a copy of an existing cube.
-        /// </summary>
-        public Cube(Cube cube)
-        {
-            X1 = cube.X1;
-            Y1 = cube.Y1;
-            Z1 = cube.Z1;
-            X2 = cube.X2;
-            Y2 = cube.Y2;
-            Z2 = cube.Z2;
-        }
-
-        /// <summary>
         /// Returns true if point <paramref name="p"/> lies inside or on the faces of this cube.
         /// </summary>
         public bool Contains(Point3 p)
@@ -151,18 +140,13 @@ namespace Geometry
         }
 
         /// <summary>
-        /// Returns true if every corner of <paramref name="c"/> lies inside or on this cube (i.e. the cube is fully enclosed).
+        /// Returns true if <paramref name="c"/> lies entirely inside or on this cube (i.e. the cube is fully enclosed).
+        /// Like the other containment tests, this assumes both cubes have X1 &lt;= X2, Y1 &lt;= Y2 and Z1 &lt;= Z2, so
+        /// enclosing the two extreme corners of <paramref name="c"/> is enough.
         /// </summary>
         public bool Contains(Cube c)
         {
-            return Contains(c.X1, c.Y1, c.Z1) &&
-                   Contains(c.X1, c.Y1, c.Z2) &&
-                   Contains(c.X1, c.Y2, c.Z2) &&
-                   Contains(c.X2, c.Y2, c.Z2) &&
-                   Contains(c.X2, c.Y2, c.Z1) &&
-                   Contains(c.X2, c.Y1, c.Z1) &&
-                   Contains(c.X2, c.Y1, c.Z2) &&
-                   Contains(c.X1, c.Y2, c.Z1);
+            return Contains(c.X1, c.Y1, c.Z1) && Contains(c.X2, c.Y2, c.Z2);
         }
 
         /// <summary>
@@ -234,6 +218,14 @@ namespace Geometry
         public override int GetHashCode()
         {
             return HashCode.Combine(X1, X2, Y1, Y2, Z1, Z2);
+        }
+
+        /// <summary>
+        /// Returns a string of the form "Cube(P1: (x1, y1, z1), P2: (x2, y2, z2))".
+        /// </summary>
+        public override string ToString()
+        {
+            return $"Cube(P1: ({X1}, {Y1}, {Z1}), P2: ({X2}, {Y2}, {Z2}))";
         }
     }
 }

@@ -5,7 +5,9 @@
     /// </summary>
     interface I1d
     {
-        /// <summary>The length of the shape.</summary>
+        /// <summary>
+        /// The length of the shape.
+        /// </summary>
         float Length { get; }
     }
 }

@@ -16,10 +16,10 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-using System;
-using System.Collections.Generic;
 using Geometry;
 using NUnit.Framework;
+using System;
+using System.Collections.Generic;
 
 namespace GeometryTests
 {
@@ -101,7 +101,72 @@ namespace GeometryTests
         [Category("Polygon")]
         public void Polygon_NullConstructor_Fail()
         {
-            Assert.Throws<ArgumentNullException>((Action)(() => new Polygon(null)));
+            Assert.Throws<ArgumentNullException>((Action)(() => new Polygon((List<Point2>)null)));
+        }
+
+        [Test]
+        [Category("Polygon")]
+        public void Polygon_PentagonAndHexagon_Pass()
+        {
+            Assert.That(Polygon.PENTAGON.Vertices.Count, Is.EqualTo(5));
+            Assert.That(Polygon.HEXAGON.Vertices.Count, Is.EqualTo(6));
+
+            Assert.That(Polygon.PENTAGON.Area, Is.GreaterThan(0f));
+            Assert.That(Polygon.PENTAGON.Perimeter, Is.GreaterThan(0f));
+            Assert.That(Polygon.HEXAGON.Area, Is.GreaterThan(0f));
+            Assert.That(Polygon.HEXAGON.Perimeter, Is.GreaterThan(0f));
+        }
+
+        [Test]
+        [Category("Polygon")]
+        public void Polygon_EqualsHashCodeAndOperators_Pass()
+        {
+            var triangle = new Polygon(new List<Point2> { new Point2(0f, 0f), new Point2(1f, 0f), new Point2(0f, 1f) });
+            var same = new Polygon(new List<Point2> { new Point2(0f, 0f), new Point2(1f, 0f), new Point2(0f, 1f) });
+            var reordered = new Polygon(new List<Point2> { new Point2(1f, 0f), new Point2(0f, 0f), new Point2(0f, 1f) });
+            var shorter = new Polygon(new List<Point2> { new Point2(0f, 0f), new Point2(1f, 0f) });
+
+            Assert.That(triangle.Equals(same), Is.True);
+            Assert.That(triangle.Equals(reordered), Is.False);
+            Assert.That(triangle.Equals(shorter), Is.False);
+            Assert.That(triangle.Equals((Polygon)null), Is.False);
+            Assert.That(triangle.Equals((object)same), Is.True);
+            Assert.That(triangle.Equals((object)null), Is.False);
+            Assert.That(triangle.Equals((object)"not a polygon"), Is.False);
+
+            Assert.That(triangle.GetHashCode(), Is.EqualTo(same.GetHashCode()));
+
+            Assert.That(triangle == same, Is.True);
+            Assert.That(triangle != reordered, Is.True);
+            Assert.That((Polygon)null == (Polygon)null, Is.True);
+            Assert.That(triangle == (Polygon)null, Is.False);
+            Assert.That((Polygon)null == triangle, Is.False);
+        }
+
+        [Test]
+        [Category("Polygon")]
+        public void Polygon_CopyConstructor_Pass()
+        {
+            var original = new Polygon(new List<Point2> { new Point2(0f, 0f), new Point2(1f, 0f), new Point2(0f, 1f) });
+            var copy = new Polygon(original);
+
+            Assert.That(copy, Is.EqualTo(original));
+            Assert.That(copy.Vertices, Is.Not.SameAs(original.Vertices));
+
+            // mutating the copy must not affect the original
+            copy.Vertices.Add(new Point2(2f, 2f));
+            Assert.That(original.Vertices.Count, Is.EqualTo(3));
+
+            Assert.Throws<ArgumentNullException>((Action)(() => new Polygon((Polygon)null)));
+        }
+
+        [Test]
+        [Category("Polygon")]
+        public void Polygon_ToString_Pass()
+        {
+            var polygon = new Polygon(new List<Point2> { new Point2(0f, 0f), new Point2(1f, 0f), new Point2(0f, 1f) });
+
+            Assert.That(polygon.ToString(), Is.EqualTo("Polygon[(0, 0), (1, 0), (0, 1)]"));
         }
     }
 }

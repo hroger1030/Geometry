@@ -16,9 +16,9 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-using System;
 using Geometry;
 using NUnit.Framework;
+using System;
 
 namespace GeometryTests
 {
@@ -91,6 +91,36 @@ namespace GeometryTests
             Assert.That(sphere.Equals((object)"not a sphere"), Is.False);
 
             Assert.That(sphere.GetHashCode(), Is.EqualTo(same.GetHashCode()));
+        }
+
+        [Test]
+        [Category("Sphere")]
+        public void Sphere_UnitSphere_Pass()
+        {
+            Assert.That(Sphere.UNIT_SPHERE.Center, Is.EqualTo(Point3.ZERO));
+            Assert.That(Sphere.UNIT_SPHERE.Radius, Is.EqualTo(1f));
+            Assert.That(Sphere.UNIT_SPHERE.Volume, Is.EqualTo((4f / 3f) * MathF.PI).Within(Constants.FLOAT_ERROR_MARGIN));
+            Assert.That(Sphere.UNIT_SPHERE.SurfaceArea, Is.EqualTo(4f * MathF.PI).Within(Constants.FLOAT_ERROR_MARGIN));
+        }
+
+        [Test]
+        [Category("Sphere")]
+        public void Sphere_RawFloatConstructor_Pass()
+        {
+            var fromFloats = new Sphere(1f, 2f, 3f, 4f);
+            var fromPoint = new Sphere(new Point3(1f, 2f, 3f), 4f);
+
+            Assert.That(fromFloats, Is.EqualTo(fromPoint));
+            Assert.Throws<ArgumentOutOfRangeException>((Action)(() => new Sphere(0f, 0f, 0f, 0f)));
+        }
+
+        [Test]
+        [Category("Sphere")]
+        public void Sphere_ToString_Pass()
+        {
+            var sphere = new Sphere(1f, 2f, 3f, 4f);
+
+            Assert.That(sphere.ToString(), Is.EqualTo("Sphere(Center: (1, 2, 3), Radius: 4)"));
         }
     }
 }

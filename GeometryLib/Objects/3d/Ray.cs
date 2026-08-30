@@ -20,13 +20,20 @@ namespace Geometry
 {
     public readonly struct Ray : IEquatable<Ray>
     {
-        /// <summary>The XY plane (normal +Z, through the origin), provided as a convenience constant.</summary>
-        public static readonly Plane3 ZeroPlane = new(new Vector3(0f, 0f, 1f), 0f);
+        /// <summary>
+        /// A ray from the origin (0, 0, 0) pointing along the (1, 1, 1) direction. As with any ray the
+        /// direction is normalized, so <see cref="Direction"/> is (0.577.., 0.577.., 0.577..), not (1, 1, 1).
+        /// </summary>
+        public static readonly Ray UNIT_RAY = new(Point3.ZERO, Vector3.ONE);
 
-        /// <summary>The point the ray starts from.</summary>
+        /// <summary>
+        /// The point the ray starts from.
+        /// </summary>
         public Point3 Origin { get; init; }
 
-        /// <summary>The ray direction, always stored as a unit vector.</summary>
+        /// <summary>
+        /// The ray direction, always stored as a unit vector.
+        /// </summary>
         public Vector3 Direction { get; init; }
 
         /// <summary>
@@ -35,12 +42,19 @@ namespace Geometry
         /// </summary>
         public Ray(Point3 origin, Vector3 direction)
         {
-            if (direction.Length() == 0f)
+            if (direction.LengthSquared() == 0f)
                 throw new ArgumentException("Direction vector must be non-zero.", nameof(direction));
 
             Origin = origin;
             Direction = Vector3.Normalize(direction);
         }
+
+        /// <summary>
+        /// Creates a ray from the raw coordinates of its origin and direction. The direction is normalized on construction.
+        /// Throws <see cref="ArgumentException"/> if the direction is the zero vector.
+        /// </summary>
+        public Ray(float originX, float originY, float originZ, float directionX, float directionY, float directionZ)
+            : this(new Point3(originX, originY, originZ), new Vector3(directionX, directionY, directionZ)) { }
 
         /// <summary>
         /// Returns the point at the given signed <paramref name="distance"/> along the ray from its origin.
@@ -264,6 +278,14 @@ namespace Geometry
         public override int GetHashCode()
         {
             return HashCode.Combine(Origin, Direction);
+        }
+
+        /// <summary>
+        /// Returns a string of the form "Ray(Origin: (x, y, z), Direction: &lt;x, y, z&gt;)".
+        /// </summary>
+        public override string ToString()
+        {
+            return $"Ray(Origin: {Origin}, Direction: {Direction})";
         }
     }
 }

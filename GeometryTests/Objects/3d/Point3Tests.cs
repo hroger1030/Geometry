@@ -52,16 +52,6 @@ namespace GeometryTests
 
         [Test]
         [Category("Point3")]
-        public void Point3_CopyConstructor_Pass()
-        {
-            var original = new Point3(1f, 2f, 3f);
-            var copy = new Point3(original);
-
-            Assert.That(copy.Equals(original), Is.True);
-        }
-
-        [Test]
-        [Category("Point3")]
         public void Point3_FromPoint2Constructor_Pass()
         {
             var point2 = new Point2(1f, 2f);
@@ -94,6 +84,26 @@ namespace GeometryTests
             Assert.That(p.Equals((object)"not a point"), Is.False);
 
             Assert.That(p.GetHashCode(), Is.EqualTo(same.GetHashCode()));
+        }
+
+        [Test]
+        [Category("Point3")]
+        public void Point3_ZeroAndOne_Pass()
+        {
+            Assert.That(Point3.ZERO.X, Is.EqualTo(0f));
+            Assert.That(Point3.ZERO.Y, Is.EqualTo(0f));
+            Assert.That(Point3.ZERO.Z, Is.EqualTo(0f));
+
+            Assert.That(Point3.ONE.X, Is.EqualTo(1f));
+            Assert.That(Point3.ONE.Y, Is.EqualTo(1f));
+            Assert.That(Point3.ONE.Z, Is.EqualTo(1f));
+        }
+
+        [Test]
+        [Category("Point3")]
+        public void Point3_ToString_Pass()
+        {
+            Assert.That(new Point3(1f, -2f, 3f).ToString(), Is.EqualTo("(1, -2, 3)"));
         }
     }
 }
