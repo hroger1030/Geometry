@@ -72,6 +72,14 @@ namespace Geometry
         }
 
         /// <summary>
+        /// Returns the vector2 required to diplace to a specified point2.
+        /// </summary>
+        public Vector2 DisplacementTo(Point2 to)
+        {
+            return new Vector2(to.X - X, to.Y - Y);
+        }
+
+        /// <summary>
         /// Returns the squared Euclidean distance from this point to <paramref name="p"/>.
         /// Cheaper than <see cref="DistanceTo(Point2)"/> (no square root); prefer it when comparing distances.
         /// </summary>
@@ -118,7 +126,7 @@ namespace Geometry
             return new Point2(p1.X - v1.X, p1.Y - v1.Y);
         }
 
-        /// <summary>
+         /// <summary>
         /// Returns true if <paramref name="obj"/> is a <see cref="Point2"/> at the same coordinates.
         /// </summary>
         public override bool Equals(object obj)

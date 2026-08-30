@@ -127,6 +127,40 @@ namespace GeometryTests
             Assert.That(Point2.DistanceSquaredTo(a, b), Is.EqualTo(25f));
             Assert.That(a.DistanceTo(b), Is.EqualTo(5f));
         }
+
+        [Test]
+        [Category("Point2")]
+        public void Point2_DisplacementTo_Pass()
+        {
+            var from = new Point2(1f, 2f);
+            var to = new Point2(4f, 7f);
+
+            var displacement = from.DisplacementTo(to);
+
+            Assert.That(displacement.X, Is.EqualTo(3f));
+            Assert.That(displacement.Y, Is.EqualTo(5f));
+
+            // applying the displacement should land exactly on the target point
+            Assert.That(from + displacement, Is.EqualTo(to));
+        }
+
+        [Test]
+        [Category("Point2")]
+        public void Point2_DisplacementTo_NegativeAndZero_Pass()
+        {
+            var from = new Point2(5f, -3f);
+            var to = new Point2(-2f, -3f);
+
+            var displacement = from.DisplacementTo(to);
+
+            Assert.That(displacement.X, Is.EqualTo(-7f));
+            Assert.That(displacement.Y, Is.EqualTo(0f));
+
+            // displacement from a point to itself is the zero vector
+            var self = from.DisplacementTo(from);
+            Assert.That(self.X, Is.EqualTo(0f));
+            Assert.That(self.Y, Is.EqualTo(0f));
+        }
     }
 }
 
