@@ -16,6 +16,8 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
+using Newtonsoft.Json;
+
 namespace Geometry
 {
     public readonly struct Rectangle : I2d, IEquatable<Rectangle>
@@ -45,39 +47,52 @@ namespace Geometry
         /// </summary>
         public float Bottom { get; init; }
 
+        [JsonIgnore]
         public float X => Left;
 
+        [JsonIgnore]
         public float Y => Top;
 
+        [JsonIgnore]
         public float Width => Right - Left;
 
+        [JsonIgnore]
         public float Height => Bottom - Top;
 
+        [JsonIgnore]
         public Point2 TopLeftCorner => new(Left, Top);
 
+        [JsonIgnore]
         public Point2 TopRightCorner => new(Right, Top);
 
+        [JsonIgnore]
         public Point2 BottomLeftCorner => new(Left, Bottom);
 
+        [JsonIgnore]
         public Point2 BottomRightCorner => new(Right, Bottom);
 
         /// <summary>
         /// The top-left coordinates of this <see cref="Rectangle"/>.
         /// </summary>
+        [JsonIgnore]
         public Point2 Location => TopLeftCorner;
 
         /// <summary>
         /// The width-height coordinates of this <see cref="Rectangle"/>.
         /// </summary>
+        [JsonIgnore]
         public Point2 Size => new(Width, Height);
 
         /// <summary>
         /// A <see cref="Point2"/> located in the center of this <see cref="Rectangle"/>.
         /// </summary>
+        [JsonIgnore]
         public Point2 Center => new((Left + Right) / 2, (Top + Bottom) / 2);
 
+        [JsonIgnore]
         public float Area => Width * Height;
 
+        [JsonIgnore]
         public float Perimeter => (Width + Height) * 2f;
 
         /// <summary>

@@ -16,6 +16,8 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
+using Newtonsoft.Json;
+
 namespace Geometry
 {
     /// <summary>
@@ -37,11 +39,13 @@ namespace Geometry
 
         public float RadiusY { get; init; }
 
+        [JsonIgnore]
         public float Area => MathF.PI * RadiusX * RadiusY;
 
         /// <summary>
         /// The approximate circumference of the ellipse, using Ramanujan's second approximation.
         /// </summary>
+        [JsonIgnore]
         public float Perimeter
         {
             get

@@ -16,6 +16,8 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
+using Newtonsoft.Json;
+
 namespace Geometry
 {
     public readonly struct Triangle3 : IEquatable<Triangle3>
@@ -29,6 +31,7 @@ namespace Geometry
         /// <summary>
         /// The sum of the three side lengths.
         /// </summary>
+        [JsonIgnore]
         public float Perimeter =>
             Vector3.DistanceTo(new Vector3(A), new Vector3(B)) +
             Vector3.DistanceTo(new Vector3(B), new Vector3(C)) +
@@ -37,6 +40,7 @@ namespace Geometry
         /// <summary>
         /// The area of the triangle, computed as half the magnitude of the cross product of two edge vectors.
         /// </summary>
+        [JsonIgnore]
         public float Area
         {
             get

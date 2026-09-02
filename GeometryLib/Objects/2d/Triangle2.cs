@@ -16,6 +16,8 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
+using Newtonsoft.Json;
+
 namespace Geometry
 {
     public readonly struct Triangle2 : I2d, IEquatable<Triangle2>
@@ -48,6 +50,7 @@ namespace Geometry
         /// <summary>
         /// The sum of the three side lengths.
         /// </summary>
+        [JsonIgnore]
         public float Perimeter
         {
             get { return A.DistanceTo(B) + B.DistanceTo(C) + C.DistanceTo(A); }
@@ -57,6 +60,7 @@ namespace Geometry
         /// The area of the triangle, computed with a numerically stable form of Heron's formula
         /// (sides sorted descending before the subtraction terms).
         /// </summary>
+        [JsonIgnore]
         public float Area
         {
             get
@@ -99,6 +103,7 @@ namespace Geometry
         /// Classifies this triangle as <see cref="Type.Equilateral"/>, <see cref="Type.Isosceles"/> or <see cref="Type.Scalene"/>
         /// based on exact side-length equality.
         /// </summary>
+        [JsonIgnore]
         public Type TriangleType
         {
             get

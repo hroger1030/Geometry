@@ -29,14 +29,14 @@ namespace GeometryTests
         public void Point3_OperatorsAndEquality_Pass()
         {
             var p1 = new Point3(1f, 2f, 3f);
-            var p2 = new Point3(4f, 5f, 6f);
-            var p3 = p1 + p2;
-            var p4 = p3 - p1;
+            var v = new Vector3(4f, 5f, 6f);
+            var p2 = p1 + v;
+            var p3 = p2 - v;
 
-            Assert.That(p3.X == 5f && p3.Y == 7f && p3.Z == 9f, Is.True);
-            Assert.That(p4.Equals(p2), Is.True);
-            Assert.That(p2.Equals((object)p2), Is.True);
-            Assert.That(p2.Equals((object)null), Is.False);
+            Assert.That(p2.X == 5f && p2.Y == 7f && p2.Z == 9f, Is.True);
+            Assert.That(p3.Equals(p1), Is.True);
+            Assert.That(p1.Equals((object)p1), Is.True);
+            Assert.That(p1.Equals((object)null), Is.False);
         }
 
         [Test]

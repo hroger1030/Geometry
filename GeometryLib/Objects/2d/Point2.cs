@@ -111,22 +111,20 @@ namespace Geometry
         /// <summary>
         /// Translates a point by a vector, returning the displaced point.
         /// </summary>
-        public static Point2 operator +(Point2 p1, Vector2 v1)
+        public static Point2 operator +(Point2 p, Vector2 v)
         {
-
-            return new Point2(p1.X + v1.X, p1.Y + v1.Y);
+            return new Point2(p.X + v.X, p.Y + v.Y);
         }
 
         /// <summary>
         /// Translates a point by the negation of a vector, returning the displaced point.
         /// </summary>
-        public static Point2 operator -(Point2 p1, Vector2 v1)
+        public static Point2 operator -(Point2 p, Vector2 v)
         {
-
-            return new Point2(p1.X - v1.X, p1.Y - v1.Y);
+            return new Point2(p.X - v.X, p.Y - v.Y);
         }
 
-         /// <summary>
+        /// <summary>
         /// Returns true if <paramref name="obj"/> is a <see cref="Point2"/> at the same coordinates.
         /// </summary>
         public override bool Equals(object obj)

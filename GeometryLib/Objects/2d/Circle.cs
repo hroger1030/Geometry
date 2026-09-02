@@ -16,6 +16,8 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
+using Newtonsoft.Json;
+
 namespace Geometry
 {
     public readonly struct Circle : I2d, IEquatable<Circle>
@@ -29,20 +31,28 @@ namespace Geometry
 
         public float Radius { get; init; }
 
+        [JsonIgnore]
         public float Left => Center.X - Radius;
 
+        [JsonIgnore]
         public float Right => Center.X + Radius;
 
+        [JsonIgnore]
         public float Top => Center.Y - Radius;
 
+        [JsonIgnore]
         public float Bottom => Center.Y + Radius;
 
+        [JsonIgnore]
         public float Area => MathF.PI * Radius * Radius;
 
+        [JsonIgnore]
         public float Circumference => MathF.PI * 2 * Radius;
 
+        [JsonIgnore]
         public float Diameter => Radius * 2;
 
+        [JsonIgnore]
         public float Perimeter => Circumference;
 
         /// <summary>

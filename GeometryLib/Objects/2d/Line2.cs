@@ -16,6 +16,8 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
+using Newtonsoft.Json;
+
 namespace Geometry
 {
     public readonly struct Line2 : I1d, IEquatable<Line2>
@@ -32,6 +34,7 @@ namespace Geometry
         /// <summary>
         /// The distance between the two endpoints (length of the segment).
         /// </summary>
+        [JsonIgnore]
         public float Length => Point1.DistanceTo(Point2);
 
         /// <summary>

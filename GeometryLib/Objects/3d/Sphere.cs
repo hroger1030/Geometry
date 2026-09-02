@@ -16,6 +16,8 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
+using Newtonsoft.Json;
+
 namespace Geometry
 {
     public readonly struct Sphere : I3d, IEquatable<Sphere>
@@ -32,11 +34,13 @@ namespace Geometry
         /// <summary>
         /// The volume of the sphere (4/3 * PI * r^3).
         /// </summary>
+        [JsonIgnore]
         public float Volume => (4f / 3f) * MathF.PI * Radius * Radius * Radius;
 
         /// <summary>
         /// The surface area of the sphere (4 * PI * r^2).
         /// </summary>
+        [JsonIgnore]
         public float SurfaceArea => 4f * MathF.PI * Radius * Radius;
 
         /// <summary>

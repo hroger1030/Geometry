@@ -16,6 +16,8 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
+using Newtonsoft.Json;
+
 namespace Geometry
 {
     public readonly struct Cube : I3d, IEquatable<Cube>
@@ -41,6 +43,7 @@ namespace Geometry
         /// Returns the <see cref="Point3"/> for one of the cube's eight corners. Indices 0-3 are the Z1 face,
         /// indices 4-7 the Z2 face. Throws <see cref="IndexOutOfRangeException"/> for indices outside 0-7.
         /// </summary>
+        [JsonIgnore]
         public Point3 this[int i]
         {
             get
@@ -67,31 +70,37 @@ namespace Geometry
         /// <summary>
         /// The extent along X (X2 - X1); may be negative if the corners are not min/max ordered.
         /// </summary>
+        [JsonIgnore]
         public float Width => X2 - X1;
 
         /// <summary>
         /// The extent along Y (Y2 - Y1); may be negative if the corners are not min/max ordered.
         /// </summary>
+        [JsonIgnore]
         public float Height => Y2 - Y1;
 
         /// <summary>
         /// The extent along Z (Z2 - Z1); may be negative if the corners are not min/max ordered.
         /// </summary>
+        [JsonIgnore]
         public float Depth => Z2 - Z1;
 
         /// <summary>
         /// A <see cref="Point3"/> located in the center of this <see cref="Cube"/>.
         /// </summary>
+        [JsonIgnore]
         public Point3 Center => new((X1 + X2) / 2, (Y1 + Y2) / 2, (Z1 + Z2) / 2);
 
         /// <summary>
         /// The volume of the cube (absolute width * height * depth).
         /// </summary>
+        [JsonIgnore]
         public float Volume => MathF.Abs(X2 - X1) * MathF.Abs(Y2 - Y1) * MathF.Abs(Z2 - Z1);
 
         /// <summary>
         /// The total surface area of the cube's six faces.
         /// </summary>
+        [JsonIgnore]
         public float SurfaceArea
         {
             get

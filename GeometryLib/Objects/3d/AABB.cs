@@ -16,6 +16,8 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
+using Newtonsoft.Json;
+
 namespace Geometry
 {
     public readonly struct AABB : I3d, IEquatable<AABB>
@@ -32,11 +34,13 @@ namespace Geometry
         /// <summary>
         /// The volume of the box (width * height * depth). The constructor guarantees Max >= Min on every axis.
         /// </summary>
+        [JsonIgnore]
         public float Volume => (Max.X - Min.X) * (Max.Y - Min.Y) * (Max.Z - Min.Z);
 
         /// <summary>
         /// The total surface area of the box's six faces.
         /// </summary>
+        [JsonIgnore]
         public float SurfaceArea
         {
             get

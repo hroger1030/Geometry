@@ -133,11 +133,7 @@ namespace Geometry
                 float t2 = (aabb.Max.X - Origin.X) / Direction.X;
 
                 if (t1 > t2)
-                {
-                    float temp = t1;
-                    t1 = t2;
-                    t2 = temp;
-                }
+                    (t2, t1) = (t1, t2);
 
                 tMin = MathF.Max(tMin, t1);
                 tMax = MathF.Min(tMax, t2);
@@ -163,11 +159,7 @@ namespace Geometry
                 float t2 = (aabb.Max.Y - Origin.Y) / Direction.Y;
 
                 if (t1 > t2)
-                {
-                    float temp = t1;
-                    t1 = t2;
-                    t2 = temp;
-                }
+                    (t2, t1) = (t1, t2);
 
                 tMin = MathF.Max(tMin, t1);
                 tMax = MathF.Min(tMax, t2);
@@ -193,11 +185,7 @@ namespace Geometry
                 float t2 = (aabb.Max.Z - Origin.Z) / Direction.Z;
 
                 if (t1 > t2)
-                {
-                    float temp = t1;
-                    t1 = t2;
-                    t2 = temp;
-                }
+                    (t2, t1) = (t1, t2);
 
                 tMin = MathF.Max(tMin, t1);
                 tMax = MathF.Min(tMax, t2);

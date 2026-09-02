@@ -62,19 +62,19 @@ namespace Geometry
         }
 
         /// <summary>
-        /// Adds two points coordinate-wise.
+        /// Translates a point by a vector, returning the displaced point.
         /// </summary>
-        public static Point3 operator +(Point3 p1, Point3 p2)
+        public static Point3 operator +(Point3 p, Vector3 v)
         {
-            return new Point3(p1.X + p2.X, p1.Y + p2.Y, p1.Z + p2.Z);
+            return new Point3(p.X + v.X, p.Y + v.Y, p.Z + v.Z);
         }
 
         /// <summary>
-        /// Subtracts <paramref name="p2"/> from <paramref name="p1"/> coordinate-wise.
+        /// Translates a point by the negation of a vector, returning the displaced point.
         /// </summary>
-        public static Point3 operator -(Point3 p1, Point3 p2)
+        public static Point3 operator -(Point3 p, Vector3 v)
         {
-            return new Point3(p1.X - p2.X, p1.Y - p2.Y, p1.Z - p2.Z);
+            return new Point3(p.X - v.X, p.Y - v.Y, p.Z - v.Z);
         }
 
         /// <summary>

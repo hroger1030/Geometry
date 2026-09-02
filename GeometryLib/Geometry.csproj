@@ -24,4 +24,8 @@ MIT licensed.</Description>
     <Folder Include="Objects\2d\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+  </ItemGroup>
+
 </Project>

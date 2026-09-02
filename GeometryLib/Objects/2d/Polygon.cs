@@ -16,6 +16,8 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
+using Newtonsoft.Json;
+
 namespace Geometry
 {
     public class Polygon : I2d, IEquatable<Polygon>
@@ -36,6 +38,7 @@ namespace Geometry
         /// The area enclosed by the polygon, computed with the shoelace formula. Result is unsigned,
         /// so winding order does not matter; self-intersecting polygons give an ill-defined value.
         /// </summary>
+        [JsonIgnore]
         public float Area
         {
             get
@@ -57,6 +60,7 @@ namespace Geometry
         /// <summary>
         /// The total edge length of the polygon, including the closing edge from the last vertex back to the first.
         /// </summary>
+        [JsonIgnore]
         public float Perimeter
         {
             get
@@ -74,6 +78,7 @@ namespace Geometry
         /// <summary>
         /// The number of vertices (equivalently, the number of edges).
         /// </summary>
+        [JsonIgnore]
         public int Sides => Vertices.Count;
 
         /// <summary>
