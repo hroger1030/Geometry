@@ -62,6 +62,20 @@ namespace GeometryTests
 
             Assert.Throws<InvalidOperationException>((Action)(() => { var _ = v1 + v2; }));
             Assert.Throws<InvalidOperationException>((Action)(() => { var _ = v1 - v2; }));
+            Assert.Throws<InvalidOperationException>((Action)(() => VectorN.Dot(v1, v2)));
+            Assert.Throws<InvalidOperationException>((Action)(() => v1.Dot(v2)));
+        }
+
+        [Test]
+        [Category("VectorN")]
+        public void VectorN_Dot_Pass()
+        {
+            var v1 = new VectorN(4) { Axis = [1f, 2f, 3f, 4f] };
+            var v2 = new VectorN(4) { Axis = [5f, -6f, 7f, 8f] };
+
+            Assert.That(VectorN.Dot(v1, v2), Is.EqualTo(46f));
+            Assert.That(v1.Dot(v2), Is.EqualTo(46f));
+            Assert.That(v1.Dot(v1), Is.EqualTo(30f));
         }
 
         [Test]

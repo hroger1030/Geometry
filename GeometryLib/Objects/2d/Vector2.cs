@@ -134,6 +134,31 @@ namespace Geometry
         }
 
         /// <summary>
+        /// Returns the 2D cross product (perp-dot) of this vector with <paramref name="v"/>.
+        /// See <see cref="Cross(Vector2, Vector2)"/> for why the result is a scalar.
+        /// </summary>
+        public float Cross(Vector2 v)
+        {
+            return Cross(this, v);
+        }
+
+        /// <summary>
+        /// Returns the dot product of two vectors.
+        /// </summary>
+        public static float Dot(Vector2 v1, Vector2 v2)
+        {
+            return (v1.X * v2.X) + (v1.Y * v2.Y);
+        }
+
+        /// <summary>
+        /// Returns the dot product of this vector with <paramref name="v"/>.
+        /// </summary>
+        public float Dot(Vector2 v)
+        {
+            return Dot(this, v);
+        }
+
+        /// <summary>
         /// Returns the squared magnitude of this vector. Cheaper than <see cref="Length"/> (no square root);
         /// prefer it when comparing magnitudes or testing against a squared threshold.
         /// </summary>
@@ -185,7 +210,7 @@ namespace Geometry
         }
 
         /// <summary>
-        /// Returns a string of the form "&lt;x, y&gt;".
+        /// Returns a string of the form "&ltx, y&gt;".
         /// </summary>
         public override string ToString()
         {

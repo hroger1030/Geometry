@@ -120,6 +120,34 @@ namespace GeometryTests
 
         [Test]
         [Category("Vector2")]
+        public void TestCross_Instance_Pass()
+        {
+            var right = new Vector2(1f, 0f);
+            var up = new Vector2(0f, 1f);
+
+            Assert.That(right.Cross(up), Is.EqualTo(1f));
+            Assert.That(up.Cross(right), Is.EqualTo(-1f));
+            Assert.That(right.Cross(right), Is.EqualTo(0f));
+        }
+
+        [Test]
+        [Category("Vector2")]
+        public void TestDot_Pass()
+        {
+            var v1 = new Vector2(3f, 4f);
+            var v2 = new Vector2(2f, 1f);
+
+            Assert.That(Vector2.Dot(v1, v2), Is.EqualTo(10f));
+            Assert.That(v1.Dot(v2), Is.EqualTo(10f));
+
+            var right = new Vector2(1f, 0f);
+            var up = new Vector2(0f, 1f);
+            Assert.That(right.Dot(up), Is.EqualTo(0f));
+            Assert.That(v1.Dot(v1), Is.EqualTo(v1.LengthSquared()));
+        }
+
+        [Test]
+        [Category("Vector2")]
         public void TestNormalize_Instance_Pass()
         {
             var v = new Vector2(3f, 4f);

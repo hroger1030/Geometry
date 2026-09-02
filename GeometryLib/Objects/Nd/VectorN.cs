@@ -103,6 +103,30 @@ namespace Geometry
         }
 
         /// <summary>
+        /// Returns the dot product of two vectors. Throws <see cref="InvalidOperationException"/> if the vectors have different dimensions.
+        /// </summary>
+        public static float Dot(VectorN v1, VectorN v2)
+        {
+            if (v1.Axis.Length != v2.Axis.Length)
+                throw new InvalidOperationException($"cannot take the dot product of vectors of unequal orders");
+
+            float sum = 0f;
+
+            for (int i = 0; i < v1.Axis.Length; i++)
+                sum += v1.Axis[i] * v2.Axis[i];
+
+            return sum;
+        }
+
+        /// <summary>
+        /// Returns the dot product of this vector with <paramref name="v"/>. Throws <see cref="InvalidOperationException"/> if the vectors have different dimensions.
+        /// </summary>
+        public float Dot(VectorN v)
+        {
+            return Dot(this, v);
+        }
+
+        /// <summary>
         /// Returns true if <paramref name="obj"/> is a <see cref="VectorN"/> of the same dimension and equal components.
         /// </summary>
         public override bool Equals(object obj)

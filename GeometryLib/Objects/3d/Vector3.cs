@@ -105,6 +105,30 @@ namespace Geometry
         }
 
         /// <summary>
+        /// Returns the cross product this x <paramref name="v"/>, a vector perpendicular to both inputs.
+        /// </summary>
+        public Vector3 Cross(Vector3 v)
+        {
+            return Cross(this, v);
+        }
+
+        /// <summary>
+        /// Returns the dot product of two vectors.
+        /// </summary>
+        public static float Dot(Vector3 v1, Vector3 v2)
+        {
+            return (v1.X * v2.X) + (v1.Y * v2.Y) + (v1.Z * v2.Z);
+        }
+
+        /// <summary>
+        /// Returns the dot product of this vector with <paramref name="v"/>.
+        /// </summary>
+        public float Dot(Vector3 v)
+        {
+            return Dot(this, v);
+        }
+
+        /// <summary>
         /// Returns a unit-length copy of <paramref name="v1"/>. Throws <see cref="DivideByZeroException"/> if the vector's magnitude is zero.
         /// </summary>
         public static Vector3 Normalize(Vector3 v1)

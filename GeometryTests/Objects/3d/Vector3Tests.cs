@@ -125,6 +125,36 @@ namespace GeometryTests
 
         [Test]
         [Category("Vector3")]
+        public void TestDot_Pass()
+        {
+            var v1 = new Vector3(1f, 2f, 3f);
+            var v2 = new Vector3(4f, -5f, 6f);
+
+            Assert.That(Vector3.Dot(v1, v2), Is.EqualTo(12f));
+            Assert.That(v1.Dot(v2), Is.EqualTo(12f));
+
+            var x = new Vector3(1f, 0f, 0f);
+            var y = new Vector3(0f, 1f, 0f);
+            Assert.That(x.Dot(y), Is.EqualTo(0f));
+            Assert.That(v1.Dot(v1), Is.EqualTo(v1.LengthSquared()));
+        }
+
+        [Test]
+        [Category("Vector3")]
+        public void TestCross_Pass()
+        {
+            var x = new Vector3(1f, 0f, 0f);
+            var y = new Vector3(0f, 1f, 0f);
+            var z = new Vector3(0f, 0f, 1f);
+
+            Assert.That(Vector3.Cross(x, y), Is.EqualTo(z));
+            Assert.That(x.Cross(y), Is.EqualTo(z));
+            Assert.That(y.Cross(x), Is.EqualTo(new Vector3(0f, 0f, -1f)));
+            Assert.That(x.Cross(x), Is.EqualTo(Vector3.ZERO));
+        }
+
+        [Test]
+        [Category("Vector3")]
         public void Vector3_LengthSquaredAndDistanceSquared_Pass()
         {
             var v = new Vector3(2f, 3f, 6f);
