@@ -75,6 +75,14 @@ namespace Geometry
         }
 
         /// <summary>
+        /// Negates each component of the vector.
+        /// </summary>
+        public static Vector2 operator -(Vector2 v)
+        {
+            return new Vector2(-v.X, -v.Y);
+        }
+
+        /// <summary>
         /// Multiplies each component of the vector by a scalar.
         /// </summary>
         public static Vector2 operator *(Vector2 v, float scale)

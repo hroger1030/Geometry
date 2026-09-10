@@ -47,6 +47,30 @@ namespace GeometryTests
 
         [Test]
         [Category("Vector2")]
+        [TestCase(3f, 4f, -3f, -4f)]
+        [TestCase(-1.5f, 2f, 1.5f, -2f)]
+        [TestCase(0f, 0f, 0f, 0f)]
+        public void TestUnaryNegation_Pass(float x, float y, float expectedX, float expectedY)
+        {
+            var v = new Vector2(x, y);
+
+            var negated = -v;
+
+            Assert.That(negated.X, Is.EqualTo(expectedX), "Failed unary negation X");
+            Assert.That(negated.Y, Is.EqualTo(expectedY), "Failed unary negation Y");
+        }
+
+        [Test]
+        [Category("Vector2")]
+        public void TestUnaryNegation_DoubleNegationRestoresOriginal_Pass()
+        {
+            var v = new Vector2(7f, -2f);
+
+            Assert.That((-(-v)).Equals(v), Is.True, "Failed double negation");
+        }
+
+        [Test]
+        [Category("Vector2")]
         public void TestNormalize_Pass()
         {
             var v = new Vector2(3f, 4f);

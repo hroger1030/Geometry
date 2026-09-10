@@ -61,11 +61,6 @@ namespace Geometry
         public Circle() : this(0f, 0f, 1f) { }
 
         /// <summary>
-        /// Creates a unit circle (radius 1) centered at <paramref name="position"/>.
-        /// </summary>
-        public Circle(Point2 position) : this(position.X, position.Y, 1f) { }
-
-        /// <summary>
         /// Creates a circle of the given radius centered at the origin.
         /// </summary>
         public Circle(float radius) : this(0f, 0f, radius) { }
@@ -81,6 +76,16 @@ namespace Geometry
             Center = new Point2(x, y);
             Radius = radius;
         }
+
+        /// <summary>
+        /// Creates a unit circle (radius 1) centered at <paramref name="position"/>.
+        /// </summary>
+        public Circle(Point2 position) : this(position.X, position.Y, 1f) { }
+
+        /// <summary>
+        /// Creates a circle of specified <paramref name="radius"/> centered at <paramref name="position"/>.
+        /// </summary>
+        public Circle(Point2 position, float radius) : this(position.X, position.Y, radius) { }
 
         /// <summary>
         /// Checks to see if circles are intersecting. 

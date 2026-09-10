@@ -55,6 +55,46 @@ namespace GeometryTests
 
         [Test]
         [Category("Circle")]
+        [Category("CTOR")]
+        [TestCase(0f, 0f)]
+        [TestCase(3f, -4f)]
+        [TestCase(-1.5f, 2.25f)]
+        public void Circle_PointConstructor_CreatesUnitCircleAtPosition_Pass(float x, float y)
+        {
+            var c = new Circle(new Point2(x, y));
+
+            Assert.That(c.Center.X == x, Is.True, "Failed center X check");
+            Assert.That(c.Center.Y == y, Is.True, "Failed center Y check");
+            Assert.That(c.Radius == 1f, Is.True, "Failed radius check");
+        }
+
+        [Test]
+        [Category("Circle")]
+        [Category("CTOR")]
+        [TestCase(0f, 0f, 2f)]
+        [TestCase(3f, -4f, 0.5f)]
+        [TestCase(-1.5f, 2.25f, 10f)]
+        public void Circle_PointAndRadiusConstructor_CreatesCircleAtPosition_Pass(float x, float y, float radius)
+        {
+            var c = new Circle(new Point2(x, y), radius);
+
+            Assert.That(c.Center.X == x, Is.True, "Failed center X check");
+            Assert.That(c.Center.Y == y, Is.True, "Failed center Y check");
+            Assert.That(c.Radius == radius, Is.True, "Failed radius check");
+        }
+
+        [Test]
+        [Category("Circle")]
+        [Category("CTOR")]
+        [TestCase(0f)]
+        [TestCase(-3f)]
+        public void Circle_PointAndRadiusConstructor_NonPositiveRadius_Fail(float radius)
+        {
+            Assert.Throws<ArgumentOutOfRangeException>((Action)(() => new Circle(new Point2(1f, 1f), radius)));
+        }
+
+        [Test]
+        [Category("Circle")]
         [Category("Math")]
         [TestCase(1f, 1f)]
         [TestCase(0f, 0f)]
