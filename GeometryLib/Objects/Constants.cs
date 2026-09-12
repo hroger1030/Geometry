@@ -24,5 +24,45 @@ namespace Geometry
         /// Float math can be a little inaccurate, so this is the margin of error we will use when comparing floats.
         /// </summary>
         public const float FLOAT_ERROR_MARGIN = 1e-6f;
+
+        /// <summary>
+        /// Ratio of a circle's circumference to its diameter. Same value as <see cref="MathF.PI"/>, provided here for convenience.
+        /// </summary>
+        public const float PI = MathF.PI;
+
+        /// <summary>
+        /// A full turn, in radians (360 degrees). Useful for wrapping angles and full-circle rotations.
+        /// </summary>
+        public const float TWO_PI = 2f * MathF.PI;
+
+        /// <summary>
+        /// A quarter turn, in radians (90 degrees). Half of <see cref="PI"/>.
+        /// </summary>
+        public const float HALF_PI = MathF.PI / 2f;
+
+        /// <summary>
+        /// An eighth of a turn, in radians (45 degrees). Quarter of <see cref="PI"/>.
+        /// </summary>
+        public const float QUARTER_PI = MathF.PI / 4f;
+
+        /// <summary>
+        /// Multiply a degree value by this to convert it to radians.
+        /// </summary>
+        public const float DEG_TO_RAD = MathF.PI / 180f;
+
+        /// <summary>
+        /// Multiply a radian value by this to convert it to degrees.
+        /// </summary>
+        public const float RAD_TO_DEG = 180f / MathF.PI;
+
+        /// <summary>
+        /// The square root of 2. Commonly used for diagonal distances/movement, e.g. on a grid.
+        /// </summary>
+        public const float SQRT_2 = 1.41421356237f;
+
+        /// <summary>
+        /// The square root of 3. Shows up in equilateral triangle and hexagon math (e.g. isometric/hex grids).
+        /// </summary>
+        public const float SQRT_3 = 1.73205080757f;
     }
 }
